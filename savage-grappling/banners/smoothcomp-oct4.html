@@ -1,0 +1,35 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Smoothcomp banner - Oct 4</title>
+<link rel="stylesheet" href="../brand.css">
+<style>
+  /* 1500x557 to match the existing Smoothcomp slot. It also shows as a ~220px thumbnail, so the date is the biggest thing on it. */
+  .canvas { width: 1500px; height: 557px; }
+  .photo { left: 620px; background-image: url(../assets/photo-takedown.jpg); background-position: 15% 42%; }
+  .fade { position: absolute; inset: 0; background:
+      linear-gradient(90deg, var(--ink) 0 600px, rgba(7,8,12,.9) 660px, rgba(7,8,12,.25) 860px, rgba(7,8,12,0) 1000px); }
+  .slash { position: absolute; left: 560px; top: -40px; width: 26px; height: 660px; background: var(--volt); transform: skewX(-14deg); }
+  .copy { position: absolute; left: 60px; top: 48px; width: 600px; }
+  .wm { height: 58px; display: block; }
+  .day { margin-top: 26px; font-size: 64px; color: var(--mute); }
+  .big { font-size: 212px; line-height: .8; }
+  .venue { margin-top: 18px; font-family: var(--display); font-weight: 700; font-style: italic; font-size: 40px; text-transform: uppercase; }
+  .cta { position: absolute; left: 60px; bottom: 44px; font-size: 44px; }
+  .chip { position: absolute; right: 50px; top: 44px; font-size: 20px; background: rgba(7,8,12,.7); }
+  .sponsors { position: absolute; right: 44px; bottom: 34px; width: 360px; }
+</style></head>
+<body>
+<div class="canvas">
+  <div class="photo"></div>
+  <div class="fade"></div>
+  <div class="slash"></div>
+  <div class="copy">
+    <img class="wm" src="../assets/wordmark-white.png" alt="Savage Grappling">
+    <div class="display day">Sunday</div>
+    <div class="display big">4 <span class="blue">Oct</span></div>
+    <div class="venue">Deakin Uni · Burwood VIC</div>
+  </div>
+  <div class="cta"><span>Sign up now</span></div>
+  <div class="chip">Gi &amp; No-Gi round robin</div>
+  <img class="sponsors" src="../assets/sponsors-strip.png" alt="Cycon Civil, AJJFR, Kamikaze Energy">
+</div>
+</body></html>

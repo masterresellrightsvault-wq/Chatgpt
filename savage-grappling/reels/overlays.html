@@ -1,0 +1,46 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Reel overlays</title>
+<link rel="stylesheet" href="../brand.css">
+<style>
+  /* 720x1280 transparent text layers composited onto the reels with ffmpeg.
+     Text stays in the top 45% so TikTok/Reels buttons and captions never cover it. */
+  html, body { background: transparent; }
+  .layer { position: relative; width: 720px; height: 1280px; }
+  .top { position: absolute; left: 44px; right: 44px; top: 190px; }
+  .line { display: inline-block; background: var(--ink); color: var(--chalk); padding: 8px 18px 4px; margin-bottom: 8px;
+          font-family: var(--display); font-weight: 800; font-style: italic; text-transform: uppercase; font-size: 64px; line-height: .95; }
+  .line.blue { background: var(--volt); color: #fff; }
+  .line.red { background: var(--red); color: #fff; }
+  .end { position: absolute; inset: 0; background: rgba(7,8,12,.86); display: flex; flex-direction: column; justify-content: center; padding: 0 56px 180px; }
+  .end img { width: 380px; margin-bottom: 40px; }
+  .end .d { font-family: var(--display); font-weight: 800; font-style: italic; text-transform: uppercase; font-size: 124px; line-height: .85; }
+  .end .v { margin-top: 18px; font-family: var(--display); font-weight: 700; font-style: italic; text-transform: uppercase; font-size: 46px; color: var(--mute); }
+  .end .cta { margin-top: 44px; font-size: 54px; align-self: flex-start; }
+  .end .score { margin-top: 26px; font-size: 26px; align-self: flex-start; }
+  [data-k] { display: none; }
+</style></head>
+<body>
+<div class="layer">
+  <div data-k="hook" class="top"><span class="line">POV: your whole gym</span><br><span class="line blue">came to watch</span></div>
+  <div data-k="mid" class="top"><span class="line">3–4 matches.</span><br><span class="line red">Guaranteed.</span></div>
+  <div data-k="hook2" class="top"><span class="line">Prove it</span><br><span class="line blue">on the mats</span></div>
+  <div data-k="medal" class="top"><span class="line">These are waiting</span><br><span class="line blue">on the podium</span></div>
+  <div data-k="medal2" class="top"><span class="line">1st also gets</span><br><span class="line blue">the tee</span></div>
+  <div data-k="medal3" class="top"><span class="line">Who's taking one</span><br><span class="line red">home Sunday?</span></div>
+  <div data-k="end" class="end">
+    <img src="../assets/wordmark-white.png" alt="Savage Grappling">
+    <div class="d">Sun <span class="blue">4 Oct</span></div>
+    <div class="v">Deakin Uni · Burwood</div>
+    <div class="cta"><span>Link in bio</span></div>
+    <div class="score"><div class="r">Entries close</div><div>Fri 10:00</div></div>
+  </div>
+</div>
+<script>
+  function show() {
+    const k = location.hash.slice(1);
+    document.querySelectorAll("[data-k]").forEach(el => { el.style.display = el.dataset.k === k ? "block" : "none"; });
+    document.querySelector(".end").style.display = k === "end" ? "flex" : "none";
+  }
+  addEventListener("hashchange", show); show();
+</script>
+</body></html>
