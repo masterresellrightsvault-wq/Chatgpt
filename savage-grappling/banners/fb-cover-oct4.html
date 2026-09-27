@@ -1,50 +1,57 @@
 <!doctype html>
 <html><head><meta charset="utf-8"><title>FB cover - Oct 4</title>
-<link rel="stylesheet" href="../brand.css">
+<link rel="stylesheet" href="poster.css">
 <style>
-  /* 1640x624. Facebook mobile crops to the centre ~1110px (x 265-1375), so all text sits inside that. */
-  .canvas { width: 1640px; height: 624px; }
-  .photo { left: 640px; background-image: url(../assets/photo-takedown.jpg); background-position: 18% 40%; }
-  .fade { position: absolute; inset: 0; background:
-      linear-gradient(90deg, var(--ink) 0 640px, rgba(7,8,12,.92) 700px, rgba(7,8,12,.35) 900px, rgba(7,8,12,0) 1100px),
-      linear-gradient(0deg, rgba(7,8,12,.85), rgba(7,8,12,0) 45%); }
-  .glow { position: absolute; left: 150px; top: -200px; width: 700px; height: 700px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(43,78,245,.28), rgba(43,78,245,0) 65%); }
-  .copy { position: absolute; left: 300px; top: 70px; width: 640px; }
-  .wm { height: 46px; display: block; margin-bottom: 26px; }
-  h1 { font-size: 138px; }
-  .meta { margin-top: 26px; display: flex; align-items: center; gap: 22px; }
-  .date { font-family: var(--display); font-weight: 800; font-style: italic; font-size: 52px; text-transform: uppercase; }
+  /* 1640x624. Phones crop to the centre (~x 265-1375): logo, date, CTA and partners sit inside it,
+     and the edges are filled with artwork so desktop never shows an empty gap. */
+  .canvas { width: 1640px; height: 624px; --gx: 70%; }
+  .g1 { font-size: 400px; left: -40px; top: -30px; }
+  .g2 { font-size: 250px; left: 20px; top: 330px; }
+  .slash { left: 1060px; top: -60px; width: 34px; height: 760px; }
+  .slash.s2 { left: 1115px; width: 12px; opacity: .6; }
+  .fighters { right: 70px; bottom: 118px; height: 490px; }
+  .floor { right: 110px; bottom: 100px; width: 640px; }
+  .copy { position: absolute; left: 290px; top: 30px; z-index: 2; }
+  .brandlock .mark { height: 140px; }
+  .brandlock .wm { height: 74px; }
+  .kicker { margin-top: 18px; font-size: 20px; color: #aab4d6; }
+  .date { margin-top: 4px; font-size: 118px; }
   .date b { color: var(--volt); }
-  .venue { font-size: 22px; color: var(--mute); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; line-height: 1.25; }
-  .row { margin-top: 24px; display: flex; gap: 14px; align-items: center; }
-  .cta { font-size: 34px; }
-  .chip { font-size: 16px; }
-  .tapeline { position: absolute; left: 0; right: 0; bottom: 0; }
-  .sponsors { position: absolute; right: 290px; bottom: 34px; width: 300px; opacity: .95; }
-  .spon-label { position: absolute; right: 290px; bottom: 102px; font-size: 13px; color: var(--mute); }
-  .scoreboard { position: absolute; right: 290px; top: 60px; font-size: 20px; }
+  .venue { margin-top: 10px; font-family: var(--display); font-weight: 700; font-style: italic; font-size: 32px; text-transform: uppercase; }
+  .row { margin-top: 18px; display: flex; gap: 14px; align-items: center; }
+  .cta { font-size: 32px; box-shadow: 0 0 30px rgba(227,32,44,.5); }
+  .score { font-size: 17px; }
+  .partners { height: 118px; gap: 22px; }
+  .partners .p { height: 92px; }
+  .partners .label { font-size: 15px; }
 </style></head>
 <body>
 <div class="canvas">
-  <div class="glow"></div>
-  <div class="photo"></div>
-  <div class="fade"></div>
+  <div class="arena"></div><div class="beams"></div><div class="haze"></div><div class="halftone"></div>
+  <div class="ghost g1">Savage</div>
+  <div class="ghost fill g2">Grappling</div>
+  <div class="slash"></div><div class="slash s2"></div>
+  <div class="floor"></div>
+  <img class="fighters" src="../assets/cutouts/takedown.png" alt="">
   <div class="copy">
-    <img class="wm" src="../assets/wordmark-white.png" alt="Savage Grappling">
-    <h1 class="display">Prove it<br><span class="blue">on the mats</span></h1>
-    <div class="meta">
-      <div class="date">Sun <b>4 Oct</b></div>
-      <div class="venue">Deakin Uni Stadium<br>Burwood, Melbourne</div>
+    <div class="brandlock">
+      <img class="mark" src="../assets/sg-mark-white.png" alt="">
+      <img class="wm" src="../assets/wordmark-white.png" alt="Savage Grappling">
     </div>
+    <div class="label kicker">Gi &amp; No-Gi round robin · Melbourne</div>
+    <div class="display date">Sun <b>4 Oct</b></div>
+    <div class="venue">Deakin Uni Stadium · Burwood</div>
     <div class="row">
-      <div class="cta"><span>Enter on Smoothcomp</span></div>
-      <div class="chip">3–4 matches guaranteed</div>
+      <div class="cta"><span>Enter now</span></div>
+      <div class="score"><div class="r">Entries close</div><div>Fri 2 Oct · 10:00</div></div>
     </div>
   </div>
-  <div class="score scoreboard"><div class="r">Entries close</div><div>Fri 2 Oct · 10:00</div></div>
-  <div class="label spon-label">Supported by</div>
-  <img class="sponsors" src="../assets/sponsors-strip.png" alt="Cycon Civil, AJJFR, Kamikaze Energy">
-  <div class="tape tapeline"></div>
+  <div class="partners">
+    <span class="label">Official partners</span>
+    <div class="p"><img src="../assets/sponsors/cycon.png" alt="Cycon Civil"></div>
+    <div class="p"><img src="../assets/sponsors/ajjfr.png" alt="AJJFP"></div>
+    <div class="p"><img src="../assets/sponsors/kamikaze.png" alt="Kamikaze Energy"></div>
+  </div>
+  <div class="vignette"></div><div class="grain"></div>
 </div>
 </body></html>
