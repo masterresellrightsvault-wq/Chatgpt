@@ -1,0 +1,11 @@
+{
+  "name": "Catch-Up Quest",
+  "short_name": "Catch-Up Quest",
+  "description": "A calm, game-style Year 9 catch-up app (Victorian Curriculum), built for ADHD, dyslexia and autism.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#E8EEF2",
+  "theme_color": "#1B6B7A",
+  "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}
