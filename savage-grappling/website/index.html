@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Savage Grappling: Gi and No-Gi round robin BJJ tournaments in Melbourne. Pools of up to five, 3–4 matches guaranteed. Next event Sunday 4 October, Deakin University Burwood.">
+<meta property="og:title" content="Savage Grappling · Prove it on the mats">
+<meta property="og:description" content="Gi &amp; No-Gi round robin. 3–4 matches guaranteed. Sun 4 Oct, Deakin Uni Burwood.">
+<meta property="og:image" content="img/hero-takedown.jpg">
+<link rel="icon" href="img/sg-mark-white.png">
+<title>Savage Grappling</title>
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+  /* Savage Grappling site. Deliberately dark-only: fight-night look, colours set explicitly. */
+  :root {
+    color-scheme: dark;
+    --ink: #07080c; --steel: #10131b; --steel-2: #171b26; --line: #262b3b;
+    --chalk: #f3f4f7; --text: #cfd3de; --mute: #8e96ab;
+    --royal: #0123b4; --volt: #2b4ef5; --volt-2: #6f86ff; --red: #e3202c;
+    --display: "Barlow Condensed", "Arial Narrow", Impact, sans-serif;
+    --body: "Barlow", "Helvetica Neue", Arial, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+    --gut: clamp(16px, 4vw, 48px);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--ink); color: var(--text); font-family: var(--body); font-size: 17px; line-height: 1.55; }
+  img, video { max-width: 100%; display: block; }
+  a { color: inherit; }
+  h1, h2, h3 { color: var(--chalk); margin: 0; text-wrap: balance; }
+  p { margin: 0 0 14px; }
+  .disp { font-family: var(--display); font-weight: 800; font-style: italic; text-transform: uppercase; line-height: .88; letter-spacing: -.005em; }
+  .lab { font-family: var(--mono); font-weight: 600; text-transform: uppercase; letter-spacing: .12em; font-size: 13px; }
+  .blue { color: var(--volt); }
+  .wrap { max-width: 1200px; margin: 0 auto; padding-inline: var(--gut); }
+  section { padding-block: clamp(64px, 9vw, 120px); }
+  .eyebrow { color: var(--volt-2); margin-bottom: 14px; display: block; }
+  h2.disp { font-size: clamp(44px, 7vw, 92px); margin-bottom: 22px; }
+
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: .5em; text-decoration: none; cursor: pointer; border: 0;
+         font-family: var(--display); font-weight: 800; font-style: italic; text-transform: uppercase; font-size: 24px; letter-spacing: .01em;
+         padding: 14px 26px 12px; background: var(--red); color: #fff; clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%); }
+  .btn:hover { background: #ff2f3b; }
+  .btn.ghost { background: transparent; color: var(--chalk); box-shadow: inset 0 0 0 2px var(--chalk); clip-path: none; }
+  .btn.ghost:hover { background: var(--chalk); color: var(--ink); }
+  .btn:focus-visible, a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid var(--volt-2); outline-offset: 3px; }
+
+  /* Mat tape divider */
+  .tape { height: 10px; background: linear-gradient(90deg, var(--chalk) 0 72%, var(--volt) 72% 100%); }
+
+  /* Nav */
+  header.nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: rgba(7,8,12,.88); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+  header.nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 68px; }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .brand img.mark { height: 38px; width: auto; }
+  .brand img.wm { height: 30px; width: auto; }
+  .links { display: flex; gap: 22px; }
+  .links a { text-decoration: none; font-family: var(--mono); font-weight: 600; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--text); }
+  .links a:hover { color: var(--chalk); }
+  .nav .btn { font-size: 18px; padding: 9px 18px 8px; }
+  @media (max-width: 900px) { .links { display: none; } .brand img.wm { display: none; } }
+
+  /* Hero */
+  .hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--line); }
+  .hero .bg { position: absolute; inset: 0; background: url(img/hero-takedown.jpg) 30% 40% / cover no-repeat; }
+  .hero .bg::after { content: ""; position: absolute; inset: 0; background:
+      linear-gradient(90deg, rgba(7,8,12,.96) 0%, rgba(7,8,12,.82) 38%, rgba(7,8,12,.25) 70%, rgba(7,8,12,.55) 100%),
+      linear-gradient(0deg, var(--ink) 0%, rgba(7,8,12,0) 30%); }
+  .hero .wrap { position: relative; display: grid; grid-template-columns: 1.25fr .9fr; gap: 40px; align-items: end; padding-block: clamp(60px, 10vw, 130px) clamp(50px, 7vw, 90px); }
+  .hero h1 { font-size: clamp(64px, 11vw, 158px); }
+  .hero .sub { margin-top: 22px; font-size: clamp(18px, 2vw, 22px); max-width: 34ch; color: var(--text); }
+  .hero .sub b { color: var(--chalk); }
+  .hero .ctas { margin-top: 30px; display: flex; gap: 12px; flex-wrap: wrap; }
+
+  .ticket { background: rgba(16,19,27,.92); border: 1px solid var(--line); border-top: 6px solid var(--volt); }
+  .ticket .top { padding: 20px 22px 16px; border-bottom: 1px dashed var(--line); }
+  .ticket .when { font-size: clamp(46px, 6vw, 70px); }
+  .ticket .where { margin-top: 8px; font-weight: 600; color: var(--chalk); font-size: 18px; }
+  .ticket .where span { display: block; color: var(--mute); font-weight: 500; font-size: 16px; }
+  .ticket .clock { padding: 16px 22px 20px; }
+  .clock .lab { color: var(--red); }
+  .digits { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 10px; }
+  .digits div { background: #000; border: 1px solid var(--line); text-align: center; padding: 10px 4px 8px; }
+  .digits b { display: block; font-family: var(--mono); font-weight: 600; font-size: clamp(26px, 3.4vw, 38px); color: var(--chalk); font-variant-numeric: tabular-nums; line-height: 1; }
+  .digits small { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--mute); }
+  .ticket .rows { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line); }
+  .ticket .rows div { padding: 12px 22px; border-right: 1px solid var(--line); }
+  .ticket .rows div:last-child { border-right: 0; }
+  .ticket .rows b { display: block; font-family: var(--mono); color: var(--chalk); font-size: 17px; }
+  .ticket .rows span { font-size: 13px; color: var(--mute); }
+  @media (max-width: 900px) { .hero .wrap { grid-template-columns: 1fr; } }
+
+  /* Proof strip */
+  .proof { background: var(--steel); border-bottom: 1px solid var(--line); }
+  .proof .wrap { display: grid; grid-template-columns: repeat(4, 1fr); }
+  .proof div.s { padding: 26px 18px; border-right: 1px solid var(--line); }
+  .proof div.s:last-child { border-right: 0; }
+  .proof .n { font-family: var(--display); font-style: italic; font-weight: 800; font-size: clamp(40px, 5vw, 60px); color: var(--chalk); line-height: 1; }
+  .proof .k { font-size: 15px; color: var(--mute); margin-top: 4px; }
+  @media (max-width: 720px) { .proof .wrap { grid-template-columns: 1fr 1fr; } .proof div.s:nth-child(2) { border-right: 0; } .proof div.s:nth-child(-n+2) { border-bottom: 1px solid var(--line); } }
+
+  /* Format */
+  .format { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(30px, 5vw, 70px); align-items: center; }
+  .format .lead { font-size: 21px; color: var(--text); max-width: 40ch; }
+  .format .lead b { color: var(--chalk); }
+  .facts { list-style: none; padding: 0; margin: 26px 0 0; display: grid; gap: 0; border-top: 1px solid var(--line); }
+  .facts li { display: grid; grid-template-columns: 170px 1fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 16px; }
+  .facts li .lab { color: var(--volt-2); padding-top: 2px; }
+  .pool { width: 100%; max-width: 520px; margin: 0 auto; }
+  @media (max-width: 900px) { .format { grid-template-columns: 1fr; } .facts li { grid-template-columns: 1fr; gap: 2px; } }
+
+  /* Prices */
+  .prices-sec { background: var(--steel); }
+  .price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); margin-top: 10px; }
+  .price { background: var(--steel); padding: 26px 24px; }
+  .price.main { background: var(--steel-2); }
+  .price .lab { color: var(--mute); }
+  .price .amt { font-family: var(--display); font-style: italic; font-weight: 800; font-size: 76px; color: var(--chalk); line-height: 1; margin-top: 10px; }
+  .price p { font-size: 15.5px; margin: 8px 0 0; color: var(--text); }
+  .extras { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0; margin-top: 18px; border-top: 1px solid var(--line); }
+  .extras div { display: flex; justify-content: space-between; gap: 12px; padding: 14px 4px; border-bottom: 1px solid var(--line); font-size: 16px; }
+  .extras div b { font-family: var(--mono); color: var(--chalk); }
+  @media (max-width: 800px) { .price-grid { grid-template-columns: 1fr; } }
+
+  /* Run sheet */
+  .run { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--line); }
+  .run div { padding: 24px 22px; border-right: 1px solid var(--line); }
+  .run div:last-child { border-right: 0; }
+  .run .t { font-family: var(--mono); font-weight: 600; font-size: 30px; color: var(--volt-2); }
+  .run h3 { font-size: 20px; margin: 10px 0 6px; }
+  .run p { font-size: 15.5px; margin: 0; }
+  .dst { margin-top: 16px; border-left: 5px solid var(--red); padding: 12px 16px; background: var(--steel); font-size: 16px; }
+  .dst b { color: var(--chalk); }
+  @media (max-width: 900px) { .run { grid-template-columns: 1fr 1fr; } .run div:nth-child(2) { border-right: 0; } .run div:nth-child(-n+2) { border-bottom: 1px solid var(--line); } }
+  @media (max-width: 520px) { .run { grid-template-columns: 1fr; } .run div { border-right: 0; border-bottom: 1px solid var(--line); } }
+
+  /* Para */
+  .para { position: relative; overflow: hidden; }
+  .para .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(30px, 5vw, 70px); align-items: center; }
+  .para img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border: 1px solid var(--line); }
+  .badge { display: inline-block; background: var(--volt); color: #fff; padding: 5px 10px; margin-bottom: 16px; }
+  @media (max-width: 900px) { .para .wrap { grid-template-columns: 1fr; } }
+
+  /* Highlight + gallery */
+  .reel-wrap { display: grid; grid-template-columns: minmax(240px, 360px) 1fr; gap: clamp(24px, 4vw, 50px); align-items: start; }
+  .reel-wrap video { width: 100%; aspect-ratio: 9/16; background: #000; border: 1px solid var(--line); }
+  .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .gallery img { width: 100%; height: 100%; aspect-ratio: 1/1; object-fit: cover; background: var(--steel); }
+  .gallery img.w { grid-column: span 2; grid-row: span 2; aspect-ratio: auto; }
+  @media (max-width: 800px) { .reel-wrap { grid-template-columns: 1fr; } .reel-wrap video { max-width: 360px; } .gallery { grid-template-columns: 1fr 1fr; } }
+
+  /* Growth chart */
+  .growth { background: var(--steel); }
+  .chartbox { overflow-x: auto; margin-top: 10px; }
+  .bars { display: grid; grid-template-columns: repeat(8, minmax(60px, 1fr)); gap: 12px; align-items: end; height: 300px; min-width: 560px; border-bottom: 2px solid var(--line); }
+  .bar { height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 8px; }
+  .bar i { display: block; width: 100%; background: #1c2340; }
+  .bar.hi i { background: var(--volt); }
+  .bar em { font-style: normal; font-family: var(--mono); font-weight: 600; font-size: 15px; color: var(--chalk); }
+  .axis { display: grid; grid-template-columns: repeat(8, minmax(60px, 1fr)); gap: 12px; min-width: 560px; margin-top: 8px; }
+  .axis span { font-family: var(--mono); font-size: 12px; color: var(--mute); text-align: center; }
+
+  /* Coaches */
+  .coaches .wrap { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(30px, 5vw, 70px); }
+  .perk { display: grid; grid-template-columns: 56px 1fr; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--line); }
+  .perk .ic { width: 56px; height: 56px; border: 2px solid var(--volt); display: flex; align-items: center; justify-content: center; font-family: var(--display); font-weight: 800; font-style: italic; font-size: 26px; color: var(--chalk); }
+  .perk h3 { font-size: 20px; margin-bottom: 4px; }
+  .perk p { margin: 0; font-size: 16px; }
+  .contact-card { background: var(--steel); border: 1px solid var(--line); padding: 26px; align-self: start; }
+  .contact-card .mail { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 14px; }
+  .contact-card code { font-family: var(--mono); font-size: 16px; color: var(--chalk); background: #000; border: 1px solid var(--line); padding: 10px 12px; user-select: all; word-break: break-all; }
+  .copy { font-family: var(--mono); font-weight: 600; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; background: var(--chalk); color: var(--ink); border: 0; padding: 11px 14px; cursor: pointer; }
+  @media (max-width: 900px) { .coaches .wrap { grid-template-columns: 1fr; } }
+
+  /* FAQ */
+  .faq { max-width: 860px; }
+  .faq details { border-bottom: 1px solid var(--line); }
+  .faq summary { cursor: pointer; list-style: none; padding: 20px 40px 20px 0; position: relative; font-weight: 700; font-size: 19px; color: var(--chalk); }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "+"; position: absolute; right: 4px; top: 14px; font-family: var(--mono); font-size: 26px; color: var(--volt-2); }
+  .faq details[open] summary::after { content: "−"; }
+  .faq details p { font-size: 16.5px; max-width: 70ch; }
+
+  /* Sponsors + footer */
+  .sponsors { border-top: 1px solid var(--line); padding-block: 34px; }
+  .sponsors .wrap { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; justify-content: space-between; }
+  .sponsors img { width: min(460px, 100%); }
+  footer { background: #000; border-top: 1px solid var(--line); padding-block: 40px 60px; }
+  footer .wrap { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 30px; }
+  footer img { height: 40px; width: auto; margin-bottom: 14px; }
+  footer p, footer a { font-size: 15px; color: var(--mute); }
+  footer h3 { font-family: var(--mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--chalk); margin-bottom: 10px; }
+  footer ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
+  footer a { text-decoration: none; } footer a:hover { color: var(--chalk); }
+  @media (max-width: 720px) { footer .wrap { grid-template-columns: 1fr; } }
+
+  /* Sticky mobile CTA */
+  .mob-cta { display: none; }
+  @media (max-width: 720px) {
+    .mob-cta { display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; gap: 10px; align-items: center; justify-content: space-between;
+      background: rgba(7,8,12,.96); border-top: 1px solid var(--line); padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px)); }
+    .mob-cta .lab { color: var(--chalk); font-size: 12px; }
+    .mob-cta .btn { font-size: 18px; padding: 10px 18px 8px; }
+    body { padding-bottom: 70px; }
+  }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Savage Grappling home">
+      <img class="mark" src="img/sg-mark-white.png" alt="" width="240" height="209">
+      <img class="wm" src="img/wordmark-white.png" alt="Savage Grappling" width="560" height="192">
+    </a>
+    <nav class="links" aria-label="Main">
+      <a href="#format">Format</a><a href="#prices">Prices</a><a href="#day">Event day</a><a href="#para">Para division</a><a href="#coaches">Coaches</a><a href="#faq">FAQ</a>
+    </nav>
+    <a class="btn js-enter" href="https://smoothcomp.com" target="_blank" rel="noopener">Enter now</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero" style="padding:0">
+    <div class="bg" role="img" aria-label="A no-gi takedown on the Savage Grappling mats while a referee watches"></div>
+    <div class="wrap">
+      <div>
+        <span class="lab eyebrow">Gi &amp; No-Gi round robin · Melbourne</span>
+        <h1 class="disp">Prove it<br><span class="blue">on the mats</span></h1>
+        <p class="sub">Pools of up to five. Everyone fights everyone. <b>3–4 matches guaranteed</b>, points scoring, no advantages.</p>
+        <div class="ctas">
+          <a class="btn js-enter" href="https://smoothcomp.com" target="_blank" rel="noopener">Enter on Smoothcomp</a>
+          <a class="btn ghost" href="#format">How it works</a>
+        </div>
+      </div>
+      <aside class="ticket" aria-label="Next event">
+        <div class="top">
+          <span class="lab" style="color:var(--volt-2)">Next event</span>
+          <div class="when disp" style="margin-top:8px">Sun 4 Oct</div>
+          <div class="where">Deakin University Stadium<span>221 Burwood Hwy, Burwood VIC 3125</span></div>
+        </div>
+        <div class="clock">
+          <span class="lab" id="clock-label">Entries close in</span>
+          <div class="digits" aria-live="polite">
+            <div><b id="cd-d">--</b><small>Days</small></div>
+            <div><b id="cd-h">--</b><small>Hrs</small></div>
+            <div><b id="cd-m">--</b><small>Min</small></div>
+            <div><b id="cd-s">--</b><small>Sec</small></div>
+          </div>
+        </div>
+        <div class="rows">
+          <div><b>8:15am</b><span>Doors open</span></div>
+          <div><b>9:00am</b><span>First matches</span></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <div class="proof" aria-label="Savage Grappling in numbers">
+    <div class="wrap">
+      <div class="s"><div class="n">556</div><div class="k">Athletes at our biggest event</div></div>
+      <div class="s"><div class="n">20+</div><div class="k">Events since 2021</div></div>
+      <div class="s"><div class="n">3–4</div><div class="k">Matches for every competitor</div></div>
+      <div class="s"><div class="n">3</div><div class="k">Cities: Melbourne, Sydney, Brisbane</div></div>
+    </div>
+  </div>
+
+  <section id="format">
+    <div class="wrap format">
+      <div>
+        <span class="lab eyebrow">The format</span>
+        <h2 class="disp">You won't lose once<br><span class="blue">and go home</span></h2>
+        <p class="lead">Most comps give you one match if you draw badly. At Savage you're in a <b>pool of up to five</b> in your belt, age and weight, and <b>you fight everyone in it</b>. More mat time for your entry fee, and a fairer way to find the best in the pool.</p>
+        <ul class="facts">
+          <li><span class="lab">Scoring</span><span>Takedown 2, sweep 2, knee on belly 2, guard pass 3, mount 4, back 4. No advantages.</span></li>
+          <li><span class="lab">Divisions</span><span>Kids, teens and adults. Gi and No-Gi, white to black belt, plus absolutes.</span></li>
+          <li><span class="lab">Podium</span><span>1st wins the "I proved it on the mats" tee. 2nd and 3rd get medals.</span></li>
+          <li><span class="lab">Teams</span><span>Best Overall Academy trophies for Adults and for Kids &amp; Teens, with live standings on Smoothcomp.</span></li>
+          <li><span class="lab">Safety</span><span>Trained medics on site and experienced referees on every mat.</span></li>
+        </ul>
+        <p style="margin-top:18px"><a href="https://www.savagegrappling.com.au/pages/rules" target="_blank" rel="noopener" style="color:var(--volt-2)">Read the full rules →</a></p>
+      </div>
+      <svg class="pool" viewBox="0 0 600 580" role="img" aria-label="A pool of five competitors where every competitor faces every other">
+        <g stroke="#2b4ef5" stroke-width="4">
+          <line x1="300" y1="70" x2="530" y2="238"/><line x1="300" y1="70" x2="442" y2="500"/><line x1="300" y1="70" x2="158" y2="500"/><line x1="300" y1="70" x2="70" y2="238"/>
+          <line x1="530" y1="238" x2="442" y2="500"/><line x1="530" y1="238" x2="158" y2="500"/><line x1="530" y1="238" x2="70" y2="238"/>
+          <line x1="442" y1="500" x2="158" y2="500"/><line x1="442" y1="500" x2="70" y2="238"/><line x1="158" y1="500" x2="70" y2="238"/>
+        </g>
+        <g fill="#07080c" stroke="#f3f4f7" stroke-width="4">
+          <circle cx="300" cy="70" r="50"/><circle cx="530" cy="238" r="50"/><circle cx="442" cy="500" r="50"/><circle cx="158" cy="500" r="50"/><circle cx="70" cy="238" r="50"/>
+        </g>
+        <g fill="#f3f4f7" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="800" font-style="italic" font-size="46" text-anchor="middle">
+          <text x="300" y="86">YOU</text><text x="530" y="254">B</text><text x="442" y="516">C</text><text x="158" y="516">D</text><text x="70" y="254">E</text>
+        </g>
+        <text x="300" y="572" fill="#8e96ab" font-family="IBM Plex Mono, monospace" font-size="18" text-anchor="middle" letter-spacing="2">5 PEOPLE · 10 MATCHES · 4 FOR YOU</text>
+      </svg>
+    </div>
+  </section>
+
+  <section id="prices" class="prices-sec">
+    <div class="wrap">
+      <span class="lab eyebrow">Entry · 4 October</span>
+      <h2 class="disp">One fee,<br><span class="blue">up to four matches</span></h2>
+      <div class="price-grid">
+        <div class="price main"><span class="lab">Adults · Gi or No-Gi</span><div class="amt">$75</div><p>Early bird $70, late entry $85. White to purple belt.</p></div>
+        <div class="price"><span class="lab">Kids &amp; teens</span><div class="amt">$65</div><p>Boys and girls, Gi and No-Gi, up to 17 years.</p></div>
+        <div class="price"><span class="lab">Both Gi &amp; No-Gi</span><div class="amt">$100</div><p>Your second division is just $25 more.</p></div>
+      </div>
+      <div class="extras">
+        <div><span>Absolute division</span><b>+$25</b></div>
+        <div><span>Brown belt</span><b>$30</b></div>
+        <div><span>Black belt</span><b>Free</b></div>
+        <div><span>Spectators, paid at the door</span><b>$10</b></div>
+      </div>
+      <p style="margin-top:22px;color:var(--mute);font-size:15px">You must pre-register on Smoothcomp. Entries and edits close <b style="color:var(--chalk)">Friday 2 October at 10am</b>.</p>
+      <a class="btn js-enter" href="https://smoothcomp.com" target="_blank" rel="noopener" style="margin-top:8px">Enter on Smoothcomp</a>
+    </div>
+  </section>
+
+  <section id="day">
+    <div class="wrap">
+      <span class="lab eyebrow">Sunday 4 October</span>
+      <h2 class="disp">Run sheet</h2>
+      <div class="run">
+        <div><div class="t">08:15</div><h3>Doors open</h3><p>Find your team, find your mat. Spectators $10 at the door.</p></div>
+        <div><div class="t">−60 min</div><h3>Weigh in</h3><p>At least an hour before your first match, on the day.</p></div>
+        <div><div class="t">09:00</div><h3>First matches</h3><p>Kids, teens and adults run across the day. Check your mat on Smoothcomp.</p></div>
+        <div><div class="t">Podium</div><h3>Get your hand raised</h3><p>Tees, medals and the Best Overall Academy trophies.</p></div>
+      </div>
+      <p class="dst"><b>Daylight saving starts at 2am on 4 October.</b> Clocks go forward one hour, so doors open at 8:15am new time.</p>
+    </div>
+  </section>
+
+  <section id="para" class="para" style="background:var(--steel)">
+    <div class="wrap">
+      <img src="img/still-33.5.jpg" alt="Two competitors embrace after their match" loading="lazy" width="720" height="720">
+      <div>
+        <span class="lab badge">New · from 4 October</span>
+        <h2 class="disp">Inclusive<br><span class="blue">para division</span></h2>
+        <p style="font-size:19px">Jiu-jitsu is for everyone. Our para division gives athletes of all abilities a place to step on the mats, compete and show their skills in a supportive, respectful environment.</p>
+        <p>Divisions are grouped by impairment type so matches are fair. Contact us before you register and we'll help you find the right division.</p>
+        <a class="btn ghost" href="#coaches">Ask us about para divisions</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="highlights">
+    <div class="wrap">
+      <span class="lab eyebrow">Highlights</span>
+      <h2 class="disp">What a Savage<br><span class="blue">Sunday looks like</span></h2>
+      <div class="reel-wrap">
+        <video src="img/highlight.mp4" controls muted playsinline loop preload="metadata" poster="img/still-41.5.jpg" aria-label="13 second highlight reel"></video>
+        <div class="gallery">
+          <img class="w" src="img/armbar.jpg" alt="A competitor locks in an armbar" loading="lazy">
+          <img src="img/still-51.6.jpg" alt="A competitor celebrates a win" loading="lazy">
+          <img src="img/still-4.4.jpg" alt="Two grapplers fight for a takedown" loading="lazy">
+          <img src="img/still-53.5.jpg" alt="The first place podium" loading="lazy">
+          <img src="img/still-69.5.jpg" alt="A smiling medallist" loading="lazy">
+          <img src="img/still-41.5.jpg" alt="The crowd cheering a match" loading="lazy">
+          <img src="img/still-31.2.jpg" alt="A referee raises the winner's hand" loading="lazy">
+          <img src="img/still-28.5.jpg" alt="Savage Grappling medals" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="growth">
+    <div class="wrap">
+      <span class="lab eyebrow">Athletes per event</span>
+      <h2 class="disp">271 <span class="blue">→ 556</span></h2>
+      <p style="max-width:60ch">Our first Chelsea comp in 2023 had 271 grapplers. Our biggest so far had 556. Thank you to every academy that keeps bringing its team.</p>
+      <div class="chartbox" role="img" aria-label="Athletes per event: Apr 2023 271, Dec 2024 543, Oct 2025 445, Nov 2025 515, Feb 2026 299, Apr 2026 495, Jun 2026 556, Jul 2026 517">
+        <div class="bars">
+          <div class="bar"><em>271</em><i style="height:45.2%"></i></div>
+          <div class="bar"><em>543</em><i style="height:90.5%"></i></div>
+          <div class="bar"><em>445</em><i style="height:74.2%"></i></div>
+          <div class="bar"><em>515</em><i style="height:85.8%"></i></div>
+          <div class="bar"><em>299</em><i style="height:49.8%"></i></div>
+          <div class="bar"><em>495</em><i style="height:82.5%"></i></div>
+          <div class="bar hi"><em>556</em><i style="height:92.7%"></i></div>
+          <div class="bar"><em>517</em><i style="height:86.2%"></i></div>
+        </div>
+        <div class="axis"><span>Apr 23</span><span>Dec 24</span><span>Oct 25</span><span>Nov 25</span><span>Feb 26</span><span>Apr 26</span><span>Jun 26</span><span>Jul 26</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="coaches" class="coaches">
+    <div class="wrap">
+      <div>
+        <span class="lab eyebrow">For coaches &amp; academies</span>
+        <h2 class="disp">Bring your team.<br><span class="blue">Take the trophy.</span></h2>
+        <div class="perk"><div class="ic">1</div><div><h3>Best Overall Academy</h3><p>Every medal your students win counts toward the Adults or the Kids &amp; Teens trophy, with live team standings all day.</p></div></div>
+        <div class="perk"><div class="ic">%</div><div><h3>Team codes</h3><p>Ask for your academy's own discount code for your students to use when they enter.</p></div></div>
+        <div class="perk"><div class="ic">4</div><div><h3>Real mat time for beginners</h3><p>Round robin means your white belts get 3–4 matches, not one and done. It's the best first comp to send them to.</p></div></div>
+        <div class="perk"><div class="ic">@</div><div><h3>Your team, featured</h3><p>We tag your academy in results and highlight posts, so your students' wins show up on your page too.</p></div></div>
+      </div>
+      <div class="contact-card">
+        <span class="lab" style="color:var(--volt-2)">Get in touch</span>
+        <h3 style="font-size:26px;margin-top:8px">Team codes, para divisions, refereeing or staff</h3>
+        <p style="margin-top:10px">We're always looking for experienced referees and event staff, and competitors who can help with set-up. Email Daniel:</p>
+        <div class="mail"><code id="mail">savagegrapplingofficial@gmail.com</code><button class="copy" id="copy-mail" type="button">Copy email</button></div>
+        <p style="margin-top:18px;font-size:15px;color:var(--mute)">Or message us on Instagram <b style="color:var(--chalk)">@savagegrapplingofficial</b> or TikTok <b style="color:var(--chalk)">@savagegrappling</b>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" style="background:var(--steel)">
+    <div class="wrap">
+      <span class="lab eyebrow">FAQ</span>
+      <h2 class="disp">Questions</h2>
+      <div class="faq">
+        <details><summary>Is this a good first competition?</summary><p>Yes. Because it's a round robin you get 3–4 matches even if you lose your first, and divisions are split by belt, age and weight. Most first-timers leave having learned more in one day than in a month of training.</p></details>
+        <details><summary>Can I register on the day?</summary><p>No. You must pre-register on Smoothcomp. Entries and division changes close on Friday 2 October at 10am.</p></details>
+        <details><summary>When and where do I weigh in?</summary><p>Weigh-ins are on the day at the venue. Weigh in at least 60 minutes before your first match.</p></details>
+        <details><summary>Can I enter both Gi and No-Gi?</summary><p>Yes. Your first division is the normal price and the second is $25, so $100 for both as an adult.</p></details>
+        <details><summary>What if I need to withdraw?</summary><p>The full-refund window for 4 October closed on 25 September. You can still cancel or edit your entry until 2 October at 10am. Check Smoothcomp for the exact policy for each event.</p></details>
+        <details><summary>Can my family watch?</summary><p>Yes. Spectators are $10 at the door. Kids and teens compete throughout the day.</p></details>
+        <details><summary>What should I bring?</summary><p>Your gi and/or rash guard and shorts, a mouthguard, water and real food for a long day, and thongs or slides for off the mat.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <div class="sponsors">
+    <div class="wrap">
+      <span class="lab" style="color:var(--mute)">Supported by</span>
+      <img src="img/sponsors-strip.png" alt="Cycon Civil, AJJFP and Kamikaze Energy" loading="lazy">
+    </div>
+  </div>
+  <div class="tape"></div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <img src="img/wordmark-white.png" alt="Savage Grappling" width="560" height="192">
+      <p>Gi and No-Gi round robin tournaments, started in Melbourne in 2021 by Daniel Stien to showcase Australian grapplers.</p>
+    </div>
+    <div>
+      <h3>Compete</h3>
+      <ul><li><a class="js-enter" href="https://smoothcomp.com" target="_blank" rel="noopener">Enter on Smoothcomp</a></li><li><a href="#format">Format</a></li><li><a href="#prices">Prices</a></li><li><a href="https://www.savagegrappling.com.au/pages/rules" target="_blank" rel="noopener">Rules</a></li></ul>
+    </div>
+    <div>
+      <h3>Follow</h3>
+      <ul><li><a href="https://www.instagram.com/savagegrapplingofficial/" target="_blank" rel="noopener">Instagram</a></li><li><a href="https://www.tiktok.com/@savagegrappling" target="_blank" rel="noopener">TikTok</a></li><li>savagegrapplingofficial@gmail.com</li></ul>
+    </div>
+  </div>
+</footer>
+
+<div class="mob-cta">
+  <span class="lab">Sun 4 Oct · Burwood</span>
+  <a class="btn js-enter" href="https://smoothcomp.com" target="_blank" rel="noopener">Enter now</a>
+</div>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SportsEvent","name":"Savage Grappling Melbourne: October 4th","startDate":"2026-10-04T09:00:00+11:00","eventStatus":"https://schema.org/EventScheduled","eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode","sport":"Brazilian Jiu-Jitsu","location":{"@type":"Place","name":"Deakin University Stadium","address":{"@type":"PostalAddress","streetAddress":"221 Burwood Hwy","addressLocality":"Burwood","addressRegion":"VIC","postalCode":"3125","addressCountry":"AU"}},"organizer":{"@type":"Organization","name":"Savage Grappling","url":"https://www.savagegrappling.com.au"},"offers":{"@type":"Offer","price":"75","priceCurrency":"AUD"}}
+</script>
+<script>
+  // Set this to the Smoothcomp event page for the next event.
+  const ENTRY_URL = "https://smoothcomp.com";
+  document.querySelectorAll(".js-enter").forEach(a => { a.href = ENTRY_URL; });
+
+  // Countdown: entries close Fri 2 Oct 10:00 AEST, then counts to first matches Sun 4 Oct 9:00 AEDT.
+  const CLOSE = new Date("2026-10-02T10:00:00+10:00");
+  const START = new Date("2026-10-04T09:00:00+11:00");
+  const el = id => document.getElementById(id);
+  const pad = n => String(n).padStart(2, "0");
+  function tick() {
+    const now = new Date();
+    let target = CLOSE, label = "Entries close in";
+    if (now >= CLOSE) { target = START; label = "Entries closed · first matches in"; }
+    let ms = Math.max(0, target - now);
+    if (now >= START) { label = "Event day. See you on the mats"; ms = 0; }
+    el("clock-label").textContent = label;
+    const d = Math.floor(ms / 864e5), h = Math.floor(ms / 36e5) % 24, m = Math.floor(ms / 6e4) % 60, s = Math.floor(ms / 1e3) % 60;
+    el("cd-d").textContent = pad(d); el("cd-h").textContent = pad(h); el("cd-m").textContent = pad(m); el("cd-s").textContent = pad(s);
+  }
+  tick(); setInterval(tick, 1000);
+
+  const btn = el("copy-mail");
+  btn.addEventListener("click", () => {
+    const text = el("mail").textContent;
+    const ok = () => { btn.textContent = "Copied"; setTimeout(() => btn.textContent = "Copy email", 1600); };
+    const fb = () => { const r = document.createRange(); r.selectNodeContents(el("mail")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = "Selected"; };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(ok, fb); else fb();
+  });
+</script>
+
+</body>
+</html>

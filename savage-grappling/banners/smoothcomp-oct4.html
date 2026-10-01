@@ -1,0 +1,49 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Smoothcomp banner - Oct 4</title>
+<link rel="stylesheet" href="poster.css">
+<style>
+  /* 1500x557 Smoothcomp event banner. It also shows as a ~220px thumbnail, so logo and date are the biggest things on it. */
+  .canvas { width: 1500px; height: 557px; --gx: 74%; }
+  .g1 { font-size: 380px; left: 380px; top: -40px; }
+  .slash { left: 820px; top: -60px; width: 30px; height: 700px; }
+  .slash.s2 { left: 870px; width: 10px; opacity: .6; }
+  .fighters { right: 40px; bottom: 104px; height: 440px; }
+  .floor { right: 80px; bottom: 88px; width: 560px; }
+  .copy { position: absolute; left: 56px; top: 22px; z-index: 2; }
+  .brandlock .mark { height: 118px; }
+  .brandlock .wm { height: 64px; }
+  .date { margin-top: 8px; font-size: 150px; }
+  .date b { color: var(--volt); }
+  .venue { margin-top: 8px; font-family: var(--display); font-weight: 700; font-style: italic; font-size: 34px; text-transform: uppercase; }
+  .cta { position: absolute; left: 56px; top: 322px; z-index: 3; font-size: 34px; box-shadow: 0 0 30px rgba(227,32,44,.5); }
+  .partners { height: 104px; gap: 20px; justify-content: flex-start; padding-left: 56px; }
+  .partners .p { height: 82px; }
+  .partners .label { font-size: 14px; }
+  .partners .fmt { margin-left: auto; margin-right: 56px; font-size: 16px; color: var(--chalk); }
+</style></head>
+<body>
+<div class="canvas">
+  <div class="arena"></div><div class="beams"></div><div class="haze"></div><div class="halftone"></div>
+  <div class="ghost g1">Savage</div>
+  <div class="slash"></div><div class="slash s2"></div>
+  <div class="floor"></div>
+  <img class="fighters" src="../assets/cutouts/takedown.png" alt="">
+  <div class="copy">
+    <div class="brandlock">
+      <img class="mark" src="../assets/logo/sg-mark-white.svg" alt="">
+      <img class="wm" src="../assets/logo/wordmark-white.svg" alt="Savage Grappling">
+    </div>
+    <div class="display date">Sun <b>4 Oct</b></div>
+    <div class="venue">Deakin Uni Stadium · Burwood VIC</div>
+  </div>
+  <div class="cta"><span>Sign up now</span></div>
+  <div class="partners">
+    <span class="label">Partners</span>
+    <div class="p"><img src="../assets/sponsors/cycon.png" alt="Cycon Civil"></div>
+    <div class="p"><img src="../assets/sponsors/ajjfr.png" alt="AJJFP"></div>
+    <div class="p"><img src="../assets/sponsors/kamikaze.png" alt="Kamikaze Energy"></div>
+    <span class="label fmt">Gi &amp; No-Gi round robin · 3–4 matches</span>
+  </div>
+  <div class="vignette"></div><div class="grain"></div>
+</div>
+</body></html>

@@ -1,0 +1,568 @@
+<title>Savage Grappling Growth Playbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;1,700;1,800&family=Barlow:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  :root {
+    --bg: #f4f5f8; --surface: #ffffff; --surface-2: #eceef4; --ink: #0b0d14; --text: #2a2f3d; --mute: #626a80;
+    --line: #d9dce6; --accent: #0123b4; --accent-2: #2b4ef5; --red: #d61c28; --good: #127a4b; --warn: #a15c00;
+    --display: "Barlow Condensed", "Arial Narrow", Impact, sans-serif;
+    --body: "Barlow", "Helvetica Neue", Arial, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #07080c; --surface: #10131b; --surface-2: #171b26; --ink: #f3f4f7; --text: #d3d7e2; --mute: #8e96ab;
+      --line: #262b3b; --accent: #5b78ff; --accent-2: #7b93ff; --red: #ff4a55; --good: #4fd394; --warn: #f0b24a;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #07080c; --surface: #10131b; --surface-2: #171b26; --ink: #f3f4f7; --text: #d3d7e2; --mute: #8e96ab;
+    --line: #262b3b; --accent: #5b78ff; --accent-2: #7b93ff; --red: #ff4a55; --good: #4fd394; --warn: #f0b24a;
+  }
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: var(--body); font-size: 17px; line-height: 1.55; padding-inline: 16px; }
+  .wrap { max-width: 1060px; margin: 0 auto; padding-block: 40px 90px; }
+  h1, h2, h3 { color: var(--ink); text-wrap: balance; margin: 0; }
+  h1 { font-family: var(--display); font-style: italic; font-weight: 800; text-transform: uppercase; font-size: clamp(46px, 8vw, 88px); line-height: .9; }
+  h2 { font-family: var(--display); font-style: italic; font-weight: 800; text-transform: uppercase; font-size: clamp(34px, 5vw, 50px); line-height: .95; margin-bottom: 14px; }
+  h3 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+  p { margin: 0 0 12px; max-width: 68ch; }
+  b, strong { color: var(--ink); }
+  .eyebrow { font-family: var(--mono); font-weight: 600; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  section { padding-top: 64px; }
+  .lead { font-size: 21px; line-height: 1.5; max-width: 60ch; color: var(--text); }
+  .tape { height: 8px; background: linear-gradient(90deg, var(--ink) 0 70%, var(--accent-2) 70%); margin: 26px 0 0; max-width: 320px; }
+
+  nav.jump { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); margin: 30px -16px 0; padding: 10px 16px; display: flex; gap: 8px; overflow-x: auto; }
+  nav.jump a { flex: 0 0 auto; font-family: var(--mono); font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; text-decoration: none; color: var(--ink); border: 1.5px solid var(--line); padding: 6px 10px; }
+  nav.jump a:hover, nav.jump a:focus-visible { border-color: var(--accent); color: var(--accent); outline: none; }
+
+  /* Headline stats */
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; margin-top: 30px; }
+  .stat { background: var(--surface); border: 1px solid var(--line); padding: 18px 20px; }
+  .stat .n { font-family: var(--display); font-style: italic; font-weight: 800; font-size: 50px; line-height: 1; color: var(--ink); }
+  .stat .n.up { color: var(--good); } .stat .n.flat { color: var(--red); }
+  .stat .k { font-size: 15px; color: var(--mute); margin-top: 4px; }
+
+  /* Chart */
+  .chart { background: var(--surface); border: 1px solid var(--line); padding: 22px 20px 16px; margin-top: 18px; overflow-x: auto; }
+  .bars { display: grid; grid-template-columns: repeat(8, minmax(56px, 1fr)); gap: 10px; align-items: end; height: 260px; min-width: 520px; }
+  .bar { height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 6px; }
+  .bar i { display: block; width: 100%; background: var(--surface-2); border-top: 3px solid var(--mute); }
+  .bar.hi i { background: var(--accent-2); border-top-color: var(--accent); }
+  .bar em { font-style: normal; font-family: var(--mono); font-size: 14px; font-weight: 600; color: var(--ink); }
+  .bar span { font-family: var(--mono); font-size: 12px; color: var(--mute); white-space: nowrap; }
+  .caption { font-size: 14px; color: var(--mute); margin-top: 10px; }
+
+  /* Diagnosis */
+  .audit { width: 100%; border-collapse: collapse; margin-top: 18px; background: var(--surface); border: 1px solid var(--line); }
+  .audit th, .audit td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 16px; }
+  .audit th { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--mute); font-weight: 600; }
+  .audit td.n { font-family: var(--mono); font-weight: 600; color: var(--ink); white-space: nowrap; }
+  .tablewrap { overflow-x: auto; }
+  .reasons { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; margin-top: 22px; }
+  .reason { background: var(--surface); border: 1px solid var(--line); padding: 18px 20px; }
+  .reason .tag { display: inline-block; font-family: var(--mono); font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--red); margin-bottom: 6px; }
+  .reason p { font-size: 16px; margin: 0; }
+
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; }
+  .compare > div { background: var(--surface); border: 1px solid var(--line); padding: 18px 20px; }
+  .compare h3 { font-family: var(--mono); font-size: 13px; letter-spacing: .1em; text-transform: uppercase; }
+  .compare .bad h3 { color: var(--red); } .compare .good h3 { color: var(--good); }
+  .compare ul { margin: 8px 0 0; padding-left: 18px; } .compare li { margin-bottom: 6px; font-size: 16px; }
+
+  .rules { counter-reset: r; display: grid; gap: 10px; margin-top: 18px; padding: 0; list-style: none; }
+  .rules li { counter-increment: r; display: grid; grid-template-columns: 54px 1fr; gap: 14px; background: var(--surface); border: 1px solid var(--line); padding: 16px 18px; }
+  .rules li::before { content: counter(r); font-family: var(--display); font-style: italic; font-weight: 800; font-size: 44px; line-height: .9; color: var(--accent-2); }
+  .rules p { margin: 4px 0 0; font-size: 16px; }
+
+  /* Posting plan */
+  .alert { border-left: 6px solid var(--red); background: var(--surface); padding: 14px 18px; margin-top: 18px; }
+  .alert b { color: var(--red); }
+  .days { display: grid; gap: 14px; margin-top: 22px; }
+  .day { background: var(--surface); border: 1px solid var(--line); display: grid; grid-template-columns: 150px 1fr; }
+  .day.event { border: 2px solid var(--accent-2); }
+  .day .when { background: var(--surface-2); padding: 18px 16px; border-right: 1px solid var(--line); }
+  .day .when .d { font-family: var(--display); font-style: italic; font-weight: 800; font-size: 34px; line-height: .95; text-transform: uppercase; color: var(--ink); }
+  .day .when .c { font-family: var(--mono); font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-top: 6px; }
+  .day .what { padding: 16px 18px; display: grid; gap: 14px; }
+  .slot { display: grid; grid-template-columns: 1fr auto; gap: 14px; align-items: start; border-bottom: 1px dashed var(--line); padding-bottom: 14px; }
+  .slot:last-child { border-bottom: 0; padding-bottom: 0; }
+  .slot .meta { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 6px; }
+  .pill { font-family: var(--mono); font-size: 11.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; padding: 3px 7px; border: 1.5px solid var(--line); color: var(--ink); white-space: nowrap; }
+  .pill.t { border-color: var(--accent); color: var(--accent); }
+  .pill.r { border-color: var(--red); color: var(--red); }
+  .slot h3 { font-size: 18px; }
+  .slot p { font-size: 16px; margin: 0 0 6px; }
+  .thumb { width: 92px; aspect-ratio: 4/5; object-fit: cover; border: 1px solid var(--line); max-width: 100%; }
+  .thumb.wide { width: 150px; aspect-ratio: auto; }
+  details.cap { margin-top: 4px; }
+  details.cap summary { cursor: pointer; font-family: var(--mono); font-size: 12.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
+  details.cap pre { white-space: pre-wrap; font-family: var(--body); font-size: 15.5px; background: var(--surface-2); padding: 12px 14px; margin: 8px 0 6px; border: 1px solid var(--line); color: var(--text); }
+  button.copy { font-family: var(--mono); font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; background: var(--ink); color: var(--bg); border: 0; padding: 7px 11px; cursor: pointer; }
+  button.copy:focus-visible { outline: 3px solid var(--accent-2); outline-offset: 2px; }
+
+  .weeks { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; margin-top: 18px; }
+  .week { background: var(--surface); border: 1px solid var(--line); padding: 16px 18px; }
+  .week .eyebrow { margin-bottom: 4px; }
+  .week ul { margin: 6px 0 0; padding-left: 18px; } .week li { font-size: 15.5px; margin-bottom: 5px; }
+
+  .mix { display: flex; height: 40px; margin-top: 16px; border: 1px solid var(--line); }
+  .mix > div { display: flex; align-items: center; padding: 0 12px; font-family: var(--mono); font-size: 13px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; }
+  .mix .a { background: #0123b4; flex: 50; } .mix .b { background: #2b4ef5; flex: 30; } .mix .c { background: #d61c28; flex: 20; }
+
+  .shots { columns: 2 280px; column-gap: 24px; margin-top: 14px; padding-left: 18px; }
+  .shots li { break-inside: avoid; margin-bottom: 8px; font-size: 16px; }
+
+  .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; margin-top: 18px; }
+  .card { background: var(--surface); border: 1px solid var(--line); padding: 18px 20px; }
+  .card p { font-size: 16px; margin-bottom: 8px; }
+  .card .eyebrow { margin-bottom: 6px; }
+
+  .money { width: 100%; border-collapse: collapse; margin-top: 16px; background: var(--surface); border: 1px solid var(--line); }
+  .money td, .money th { padding: 11px 14px; border-bottom: 1px solid var(--line); text-align: left; font-size: 16px; }
+  .money td:last-child, .money th:last-child { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; font-weight: 600; color: var(--ink); }
+  .money th { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
+
+  .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin-top: 18px; }
+  .gallery figure { margin: 0; }
+  .gallery img, .gallery video { width: 100%; display: block; border: 1px solid var(--line); background: #000; }
+  .gallery figcaption { font-family: var(--mono); font-size: 11.5px; color: var(--mute); margin-top: 6px; word-break: break-all; }
+  .banners { display: grid; gap: 14px; margin-top: 18px; }
+  .banners img { width: 100%; display: block; border: 1px solid var(--line); }
+  .reels { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 280px)); gap: 16px; margin-top: 18px; }
+  .reels video { width: 100%; aspect-ratio: 9/16; background: #000; display: block; border: 1px solid var(--line); }
+  .reels p { font-size: 15px; margin-top: 8px; }
+  .note { font-size: 14.5px; color: var(--mute); }
+
+  @media (max-width: 640px) {
+    .day { grid-template-columns: 1fr; }
+    .day .when { border-right: 0; border-bottom: 1px solid var(--line); display: flex; gap: 14px; align-items: baseline; }
+    .compare { grid-template-columns: 1fr; }
+    .slot { grid-template-columns: 1fr; }
+    .thumb { width: 120px; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Savage Grappling · social media review · 27 Sep 2026</div>
+    <h1>The events doubled.<br>The page didn't.</h1>
+    <div class="tape"></div>
+    <p class="lead" style="margin-top:22px">Savage Grappling went from <b>271 athletes</b> at the Chelsea comp in April 2023 to <b>556</b> at the Hungarian Community Centre in June 2026. The business is working. The social media is still posting like a first-year local comp, so it isn't bringing in new competitors, new gyms or sponsors at the rate the events deserve.</p>
+    <p class="lead">This page has the diagnosis from the 27 videos and screenshots you sent, a day-by-day plan for the 4 October event starting today, and every banner, post and reel I designed.</p>
+  </header>
+
+  <nav class="jump" aria-label="Sections">
+    <a href="#numbers">Numbers</a><a href="#why">Why it's stuck</a><a href="#rules">New rules</a><a href="#week">This week</a><a href="#eventday">Event day</a><a href="#after">After the event</a><a href="#grow">Grow Australia-wide</a><a href="#money">Money</a><a href="#assets">All assets</a>
+  </nav>
+
+  <section id="numbers">
+    <div class="eyebrow">From Smoothcomp</div>
+    <h2>What's actually happening</h2>
+    <div class="stats">
+      <div class="stat"><div class="n up">+105%</div><div class="k">Athletes per event, 271 → 556</div></div>
+      <div class="stat"><div class="n">~500</div><div class="k">Typical athletes at a 2025–26 Melbourne event</div></div>
+      <div class="stat"><div class="n">20+</div><div class="k">Events run in 5 years on Smoothcomp</div></div>
+      <div class="stat"><div class="n flat">~1.5k</div><div class="k">Instagram followers. Fewer than 3 per athlete who has competed</div></div>
+    </div>
+    <div class="chart" role="img" aria-label="Athletes per event: Apr 2023 271, Dec 2024 543, Oct 2025 445, Nov 2025 515, Feb 2026 299, Apr 2026 495, Jun 2026 556, Jul 2026 517">
+      <div class="bars">
+        <div class="bar"><em>271</em><i style="height:45.2%"></i><span>Apr 23</span></div>
+        <div class="bar"><em>543</em><i style="height:90.5%"></i><span>Dec 24</span></div>
+        <div class="bar"><em>445</em><i style="height:74.2%"></i><span>Oct 25</span></div>
+        <div class="bar"><em>515</em><i style="height:85.8%"></i><span>Nov 25</span></div>
+        <div class="bar"><em>299</em><i style="height:49.8%"></i><span>Feb 26</span></div>
+        <div class="bar"><em>495</em><i style="height:82.5%"></i><span>Apr 26</span></div>
+        <div class="bar hi"><em>556</em><i style="height:92.7%"></i><span>Jun 26</span></div>
+        <div class="bar"><em>517</em><i style="height:86.2%"></i><span>Jul 26</span></div>
+      </div>
+    </div>
+    <p class="caption">Athletes registered per event, from the Smoothcomp screenshots you sent. Not every event is shown. The February dip (299) is the summer event to target next year.</p>
+    <p>Across 2025–26 the events run at around 500 athletes. So <b>1,000–2,000 grapplers a year</b> step on a Savage mat, plus their coaches, team-mates and families. The Instagram following is about 1.5k. <b>Most people who compete at Savage never follow Savage.</b> That's the gap this plan closes.</p>
+  </section>
+
+  <section id="why">
+    <div class="eyebrow">From the 22 different videos you sent</div>
+    <h2>Why the page is stuck</h2>
+    <p>I watched every clip frame by frame. The footage isn't the problem: the cinematic highlight has takedowns, slams, screaming crowds, arm raises and a woman fist-pumping after a win. It's how the clips are put together.</p>
+    <div class="tablewrap">
+      <table class="audit">
+        <thead><tr><th>What the first second shows</th><th>Videos</th><th>What the viewer does</th></tr></thead>
+        <tbody>
+          <tr><td>Logo, title card or event banner</td><td class="n">14 of 22</td><td>Scrolls. The platform reads that as "boring" and stops showing it.</td></tr>
+          <tr><td>Empty hall, mats being laid, truck being loaded</td><td class="n">5 of 22</td><td>Scrolls. No people, no action, 30–130 seconds long.</td></tr>
+          <tr><td>Photo slideshow or static photo</td><td class="n">2 of 22</td><td>Maybe watches if they're tagged in it.</td></tr>
+          <tr><td>Wide crowd shot with no action yet</td><td class="n">1 of 22</td><td>Doesn't know what they're watching.</td></tr>
+          <tr><td>A match, a takedown or a crowd reaction</td><td class="n">0 of 22</td><td>This is what stops the scroll, and it never opens a video.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="caption">Counts are the first frame of each unique video (repeat uploads removed). Most videos are 30–80 seconds long. Short-form videos that grow accounts are usually 7–15 seconds.</p>
+
+    <div class="reasons">
+      <div class="reason"><span class="tag">No hook</span><p>TikTok and Reels decide in about 1.5 seconds whether to show a video to more people. Almost every Savage video spends those seconds on the logo fading in.</p></div>
+      <div class="reason"><span class="tag">The action is buried</span><p>The best moments are 1–2 second shots inside 77-second montages. Each takedown should be its own 8-second post.</p></div>
+      <div class="reason"><span class="tag">It's about the event, not the athletes</span><p>People share videos of <i>themselves</i>. 500 athletes per event means 500 people who'd repost a clip of their own match, and their gym would too.</p></div>
+      <div class="reason"><span class="tag">Every post asks for money</span><p>"Sign up now" to people who don't follow you yet is a cold ask. Pages grow on entertainment first: 4 fun posts earn 1 sign-up post.</p></div>
+      <div class="reason"><span class="tag">Talking heads with no cuts</span><p>One shot against a wall for 45–60 seconds. The information is good (codes, venue, para division), but it has to be cut to under 20 seconds with the offer first.</p></div>
+      <div class="reason"><span class="tag">Nothing worth saving</span><p>No carousels, so nothing gets saved or sent to a team-mate. "First comp? What to expect" is the most saveable thing a comp can post.</p></div>
+      <div class="reason"><span class="tag">Wrong shape</span><p>Several videos were filmed landscape or square and posted into a vertical feed, so the action is small in the middle with black bars around it.</p></div>
+      <div class="reason"><span class="tag">It looks small</span><p>Nothing on the page says "556 athletes" or "20+ events". Gyms, sponsors and first-timers judge size from the page, and right now it undersells the event.</p></div>
+    </div>
+
+    <h3 style="margin-top:34px">How pages that grow do it</h3>
+    <p>The big grappling pages (Grappling Industries, which runs the same round-robin format in over 200 events a year, and ADCC Australia at about 6k Instagram followers) follow the same pattern. I couldn't pull their live view counts from here, so this is the pattern, not their numbers:</p>
+    <div class="compare">
+      <div class="bad"><h3>Savage now</h3><ul>
+        <li>Opens on the logo</li><li>60–80 second montages</li><li>Rarely tags athletes or gyms in videos</li><li>Same edit posted everywhere</li><li>Posts cluster around sign-up deadlines</li><li>No carousels</li></ul></div>
+      <div class="good"><h3>Pages that grow</h3><ul>
+        <li>Opens on the most violent or emotional second</li><li>One moment per clip, 7–15 seconds</li><li>Tags both athletes and both academies, every time</li><li>Posts clips for weeks after each event</li><li>Results posts that tag every podium gym</li><li>Saveable carousels: rules, what to expect, results</li></ul></div>
+    </div>
+  </section>
+
+  <section id="rules">
+    <div class="eyebrow">Stick these on the wall</div>
+    <h2>The new rules</h2>
+    <ol class="rules">
+      <li><div><h3>The first second is the best second</h3><p>Open on the takedown, the slam, the tap or the scream. The logo goes at the end, or nowhere, since the profile picture already shows it.</p></div></li>
+      <li><div><h3>One moment per video, 7–15 seconds</h3><p>A 77-second highlight is ten separate posts. Cut it up. Short videos get replayed, and replays push them to more people.</p></div></li>
+      <li><div><h3>Tag every athlete and both academies</h3><p>Put "@athlete vs @athlete · @gym vs @gym" in the caption and a text tag on screen. Use Instagram's Collab invite with the winning gym so the post appears on their page too.</p></div></li>
+      <li><div><h3>Film vertical, film close</h3><p>Hold the phone upright at mat level, 2–3 metres from the action. One phone per 2 mats on event day.</p></div></li>
+      <li><div><h3>50 / 30 / 20 content mix</h3><p>Half action clips, 30% people and stories (first-timers, kids, the para division, coaches), 20% sign-up posts. The action earns the attention the sign-up posts spend.</p></div></li>
+      <li><div><h3>Post for 4 weeks after every event</h3><p>Each event gives you 30+ clips. Post one a day while the athletes still care. That keeps the page active between comps.</p></div></li>
+      <li><div><h3>Show the size</h3><p>Say "556 athletes", "20+ events" and "3–4 matches guaranteed" in banners, bios and captions. Size is proof, and it's already true.</p></div></li>
+    </ol>
+    <div class="mix" role="img" aria-label="Content mix: 50% action, 30% people, 20% sign-up"><div class="a">50% action</div><div class="b">30% people</div><div class="c">20% sign-up</div></div>
+  </section>
+
+  <section id="week">
+    <div class="eyebrow">Sunday 27 Sep → Sunday 4 Oct</div>
+    <h2>This week: fill the 4 October event</h2>
+    <div class="alert"><b>Two dates to push hard:</b> entries and edits close <b>Friday 2 Oct at 10am</b>, and <b>daylight saving starts at 2am on event day</b>, so clocks go forward an hour on Sunday 4 Oct. Remind everyone that doors open at 8:15am new time.</div>
+    <p style="margin-top:14px" class="note">Times are Melbourne time. Post each video to TikTok, Instagram Reels and Facebook Reels. For carousels, use TikTok's photo mode with the same slides. Add a trending sound in each app, since the reels here have no audio on purpose.</p>
+
+    <div class="days">
+      <article class="day">
+        <div class="when"><div class="d">Sun 27</div><div class="c">Today · 7 days out</div></div>
+        <div class="what">
+          <div class="slot"><div>
+            <div class="meta"><span class="pill">Facebook</span><span class="pill">Smoothcomp</span><span class="pill t">Now</span></div>
+            <h3>Swap in the new Facebook cover and Smoothcomp banner</h3>
+            <p>They're designed to show the date, venue and "3–4 matches guaranteed" clearly, even at thumbnail size.</p>
+          </div><img class="thumb wide" src="img/fb-cover-oct4.jpg" alt="New Facebook cover"></div>
+          <div class="slot"><div>
+            <div class="meta"><span class="pill">TikTok</span><span class="pill">Reels</span><span class="pill">FB Reels</span><span class="pill t">7:00pm</span></div>
+            <h3>Post Reel A: "POV: your whole gym came to watch"</h3>
+            <p>13 seconds. It opens on the screaming crowd, cuts through five takedowns and slams, and ends on the date.</p>
+            <details class="cap"><summary>Caption</summary><pre id="c1">Your coach when you finally hit the takedown you've been drilling for 6 months 😤
+
+Sunday 4 Oct · Deakin Uni Burwood
+Gi & No-Gi round robin · 3–4 matches guaranteed
+Entries close Fri 10am, link in bio
+
+#bjjmelbourne #melbournebjj #nogi #jiujitsu #grappling #bjjaustralia #savagegrappling #matsavage</pre><button class="copy" data-t="c1">Copy caption</button></details>
+          </div><img class="thumb" src="img/01-countdown-7-days.jpg" alt=""></div>
+          <div class="slot"><div>
+            <div class="meta"><span class="pill">Stories</span><span class="pill t">Evening</span></div>
+            <h3>Story: "7 days" countdown and a link sticker to Smoothcomp</h3>
+            <p>Also post the "7 days" feed post (01) on Instagram and Facebook.</p>
+          </div></div>
+        </div>
+      </article>
+
+      <article class="day">
+        <div class="when"><div class="d">Mon 28</div><div class="c">6 days out</div></div>
+        <div class="what">
+          <div class="slot"><div>
+            <div class="meta"><span class="pill">Instagram</span><span class="pill">Facebook</span><span class="pill">TikTok photo</span><span class="pill t">6:30pm</span></div>
+            <h3>Carousel: "First comp? What really happens on comp day" (5 slides)</h3>
+            <p>This is the post people save and send to the nervous white belt at their gym. It covers the round-robin pool, the run sheet, what to bring and prices.</p>
+            <details class="cap"><summary>Caption</summary><pre id="c2">First comp nerves? Read this, then send it to the white belt at your gym who keeps saying "next one" 👇
+
+You don't lose once and go home. At Savage you're in a pool of up to 5, and everyone fights everyone, so you get 3–4 matches.
+
+Sun 4 Oct · Deakin Uni Burwood · entries close Fri 10am
+Save this for comp morning.
+
+#firstcomp #bjjwhitebelt #bjjmelbourne #nogi #jiujitsu #savagegrappling</pre><button class="copy" data-t="c2">Copy caption</button></details>
+          </div><img class="thumb" src="img/03-first-comp-slide-1.jpg" alt=""></div>
+          <div class="slot"><div>
+            <div class="meta"><span class="pill">Stories</span></div>
+            <h3>Story poll: "First comp or veteran?"</h3>
+            <p>Reply to every "first comp" vote with a DM that says "you'll love it, here's the link".</p>
+          </div></div>
+        </div>
+      </article>
+
+      <article class="day">
+        <div class="when"><div class="d">Tue 29</div><div class="c">5 days out</div></div>
+        <div class="what">
+          <div class="slot"><div>
+            <div class="meta"><span class="pill">All platforms</span><span class="pill t">12:30pm</span></div>
+            <h3>Announce the inclusive para division</h3>
+            <p>Send the post to local adaptive sport groups and gyms that run adaptive classes. It's also a story local papers and community radio will cover: send them a short email with the date, the photo and Daniel's contact.</p>
+            <details class="cap"><summary>Caption</summary><pre id="c3">New for 4 October: the Savage Grappling Inclusive Para Division.
+
+Athletes of all abilities. Step on the mats, compete and prove it in a supportive, respectful room. Medics on site, experienced refs.
+
+Know someone who should be there? Tag them 👇
+Entries close Fri 10am, link in bio.
+
+#parajiujitsu #adaptivebjj #inclusivesport #bjjmelbourne #savagegrappling</pre><button class="copy" data-t="c3">Copy caption</button></details>
+          </div><img class="thumb" src="img/04-para-division.jpg" alt=""></div>
+          <div class="slot"><div>
+            <div class="meta"><span class="pill">TikTok</span><span class="pill">Reels</span><span class="pill t">7:00pm</span></div>
+            <h3>Re-cut Daniel's talking-head video</h3>
+            <p>Remove the logo intro. Open with his strongest line ("We're launching our first ever para division"), cut every pause, keep it under 20 seconds, and put the date on screen from frame 1.</p>
+          </div></div>
+        </div>
+      </article>
+
+      <article class="day">
+        <div class="when"><div class="d">Wed 30</div><div class="c">4 days out</div></div>
+        <div class="what">
+          <div class="slot"><div>
+            <div class="meta"><span class="pill">Instagram</span><span class="pill">Facebook</span><span class="pill t">12:30pm</span></div>
+            <h3>"Which gym takes the trophy?" plus DMs to the 15 biggest academies</h3>
+            <p>Send the post to the coaches directly: "Your team was top 3 last time, bringing a crew Sunday?" Invite the top gyms as Instagram Collaborators so it lands on their feeds too.</p>
+            <details class="cap"><summary>Caption</summary><pre id="c4">Coaches, this one's for you 🏆
+
+Best Overall Academy, Adults and Kids & Teens. Every medal your team wins counts, with live standings on Smoothcomp all day.
+
+Who's bringing the biggest crew on Sunday? Tag your team 👇
+
+#bjjmelbourne #bjjteam #jiujitsulife #savagegrappling</pre><button class="copy" data-t="c4">Copy caption</button></details>
+          </div><img class="thumb" src="img/05-best-academy.jpg" alt=""></div>
+          <div class="slot"><div>
+            <div class="meta"><span class="pill">TikTok</span><span class="pill">Reels</span><span class="pill t">7:00pm</span></div>
+            <h3>Post Reel B: "These are waiting on the podium"</h3>
+            <p>9 seconds. Opens on the medal pile, then the 1ST podium, then three winners smiling with their medals.</p>
+          </div></div>
+        </div>
+      </article>
+
+      <article class="day">
+        <div class="when"><div class="d">Thu 1</div><div class="c">Last full day to enter</div></div>
+        <div class="what">
+          <div class="slot"><div>
+            <div class="meta"><span class="pill">Instagram</span><span class="pill">Facebook</span><span class="pill t">12:30pm</span></div>
+            <h3>"271 → 556" growth post</h3>
+            <p>It shows how big the event has become and makes the page look its real size.</p>
+            <details class="cap"><summary>Caption</summary><pre id="c5">Our first Chelsea comp: 271 grapplers.
+Our biggest: 556.
+
+Thank you Melbourne. Sunday 4 Oct at Deakin Uni Burwood is next, and entries close tomorrow at 10am.
+
+#bjjmelbourne #grapplingaustralia #savagegrappling #matsavage</pre><button class="copy" data-t="c5">Copy caption</button></details>
+          </div><img class="thumb" src="img/08-500-grapplers.jpg" alt=""></div>
+          <div class="slot"><div>
+            <div class="meta"><span class="pill">TikTok</span><span class="pill">Reels</span><span class="pill t">7:00pm</span></div>
+            <h3>One-takedown clip: "Would you have defended this?"</h3>
+            <p>8 seconds, the standing takedown from the highlight, in slow motion on the second loop. Questions in the caption get comments.</p>
+          </div></div>
+          <div class="slot"><div>
+            <div class="meta"><span class="pill">Stories</span><span class="pill r">Every 3–4 hrs</span></div>
+            <h3>Story countdown: "Entries close in 1 day"</h3>
+            <p>Use the story template (07) and change the number each day.</p>
+          </div><img class="thumb" src="img/07-story-countdown.jpg" alt="" style="aspect-ratio:9/16"></div>
+        </div>
+      </article>
+
+      <article class="day">
+        <div class="when"><div class="d">Fri 2</div><div class="c">Entries close 10am</div></div>
+        <div class="what">
+          <div class="slot"><div>
+            <div class="meta"><span class="pill">All platforms</span><span class="pill r">7:00am</span></div>
+            <h3>"Last call: entries close at 10am" post</h3>
+            <p>Post stories at 7am, 8:30am and 9:30am. After 10am, post a story: "Divisions locked. Brackets drop tonight."</p>
+            <details class="cap"><summary>Caption</summary><pre id="c6">LAST CALL ⏰ Entries close at 10am TODAY.
+
+Adults $75 · Kids & teens $65 · Gi + No-Gi $100 · Absolute +$25
+3–4 matches guaranteed. Link in bio.
+
+#bjjmelbourne #nogi #savagegrappling</pre><button class="copy" data-t="c6">Copy caption</button></details>
+          </div><img class="thumb" src="img/02-entries-close.jpg" alt=""></div>
+          <div class="slot"><div>
+            <div class="meta"><span class="pill">Stories</span><span class="pill t">6:00pm</span></div>
+            <h3>"Brackets are live" with a screenshot and link</h3>
+            <p>Everyone checks who they drew, so this is the most-viewed story of the week. Ask people to screenshot their pool and tag their opponent.</p>
+          </div></div>
+        </div>
+      </article>
+
+      <article class="day">
+        <div class="when"><div class="d">Sat 3</div><div class="c">Day before</div></div>
+        <div class="what">
+          <div class="slot"><div>
+            <div class="meta"><span class="pill">Stories</span></div>
+            <h3>Rules webinar with Antonio Martins, the "What to bring" slide, and the daylight-saving reminder</h3>
+            <p>"Clocks go forward tonight. Doors 8:15am, first matches 9:00am, weigh in 60 min before your first match."</p>
+          </div><img class="thumb" src="img/03-first-comp-slide-4.jpg" alt=""></div>
+        </div>
+      </article>
+
+      <article class="day event">
+        <div class="when"><div class="d">Sun 4</div><div class="c">Event day</div></div>
+        <div class="what">
+          <div class="slot"><div>
+            <div class="meta"><span class="pill">Stories</span><span class="pill t">Every 30–60 min</span></div>
+            <h3>Live stories all day</h3>
+            <p>Doors opening, the full hall at 9am (to show the size), podiums tagging every athlete, team standings, the first para division matches (with consent), and the Best Overall Academy trophies.</p>
+          </div></div>
+          <div class="slot"><div>
+            <div class="meta"><span class="pill">TikTok</span><span class="pill">Reels</span><span class="pill t">By 8:00pm</span></div>
+            <h3>One same-day reel of the best moment</h3>
+            <p>Whatever got the biggest crowd reaction. Don't wait for the photographer edit.</p>
+          </div></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="eventday">
+    <div class="eyebrow">Filming on 4 October</div>
+    <h2>Event-day filming plan</h2>
+    <p>Right now almost no vertical match footage exists, and that's the raw material for everything else. Give 2–3 staff or volunteers a phone and this list:</p>
+    <ul class="shots">
+      <li><b>Vertical only</b>, phone at mat level, 2–3 m from the action</li>
+      <li><b>Film every takedown and submission</b> from the start of the scramble. Clips can be cut later.</li>
+      <li><b>Turn around after big moments</b> and film the crowd and the coaches reacting</li>
+      <li><b>Every podium</b>, with athletes calling out their name and gym on camera</li>
+      <li><b>First-timers</b>: 10-second "how was your first comp?" clips</li>
+      <li><b>Kids' arm raises</b> (parents share these the most). Check your photo consent</li>
+      <li><b>The 9am wide shot</b> of the full hall, to show the size</li>
+      <li><b>The trophy handover</b> for Best Overall Academy</li>
+      <li><b>A podium QR code</b> linking to "tag us @savagegrapplingofficial" so athletes post and tag you</li>
+      <li><b>Ask the photographers</b> (MMA Media and the others) for originals within 48 hours</li>
+    </ul>
+  </section>
+
+  <section id="after">
+    <div class="eyebrow">5 Oct → 1 Nov</div>
+    <h2>After the event: four weeks of posts</h2>
+    <p>One event gives you a month of posts. This is the part that has been missing, and it's the part that builds the following.</p>
+    <div class="weeks">
+      <div class="week"><div class="eyebrow">Week 1 · 5–11 Oct</div><h3>Results and clips</h3><ul>
+        <li><b>Mon</b>: results carousel (fill in the dashed boxes), tagging every podium gym</li>
+        <li><b>Tue–Sun</b>: one 7–15s "sub of the day" clip daily, tagging both athletes and gyms</li>
+        <li>Repost every athlete story that tags you</li></ul></div>
+      <div class="week"><div class="eyebrow">Week 2 · 12–18 Oct</div><h3>People</h3><ul>
+        <li>Photographer gallery carousel, credit the photographer</li>
+        <li>First-timer interview clip</li>
+        <li>Best Overall Academy winners, filmed at their gym</li>
+        <li>Para division highlight (with consent)</li></ul></div>
+      <div class="week"><div class="eyebrow">Week 3 · 19–25 Oct</div><h3>Announce the next event</h3><ul>
+        <li>Swap the covers to the next date</li>
+        <li>Early-bird price post with a 7-day deadline</li>
+        <li>"Last event in numbers" carousel</li>
+        <li>Keep posting daily clips</li></ul></div>
+      <div class="week"><div class="eyebrow">Week 4 · 26 Oct–1 Nov</div><h3>Grow the next field</h3><ul>
+        <li>Repost the "First comp?" carousel</li>
+        <li>Kids and teens post aimed at parents</li>
+        <li>Start the gym ambassador codes (see below)</li>
+        <li>Behind-the-scenes set-up clip, 15s sped up: "4am. 1 truck. 500 grapplers."</li></ul></div>
+    </div>
+    <p style="margin-top:14px"><b>Weekly rhythm from then on:</b> 4 short videos, 2 carousels or photo posts, and stories most days. Post the same videos to TikTok, Reels and Facebook, each uploaded natively in the app with its own sound.</p>
+  </section>
+
+  <section id="grow">
+    <div class="eyebrow">Local first, then Australia-wide</div>
+    <h2>How to grow bigger</h2>
+    <div class="grid2">
+      <div class="card"><div class="eyebrow">Gyms are the customer</div><h3>Gym ambassador codes</h3>
+        <p>Give each academy its own discount code (like the OCT2026 and JULY26 codes already in use), such as <span class="mono">BAYSIDE10</span>. The coach gets a free entry or a merch pack for every 10 sign-ups.</p><p>The codes also show which gyms bring people, so you know who to thank and who to chase.</p></div>
+      <div class="card"><div class="eyebrow">Already built</div><h3>Make Best Overall Academy a season</h3>
+        <p>Keep a running points table across the year and post it after every event. Gyms that are 2nd will bring more students to the next one to catch up. That's repeat entries every event.</p></div>
+      <div class="card"><div class="eyebrow">Free reach</div><h3>Instagram Collab posts</h3>
+        <p>Invite the winning gym and the tagged athletes as Collaborators on results and clip posts. The post then shows on their profile and to their followers, and it counts toward yours.</p></div>
+      <div class="card"><div class="eyebrow">Paid, small</div><h3>$15–20 a day, 10 days before each event</h3>
+        <p>Boost the best-performing reel on Instagram and Facebook to people within 30 km of the venue who are interested in BJJ, MMA or grappling. Then run a second ad to people who watched 50%+ of a reel, with the entry link. That's about $200 per event, or around 3 extra adult entries to break even.</p></div>
+      <div class="card"><div class="eyebrow">Press</div><h3>The para division is news</h3>
+        <p>Local papers, community radio and council newsletters cover inclusive sport. One article with the venue name gets you in front of parents and new gyms who don't follow BJJ pages.</p></div>
+      <div class="card"><div class="eyebrow">Australia-wide</div><h3>Sydney and Brisbane with a host gym</h3>
+        <p>You've already run Sydney and Brisbane. For each interstate event, partner with one big local academy as the "host gym". They get a free team entry and co-branding, and they fill the first 100 spots. Build 4 weeks of that city's clips before announcing.</p></div>
+      <div class="card"><div class="eyebrow">Look bigger</div><h3>Livestream Mat 1</h3>
+        <p>A phone on a tripod streaming the main mat to Facebook and YouTube lets families watch from home, gives sponsors something to point to, and fills YouTube with Savage matches.</p></div>
+      <div class="card"><div class="eyebrow">Fix February</div><h3>New Year, first comp</h3>
+        <p>February was the smallest recent event (299). Open early-bird entries in December with a "New Year, first comp" push to white belts, since January is when new members join gyms.</p></div>
+    </div>
+  </section>
+
+  <section id="money">
+    <div class="eyebrow">Why this is worth the effort</div>
+    <h2>What extra entries are worth</h2>
+    <p>These are rough numbers from the Smoothcomp prices ($75 adults, $65 kids and teens, $30 brown belt, free black belt). I've used about $68 average per entry because of that mix. Swap in the real figure if you know it.</p>
+    <div class="tablewrap">
+      <table class="money">
+        <thead><tr><th>Scenario</th><th>Gross entries</th></tr></thead>
+        <tbody>
+          <tr><td>Typical event, about 500 athletes</td><td>≈ $34,000</td></tr>
+          <tr><td>+50 athletes from better social media</td><td>+ ≈ $3,400 per event</td></tr>
+          <tr><td>+50 athletes at 6 events a year</td><td>+ ≈ $20,000 a year</td></tr>
+          <tr><td>Lift February from 299 to 450</td><td>+ ≈ $10,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="caption">This is before spectators ($10 each), the rules webinar, merch and sponsorship. A bigger, busier-looking page also makes sponsorship easier to sell.</p>
+  </section>
+
+  <section id="assets">
+    <div class="eyebrow">Everything I made</div>
+    <h2>Banners, posts and reels</h2>
+    <p>The full-size PNG and MP4 files are in the GitHub branch under <span class="mono">savage-grappling/</span>. Every design is an HTML template, so dates and text can be changed and re-rendered.</p>
+
+    <h3 style="margin-top:22px">Banners</h3>
+    <div class="banners">
+      <figure style="margin:0"><img src="img/fb-cover-oct4.jpg" alt="Facebook cover for 4 October"><figcaption class="note">Facebook cover, 4 Oct (1640×624). All text sits inside the area mobile shows.</figcaption></figure>
+      <figure style="margin:0"><img src="img/smoothcomp-oct4.jpg" alt="Smoothcomp banner"><figcaption class="note">Smoothcomp banner (1500×557). The date is huge because it also shows as a small thumbnail.</figcaption></figure>
+      <figure style="margin:0"><img src="img/fb-cover-evergreen.jpg" alt="Evergreen Facebook cover"><figcaption class="note">Evergreen Facebook cover for between events.</figcaption></figure>
+    </div>
+
+    <h3 style="margin-top:30px">Sample reels</h3>
+    <div class="reels">
+      <div><video src="reels/reel-a-hype.mp4" controls muted playsinline preload="metadata"></video><p><b>Reel A, 13s.</b> The hook is the screaming crowd, then five takedowns and slams, then the date. No sound: add a trending sound in the app.</p></div>
+      <div><video src="reels/reel-b-medals.mp4" controls muted playsinline preload="metadata"></video><p><b>Reel B, 9s.</b> Medal pile, the 1ST podium, winners' smiles, then the date.</p></div>
+    </div>
+
+    <h3 style="margin-top:30px">Feed posts, carousels and story</h3>
+    <div class="gallery">
+      <figure><img src="img/01-countdown-7-days.jpg" alt=""><figcaption>01 countdown</figcaption></figure>
+      <figure><img src="img/02-entries-close.jpg" alt=""><figcaption>02 entries close</figcaption></figure>
+      <figure><img src="img/03-first-comp-slide-1.jpg" alt=""><figcaption>03 first comp · 1</figcaption></figure>
+      <figure><img src="img/03-first-comp-slide-2.jpg" alt=""><figcaption>03 first comp · 2</figcaption></figure>
+      <figure><img src="img/03-first-comp-slide-3.jpg" alt=""><figcaption>03 first comp · 3</figcaption></figure>
+      <figure><img src="img/03-first-comp-slide-4.jpg" alt=""><figcaption>03 first comp · 4</figcaption></figure>
+      <figure><img src="img/03-first-comp-slide-5.jpg" alt=""><figcaption>03 first comp · 5</figcaption></figure>
+      <figure><img src="img/04-para-division.jpg" alt=""><figcaption>04 para division</figcaption></figure>
+      <figure><img src="img/05-best-academy.jpg" alt=""><figcaption>05 best academy</figcaption></figure>
+      <figure><img src="img/06-results-slide-1.jpg" alt=""><figcaption>06 results · 1 (template)</figcaption></figure>
+      <figure><img src="img/06-results-slide-2.jpg" alt=""><figcaption>06 results · 2 (template)</figcaption></figure>
+      <figure><img src="img/08-500-grapplers.jpg" alt=""><figcaption>08 271 → 556</figcaption></figure>
+      <figure><img src="img/07-story-countdown.jpg" alt=""><figcaption>07 story countdown</figcaption></figure>
+    </div>
+    <p class="note" style="margin-top:14px">The dashed blue boxes on the results templates are for real numbers after the event. The numbers shown in them are placeholders.</p>
+  </section>
+</div>
+
+<script>
+  document.querySelectorAll("button.copy").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const pre = document.getElementById(btn.dataset.t);
+      const done = () => { btn.textContent = "Copied"; setTimeout(() => btn.textContent = "Copy caption", 1600); };
+      const fallback = () => {
+        const r = document.createRange(); r.selectNodeContents(pre);
+        const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+        btn.textContent = "Selected, press copy";
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(pre.textContent).then(done, fallback);
+      } else { fallback(); }
+    });
+  });
+</script>
