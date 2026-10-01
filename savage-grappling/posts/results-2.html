@@ -1,30 +1,32 @@
 <!doctype html>
 <html><head><meta charset="utf-8"><title>results-2</title>
 <link rel="stylesheet" href="post.css">
-<style>
-.podium { margin-top:26px; display:grid; gap:18px; }
-.podium div { display:grid; grid-template-columns:170px 1fr auto; align-items:center; gap:24px; background:var(--steel); border-left:10px solid var(--line); padding:28px 32px; }
-.podium .p1 { border-left-color:var(--volt); padding:44px 32px; }
-.podium span { font-size:72px; color:var(--mute); }
-.podium .p1 span { color:var(--chalk); font-size:96px; }
-.podium b { font-size:44px; font-weight:700; justify-self:start; }
-.podium i { font-style:normal; font-size:26px; }
-</style></head>
+<style>.canvas{--gx:62%;} .g1{font-size:520px;left:-30px;top:150px;} 
+.podium{margin-top:22px;display:grid;gap:16px}
+.podium div{display:grid;grid-template-columns:150px 1fr auto;align-items:center;gap:22px;background:rgba(6,8,18,.75);border:2px solid rgba(150,175,255,.2);border-left:10px solid #3a4364;padding:24px 30px}
+.podium .p1{border-left-color:var(--volt);padding:38px 30px;box-shadow:0 0 40px rgba(43,78,245,.35)}
+.podium span{font-size:68px;color:#8f9ac0}.podium .p1 span{color:var(--chalk);font-size:92px}
+.podium b{font-size:42px;font-weight:700;justify-self:start}.podium i{font-style:normal;font-size:24px}</style></head>
 <body><div class="canvas">
+<div class="arena"></div><div class="beams"></div><div class="haze"></div><div class="halftone"></div>
+<div class="ghost g1">Champs</div>
+<div class="top"><div class="brandlock"><img class="mark" src="../assets/logo/sg-mark-white.svg" alt="">
+<img class="wm" src="../assets/logo/wordmark-white.svg" alt="Savage Grappling"></div>
+<div class="label tag">Next event: [date]</div></div>
 
-<div class="body" style="top:90px">
+<div class="body" style="top:200px">
   <div class="kicker label">Best Overall Academy · Adults</div>
   <div class="podium">
     <div class="p1"><span class="display">1st</span><b class="fill">Academy name</b><i class="label fill">000 pts</i></div>
     <div><span class="display">2nd</span><b class="fill">Academy name</b><i class="label fill">000 pts</i></div>
     <div><span class="display">3rd</span><b class="fill">Academy name</b><i class="label fill">000 pts</i></div>
   </div>
-  <div class="kicker label" style="margin-top:60px">Kids &amp; Teens</div>
-  <div class="podium small">
-    <div class="p1"><span class="display">1st</span><b class="fill">Academy name</b><i class="label fill">000 pts</i></div>
-  </div>
+  <div class="kicker label" style="margin-top:44px">Kids &amp; Teens</div>
+  <div class="podium"><div class="p1"><span class="display">1st</span><b class="fill">Academy name</b><i class="label fill">000 pts</i></div></div>
 </div>
-
-<div class="foot"><img src="../assets/wordmark-white.png" alt="Savage Grappling">
-<div class="label">Next event: [date]</div><div class="tape"></div></div>
+<div class="partners"><span class="label">Partners</span>
+<div class="p"><img src="../assets/sponsors/cycon.png" alt="Cycon Civil"></div>
+<div class="p"><img src="../assets/sponsors/ajjfr.png" alt="AJJFP"></div>
+<div class="p"><img src="../assets/sponsors/kamikaze.png" alt="Kamikaze Energy"></div></div>
+<div class="vignette"></div><div class="grain"></div>
 </div></body></html>

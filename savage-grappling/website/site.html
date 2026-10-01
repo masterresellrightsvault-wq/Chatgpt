@@ -54,11 +54,21 @@
 
   /* Hero */
   .hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--line); }
-  .hero .bg { position: absolute; inset: 0; background: url(img/hero-takedown.jpg) 30% 40% / cover no-repeat; }
-  .hero .bg::after { content: ""; position: absolute; inset: 0; background:
-      linear-gradient(90deg, rgba(7,8,12,.96) 0%, rgba(7,8,12,.82) 38%, rgba(7,8,12,.25) 70%, rgba(7,8,12,.55) 100%),
-      linear-gradient(0deg, var(--ink) 0%, rgba(7,8,12,0) 30%); }
-  .hero .wrap { position: relative; display: grid; grid-template-columns: 1.25fr .9fr; gap: 40px; align-items: end; padding-block: clamp(60px, 10vw, 130px) clamp(50px, 7vw, 90px); }
+  .hero .bg { position: absolute; inset: 0; background:
+      radial-gradient(55% 90% at 70% 15%, rgba(43,78,245,.85) 0%, rgba(1,35,180,.5) 30%, rgba(1,20,110,.2) 55%, rgba(7,8,12,0) 75%),
+      radial-gradient(40% 60% at 5% 95%, rgba(1,35,180,.4), rgba(7,8,12,0) 70%), linear-gradient(180deg, #060918, var(--ink)); }
+  .hero .bg::before { content: ""; position: absolute; inset: -20% -10% 0; opacity: .5; mix-blend-mode: screen; filter: blur(6px);
+      background: repeating-conic-gradient(from 180deg at 70% -8%, rgba(160,185,255,.22) 0deg 2.2deg, rgba(160,185,255,0) 2.2deg 9deg);
+      -webkit-mask-image: radial-gradient(70% 90% at 70% 0%, #000 20%, transparent 75%); mask-image: radial-gradient(70% 90% at 70% 0%, #000 20%, transparent 75%); }
+  .hero .bg::after { content: "SAVAGE"; position: absolute; left: -2%; top: 4%; font-family: var(--display); font-weight: 900; font-style: italic; font-size: clamp(160px, 26vw, 380px); line-height: .8; color: transparent; -webkit-text-stroke: 2px rgba(150,175,255,.14); white-space: nowrap; }
+  .hero .art { position: relative; display: flex; flex-direction: column; align-items: stretch; }
+  .hero .art .fighter { width: 100%; max-width: 560px; align-self: center; height: auto; filter: drop-shadow(0 0 2px rgba(190,205,255,.9)) drop-shadow(0 0 26px rgba(43,78,245,.85)) drop-shadow(0 30px 40px rgba(0,0,0,.7)); }
+  .hero .art .ticket { position: relative; margin-top: -40px; }
+  .hero .lockup { display: flex; align-items: center; gap: 16px; margin-bottom: 22px; }
+  .hero .lockup img:first-child { height: 92px; width: auto; filter: drop-shadow(0 0 18px rgba(43,78,245,.7)); }
+  .hero .lockup img:last-child { height: 50px; width: auto; }
+  
+  .hero .wrap { position: relative; display: grid; grid-template-columns: 1.25fr .9fr; gap: 40px; align-items: center; padding-block: clamp(40px, 7vw, 90px) clamp(60px, 7vw, 100px); }
   .hero h1 { font-size: clamp(64px, 11vw, 158px); }
   .hero .sub { margin-top: 22px; font-size: clamp(18px, 2vw, 22px); max-width: 34ch; color: var(--text); }
   .hero .sub b { color: var(--chalk); }
@@ -174,9 +184,12 @@
   .faq details p { font-size: 16.5px; max-width: 70ch; }
 
   /* Sponsors + footer */
-  .sponsors { border-top: 1px solid var(--line); padding-block: 34px; }
-  .sponsors .wrap { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; justify-content: space-between; }
-  .sponsors img { width: min(460px, 100%); }
+  .sponsors { border-top: 1px solid var(--line); padding-block: clamp(44px, 6vw, 72px); background: radial-gradient(60% 120% at 50% 0%, rgba(43,78,245,.18), transparent 70%); }
+  .sponsors .wrap { display: grid; gap: 22px; justify-items: center; text-align: center; }
+  .sponsors h2 { font-size: clamp(34px, 5vw, 56px); }
+  .plogos { display: flex; flex-wrap: wrap; gap: 18px; justify-content: center; }
+  .plogos div { background: #000; border: 1px solid rgba(150,175,255,.28); box-shadow: 0 0 30px rgba(43,78,245,.25); height: clamp(96px, 12vw, 140px); display: flex; }
+  .plogos img { height: 100%; width: auto; }
   footer { background: #000; border-top: 1px solid var(--line); padding-block: 40px 60px; }
   footer .wrap { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 30px; }
   footer img { height: 40px; width: auto; margin-bottom: 14px; }
@@ -201,8 +214,8 @@
 <header class="nav">
   <div class="wrap">
     <a class="brand" href="#top" aria-label="Savage Grappling home">
-      <img class="mark" src="img/sg-mark-white.png" alt="" width="240" height="209">
-      <img class="wm" src="img/wordmark-white.png" alt="Savage Grappling" width="560" height="192">
+      <img class="mark" src="img/sg-mark-white.svg" alt="" width="1012" height="974">
+      <img class="wm" src="img/wordmark-white.svg" alt="Savage Grappling" width="1407" height="483">
     </a>
     <nav class="links" aria-label="Main">
       <a href="#format">Format</a><a href="#prices">Prices</a><a href="#day">Event day</a><a href="#para">Para division</a><a href="#coaches">Coaches</a><a href="#faq">FAQ</a>
@@ -213,9 +226,10 @@
 
 <main id="top">
   <section class="hero" style="padding:0">
-    <div class="bg" role="img" aria-label="A no-gi takedown on the Savage Grappling mats while a referee watches"></div>
+    <div class="bg" aria-hidden="true"></div>
     <div class="wrap">
       <div>
+        <div class="lockup"><img src="img/sg-mark-white.svg" alt=""><img src="img/wordmark-white.svg" alt="Savage Grappling"></div>
         <span class="lab eyebrow">Gi &amp; No-Gi round robin · Melbourne</span>
         <h1 class="disp">Prove it<br><span class="blue">on the mats</span></h1>
         <p class="sub">Pools of up to five. Everyone fights everyone. <b>3–4 matches guaranteed</b>, points scoring, no advantages.</p>
@@ -224,6 +238,8 @@
           <a class="btn ghost" href="#format">How it works</a>
         </div>
       </div>
+      <div class="art">
+      <img class="fighter" src="img/cutout-takedown.png" alt="A no-gi takedown on the Savage Grappling mats">
       <aside class="ticket" aria-label="Next event">
         <div class="top">
           <span class="lab" style="color:var(--volt-2)">Next event</span>
@@ -244,6 +260,7 @@
           <div><b>9:00am</b><span>First matches</span></div>
         </div>
       </aside>
+      </div>
     </div>
   </section>
 
@@ -414,8 +431,14 @@
 
   <div class="sponsors">
     <div class="wrap">
-      <span class="lab" style="color:var(--mute)">Supported by</span>
-      <img src="img/sponsors-strip.png" alt="Cycon Civil, AJJFP and Kamikaze Energy" loading="lazy">
+      <span class="lab" style="color:var(--volt-2)">Official partners</span>
+      <h2 class="disp">Proudly backed by</h2>
+      <div class="plogos">
+        <div><img src="img/cycon.png" alt="Cycon Civil" loading="lazy"></div>
+        <div><img src="img/ajjfr.png" alt="AJJFP (Australian Jiu-Jitsu Futures Program)" loading="lazy"></div>
+        <div><img src="img/kamikaze.png" alt="Kamikaze Energy" loading="lazy"></div>
+      </div>
+      <p style="color:var(--mute);font-size:15px">Want your brand in front of 500+ athletes and their families? Email savagegrapplingofficial@gmail.com</p>
     </div>
   </div>
   <div class="tape"></div>
@@ -424,7 +447,7 @@
 <footer>
   <div class="wrap">
     <div>
-      <img src="img/wordmark-white.png" alt="Savage Grappling" width="560" height="192">
+      <img src="img/wordmark-white.svg" alt="Savage Grappling" width="1407" height="483">
       <p>Gi and No-Gi round robin tournaments, started in Melbourne in 2021 by Daniel Stien to showcase Australian grapplers.</p>
     </div>
     <div>

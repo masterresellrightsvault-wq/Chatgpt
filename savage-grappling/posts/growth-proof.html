@@ -1,24 +1,29 @@
 <!doctype html>
 <html><head><meta charset="utf-8"><title>growth-proof</title>
 <link rel="stylesheet" href="post.css">
-<style>
-.chart { position:absolute; left:72px; right:72px; top:600px; height:520px; display:grid; grid-template-columns:repeat(8,1fr); gap:18px; align-items:end; }
-.bar { height:100%; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; gap:10px; }
-.bar i { display:block; width:100%; background:#1c2340; }
-.bar.hi i { background:var(--volt); }
-.bar em { font-style:normal; font-size:24px; color:var(--mute); }
-.bar.hi em { color:var(--chalk); }
-.bar span { font-size:18px; color:var(--mute); white-space:nowrap; }
-</style></head>
+<style>.canvas{--gx:62%;} .g1{font-size:520px;left:-30px;top:150px;} 
+.chart{position:absolute;z-index:2;left:60px;right:60px;top:640px;height:500px;display:grid;grid-template-columns:repeat(8,1fr);gap:16px;align-items:end}
+.bar{height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:10px}
+.bar i{display:block;width:100%;background:linear-gradient(180deg,#2a3768,#151b33);border-top:3px solid #4a5a96}
+.bar.hi i{background:linear-gradient(180deg,var(--volt),var(--royal));border-top-color:#9fb3ff;box-shadow:0 0 40px rgba(43,78,245,.7)}
+.bar em{font-style:normal;font-size:24px;color:#aab4d6}.bar.hi em{color:var(--chalk)}
+.bar span{font-size:17px;color:#8f9ac0;white-space:nowrap}</style></head>
 <body><div class="canvas">
+<div class="arena"></div><div class="beams"></div><div class="haze"></div><div class="halftone"></div>
+<div class="ghost g1">556</div>
+<div class="top"><div class="brandlock"><img class="mark" src="../assets/logo/sg-mark-white.svg" alt="">
+<img class="wm" src="../assets/logo/wordmark-white.svg" alt="Savage Grappling"></div>
+<div class="label tag">Sun 4 Oct · Deakin Burwood</div></div>
 
-<div class="body" style="top:90px">
+<div class="body" style="top:200px">
   <div class="kicker label">Athletes per event · from Smoothcomp</div>
-  <div class="h display" style="margin-top:14px">271 <span class="blue">→ 556</span></div>
-  <div class="lede" style="margin-top:22px">Our first Chelsea comp had 271 grapplers. Our biggest had <b>556</b>. Thank you, Melbourne. <b>Sunday 4 Oct is next.</b></div>
+  <div class="h display" style="margin-top:12px">271 <span class="blue">→ 556</span></div>
+  <div class="lede" style="margin-top:20px">Our first Chelsea comp had 271 grapplers. Our biggest had <b>556</b>. Thank you, Melbourne. <b>Sunday 4 Oct is next.</b></div>
 </div>
 <div class="chart"><div class="bar"><em class="label">271</em><i style="height:45.2%"></i><span class="label">Apr 23</span></div><div class="bar"><em class="label">543</em><i style="height:90.5%"></i><span class="label">Dec 24</span></div><div class="bar"><em class="label">445</em><i style="height:74.2%"></i><span class="label">Oct 25</span></div><div class="bar"><em class="label">515</em><i style="height:85.8%"></i><span class="label">Nov 25</span></div><div class="bar"><em class="label">299</em><i style="height:49.8%"></i><span class="label">Feb 26</span></div><div class="bar"><em class="label">495</em><i style="height:82.5%"></i><span class="label">Apr 26</span></div><div class="bar hi"><em class="label">556</em><i style="height:92.7%"></i><span class="label">Jun 26</span></div><div class="bar"><em class="label">517</em><i style="height:86.2%"></i><span class="label">Jul 26</span></div></div>
-
-<div class="foot"><img src="../assets/wordmark-white.png" alt="Savage Grappling">
-<div class="label">Sun 4 Oct · Deakin Burwood</div><div class="tape"></div></div>
+<div class="partners"><span class="label">Partners</span>
+<div class="p"><img src="../assets/sponsors/cycon.png" alt="Cycon Civil"></div>
+<div class="p"><img src="../assets/sponsors/ajjfr.png" alt="AJJFP"></div>
+<div class="p"><img src="../assets/sponsors/kamikaze.png" alt="Kamikaze Energy"></div></div>
+<div class="vignette"></div><div class="grain"></div>
 </div></body></html>

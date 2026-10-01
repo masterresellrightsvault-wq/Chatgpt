@@ -1,30 +1,27 @@
 <!doctype html>
 <html><head><meta charset="utf-8"><title>first-comp-4</title>
 <link rel="stylesheet" href="post.css">
-<style>
-.medals { position:absolute; left:0; right:0; bottom:118px; height:380px; background:url(../assets/stills/cine-28.5.jpg) center/cover; }
-.medals::before { content:""; position:absolute; inset:0; background:linear-gradient(180deg,var(--ink),rgba(7,8,12,.2) 50%,rgba(7,8,12,.6)); }
-.pager { z-index:2; }
-.check { list-style:none; margin-top:50px; display:grid; gap:22px; }
-.check li { font-size:40px; font-weight:600; display:flex; gap:26px; align-items:center; }
-.check li::before { content:""; flex:0 0 44px; height:44px; border:4px solid var(--volt); background:linear-gradient(135deg,transparent 42%,var(--volt) 42% 58%,transparent 58%); }
-</style></head>
+<style>.canvas{--gx:62%;} .g1{font-size:520px;left:-30px;top:150px;} .check{list-style:none;margin:40px 0 0;padding:0;display:grid;gap:20px}.check li{font-size:38px;font-weight:600;display:flex;gap:24px;align-items:center;text-shadow:0 2px 12px rgba(0,0,0,.7)}.check li::before{content:'';flex:0 0 42px;height:42px;border:4px solid var(--volt);background:linear-gradient(135deg,transparent 42%,var(--volt) 42% 58%,transparent 58%)}</style></head>
 <body><div class="canvas">
+<div class="arena"></div><div class="beams"></div><div class="haze"></div><div class="halftone"></div>
+<div class="ghost g1">Ready</div>
+<div class="top"><div class="brandlock"><img class="mark" src="../assets/logo/sg-mark-white.svg" alt="">
+<img class="wm" src="../assets/logo/wordmark-white.svg" alt="Savage Grappling"></div>
+<div class="label tag">Sun 4 Oct · Deakin Burwood</div></div>
 
-<div class="body" style="top:90px">
+<div class="photo-fade" style="top:760px;height:440px;background-image:url(../assets/stills/cine-28.5.jpg)"></div>
+<div class="body" style="top:200px">
   <div class="kicker label">04 / Your bag</div>
-  <div class="h m display" style="margin-top:14px">What to<br><span class="blue">bring</span></div>
+  <div class="h m display" style="margin-top:12px">What to<br><span class="blue">bring</span></div>
   <ul class="check">
-    <li>Gi and/or rash guard &amp; shorts</li>
-    <li>Mouthguard</li>
-    <li>Water and real food, it's a long day</li>
-    <li>Thongs or slides for off the mat</li>
-    <li>Your crew. Spectators are $10 at the door</li>
+    <li>Gi and/or rash guard &amp; shorts</li><li>Mouthguard</li><li>Water and real food, it's a long day</li>
+    <li>Thongs or slides for off the mat</li><li>Your crew. Spectators are $10 at the door</li>
   </ul>
 </div>
-<div class="medals"></div>
-<div class="label pager" style="bottom:160px">Swipe →</div>
-
-<div class="foot"><img src="../assets/wordmark-white.png" alt="Savage Grappling">
-<div class="label">Sun 4 Oct · Deakin Burwood</div><div class="tape"></div></div>
+<div class="label swipe" style="bottom:180px">Swipe →</div>
+<div class="partners"><span class="label">Partners</span>
+<div class="p"><img src="../assets/sponsors/cycon.png" alt="Cycon Civil"></div>
+<div class="p"><img src="../assets/sponsors/ajjfr.png" alt="AJJFP"></div>
+<div class="p"><img src="../assets/sponsors/kamikaze.png" alt="Kamikaze Energy"></div></div>
+<div class="vignette"></div><div class="grain"></div>
 </div></body></html>

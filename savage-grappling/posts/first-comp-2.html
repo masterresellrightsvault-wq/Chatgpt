@@ -1,19 +1,21 @@
 <!doctype html>
 <html><head><meta charset="utf-8"><title>first-comp-2</title>
 <link rel="stylesheet" href="post.css">
-<style>
-.pool { position:absolute; left:270px; top:540px; width:540px; height:504px; }
-.rules { position:absolute; left:72px; right:72px; bottom:235px; text-align:center; font-size:22px; color:var(--mute); }
-</style></head>
+<style>.canvas{--gx:62%;} .g1{font-size:520px;left:-30px;top:150px;} .pool{position:absolute;left:290px;top:640px;width:500px;height:467px;z-index:2;filter:drop-shadow(0 0 24px rgba(43,78,245,.6))}.rules{position:absolute;left:60px;bottom:180px;font-size:20px;color:#aab4d6;z-index:3}</style></head>
 <body><div class="canvas">
+<div class="arena"></div><div class="beams"></div><div class="haze"></div><div class="halftone"></div>
+<div class="ghost g1">Format</div>
+<div class="top"><div class="brandlock"><img class="mark" src="../assets/logo/sg-mark-white.svg" alt="">
+<img class="wm" src="../assets/logo/wordmark-white.svg" alt="Savage Grappling"></div>
+<div class="label tag">Sun 4 Oct · Deakin Burwood</div></div>
 
-<div class="body" style="top:90px">
+<div class="body" style="top:200px">
   <div class="kicker label">02 / The format</div>
-  <div class="h m display" style="margin-top:14px">You won't lose once<br><span class="blue">and go home</span></div>
-  <div class="lede" style="margin-top:28px">Pools of up to <b>5 people</b>. Everyone fights everyone. That's <b>3–4 matches</b> for your entry fee.</div>
+  <div class="h m display" style="margin-top:12px">You won't lose once<br><span class="blue">and go home</span></div>
+  <div class="lede" style="margin-top:22px">Pools of up to <b>5 people</b>. Everyone fights everyone. That's <b>3–4 matches</b> for your entry fee.</div>
 </div>
 <svg class="pool" viewBox="0 0 600 560" aria-label="Round robin pool of five">
-  <g stroke="#2b4ef5" stroke-width="5" opacity=".9">
+  <g stroke="#2b4ef5" stroke-width="5">
     <line x1="300" y1="70" x2="530" y2="238"/><line x1="300" y1="70" x2="442" y2="500"/><line x1="300" y1="70" x2="158" y2="500"/><line x1="300" y1="70" x2="70" y2="238"/>
     <line x1="530" y1="238" x2="442" y2="500"/><line x1="530" y1="238" x2="158" y2="500"/><line x1="530" y1="238" x2="70" y2="238"/>
     <line x1="442" y1="500" x2="158" y2="500"/><line x1="442" y1="500" x2="70" y2="238"/><line x1="158" y1="500" x2="70" y2="238"/>
@@ -25,9 +27,11 @@
     <text x="300" y="89">YOU</text><text x="530" y="257">B</text><text x="442" y="519">C</text><text x="158" y="519">D</text><text x="70" y="257">E</text>
   </g>
 </svg>
-<div class="rules label">Points scoring · No advantages · Medics on site</div>
-<div class="label pager" style="bottom:160px">Swipe →</div>
-
-<div class="foot"><img src="../assets/wordmark-white.png" alt="Savage Grappling">
-<div class="label">Sun 4 Oct · Deakin Burwood</div><div class="tape"></div></div>
+<div class="label rules">Points scoring · No advantages · Medics on site</div>
+<div class="label swipe" style="bottom:180px">Swipe →</div>
+<div class="partners"><span class="label">Partners</span>
+<div class="p"><img src="../assets/sponsors/cycon.png" alt="Cycon Civil"></div>
+<div class="p"><img src="../assets/sponsors/ajjfr.png" alt="AJJFP"></div>
+<div class="p"><img src="../assets/sponsors/kamikaze.png" alt="Kamikaze Energy"></div></div>
+<div class="vignette"></div><div class="grain"></div>
 </div></body></html>
