@@ -45,7 +45,8 @@
   .btn.ghost { background: transparent; border: 1.5px solid var(--line); color: var(--ink); font-family: var(--mono); font-style: normal; font-size: 12.5px; font-weight: 600; letter-spacing: .06em; }
   button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid var(--volt-2); outline-offset: 2px; }
   .msg { font-size: 14.5px; color: var(--text); min-height: 1.4em; }
-  #fallback img { width: 100%; border: 1px solid var(--line); }
+  #fallback img, #fallback video { width: 100%; border: 1px solid var(--line); }
+  .btn:disabled { opacity: .5; cursor: wait; }
   .how { margin-top: 36px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
   .how div { background: var(--panel); border: 1px solid var(--line); padding: 14px 16px; font-size: 15px; }
   .how b { color: var(--ink); display: block; margin-bottom: 4px; }
@@ -62,14 +63,14 @@
     <div class="previewbox">
       <div class="stage"><canvas id="view" width="1080" height="1350" aria-label="Preview of the post"></canvas></div>
       <div class="meta" id="meta"></div>
-      <div class="btns"><button class="btn" id="save" type="button">Save PNG</button></div>
+      <div class="btns"><button class="btn" id="save" type="button">Save PNG</button><button class="btn" id="savevid" type="button" hidden>Save video</button><button class="btn ghost" id="playbtn" type="button" hidden>Pause clip</button></div>
       <div class="msg" id="msg" role="status"></div>
-      <div id="fallback" hidden><p class="meta" style="margin-bottom:8px">Saving isn't available here. Right-click the image below and choose "Save image", or press and hold it on a phone.</p><img id="fbimg" alt="Finished image to save"></div>
+      <div id="fallback" hidden><p class="meta" style="margin-bottom:8px">Saving isn't available here. Right-click the image below and choose "Save image", or press and hold it on a phone.</p><img id="fbimg" alt="Finished image to save"><video id="fbvid" controls playsinline hidden></video></div>
     </div>
   </div>
 
   <div class="how">
-    <div><b>Video overlays</b>Save the PNG, then in CapCut: Overlay → Add overlay → pick the PNG and stretch it to fill the frame. In TikTok or Instagram: add it as a sticker or image.</div>
+    <div><b>Video overlays</b>Pick Hook text, Debate sticker or Name tag, upload your clip, then "Save video" to get the clip with the text on it, sound included. It takes as long as the clip, so keep the tab open. Or save the PNG and add it as an overlay in CapCut.</div>
     <div><b>Photos</b>Use your own photo with "Upload photo". Zoom and move it with the sliders until the athletes sit where you want them.</div>
     <div><b>Carousels</b>Make the cover, then each inner slide with its number, then the question slide. Post them in that order.</div>
     <div><b>Keep it raw</b>These are for the 20% designed posts and overlays. Most posts should still be real clips with one line of text.</div>
@@ -126,7 +127,7 @@
     const t = String(text || "").toUpperCase().split("").join(String.fromCharCode(8202)); ctx.fillText(t, x, y); ctx.textAlign = "left";
   }
   function cover(ctx, img, x, y, w, h, zoom = 1, fx = 50, fy = 50) {
-    if (!img) return; const s = Math.max(w / img.width, h / img.height) * zoom; const iw = img.width * s, ih = img.height * s;
+    if (!img) return; const w0 = img.videoWidth || img.naturalWidth || img.width, h0 = img.videoHeight || img.naturalHeight || img.height; if (!w0 || !h0) return; const s = Math.max(w / w0, h / h0) * zoom; const iw = w0 * s, ih = h0 * s;
     const ox = x + (w - iw) * (fx / 100), oy = y + (h - ih) * (fy / 100);
     ctx.save(); ctx.beginPath(); ctx.rect(x, y, w, h); ctx.clip(); ctx.drawImage(img, ox, oy, iw, ih); ctx.restore();
   }
@@ -220,7 +221,7 @@
 
   // ---------- UI ----------
   const view = document.getElementById("view"), fields = document.getElementById("fields"), groupsEl = document.getElementById("groups");
-  let cur = T[0], vals = {};
+  let cur = T[0], vals = {}; const G = { vfx: 50, when: "all" }; let clip = null, recording = false;
   const groups = [...new Set(T.map((t) => t.g))];
   groupsEl.innerHTML = groups.map((g) => `<div><h2>${g}</h2><div class="tpls">${T.filter((t) => t.g === g).map((t) => `<button type="button" class="tpl" data-t="${t.id}" aria-pressed="${t.id === cur.id}">${t.n}<small>${t.w}×${t.h}${t.overlay ? " · see-through" : ""}</small></button>`).join("")}</div></div>`).join("");
 
@@ -235,40 +236,108 @@
       if (f.t === "check") return `<label class="chk" for="${id}"><input type="checkbox" id="${id}" data-k="${f.k}" ${f.def ? "checked" : ""}> ${f.l}</label>`;
       if (f.t === "photo") return `<label class="f" for="${id}"><span>${f.l || "Upload photo"}</span><input type="file" accept="image/*" id="${id}" data-photo="${f.k}"></label>`;
       return "";
-    }).join("") + (cur.overlay ? `<label class="chk" for="f-prev"><input type="checkbox" id="f-prev" data-k="_prev" checked> Show a sample clip behind it (not saved)</label>` : "");
+    }).join("") + (cur.overlay ? `<label class="f" for="f-clip"><span>Upload video clip</span><input type="file" accept="video/*" id="f-clip"></label><p class="tip" id="clipname"></p><label class="f" for="f-vfx"><span>Move clip left / right</span><input type="range" id="f-vfx" data-g="vfx" min="0" max="100" step="1" value="${G.vfx}"></label><label class="f" for="f-when"><span>When the text shows (in the saved video)</span><select id="f-when" data-g="when">${[["all", "Whole clip"], ["first", "First 3 seconds"], ["last", "Last 3 seconds"]].map(([v, l]) => `<option value="${v}" ${G.when === v ? "selected" : ""}>${l}</option>`).join("")}</select></label><label class="chk" for="f-prev"><input type="checkbox" id="f-prev" data-k="_prev" checked> Show a sample photo when there's no clip (not saved)</label>` : "");
     vals._prev = true;
   }
 
+  // mode: "preview" (on screen), "png" (text only, see-through for overlays), "video" (clip + timed text)
+  function textOn() { if (!clip || G.when === "all") return true; const t = clip.el.currentTime, d = clip.el.duration || 0; return G.when === "first" ? t < 3 : t > d - 3; }
+  function paint(ctx, mode) {
+    ctx.clearRect(0, 0, cur.w, cur.h);
+    if (cur.overlay && mode !== "png") {
+      if (clip && clip.el.readyState >= 2) cover(ctx, clip.el, 0, 0, cur.w, cur.h, 1, G.vfx, 50);
+      else if (mode === "preview" && vals._prev) { cover(ctx, IMG["photo-takedown"], 0, 0, cur.w, cur.h, 1, 25, 50); ctx.fillStyle = "rgba(0,0,0,.15)"; ctx.fillRect(0, 0, cur.w, cur.h); }
+    }
+    if (mode !== "video" || textOn()) { ctx.save(); cur.draw(ctx, vals); ctx.restore(); }
+  }
   function draw(target, forExport) {
-    const ctx = target.getContext("2d"); target.width = cur.w; target.height = cur.h; ctx.clearRect(0, 0, cur.w, cur.h);
-    if (cur.overlay && !forExport && vals._prev) { cover(ctx, IMG["photo-takedown"], 0, 0, cur.w, cur.h, 1, 25, 50); ctx.fillStyle = "rgba(0,0,0,.15)"; ctx.fillRect(0, 0, cur.w, cur.h); }
-    cur.draw(ctx, vals);
+    if (target.width !== cur.w || target.height !== cur.h) { target.width = cur.w; target.height = cur.h; }
+    paint(target.getContext("2d"), forExport ? "png" : "preview");
   }
   const render = () => { draw(view, false); document.getElementById("meta").textContent = `${cur.n} · ${cur.w}×${cur.h} px${cur.overlay ? " · saves see-through" : ""}`; };
 
-  groupsEl.addEventListener("click", (e) => { const b = e.target.closest("[data-t]"); if (!b) return; cur = T.find((t) => t.id === b.dataset.t); groupsEl.querySelectorAll("[data-t]").forEach((x) => x.setAttribute("aria-pressed", x === b)); buildFields(); render(); document.getElementById("msg").textContent = ""; document.getElementById("fallback").hidden = true; });
-  fields.addEventListener("input", (e) => { const k = e.target.dataset.k; if (!k) return; vals[k] = e.target.type === "checkbox" ? e.target.checked : e.target.type === "range" ? Number(e.target.value) : e.target.value; render(); });
+  groupsEl.addEventListener("click", (e) => { const b = e.target.closest("[data-t]"); if (!b || recording) return; cur = T.find((t) => t.id === b.dataset.t); groupsEl.querySelectorAll("[data-t]").forEach((x) => x.setAttribute("aria-pressed", x === b)); buildFields(); render(); clipUI(); document.getElementById("msg").textContent = ""; document.getElementById("fallback").hidden = true; });
+  fields.addEventListener("input", (e) => { const g = e.target.dataset.g; if (g) { G[g] = e.target.type === "range" ? Number(e.target.value) : e.target.value; render(); return; } const k = e.target.dataset.k; if (!k) return; vals[k] = e.target.type === "checkbox" ? e.target.checked : e.target.type === "range" ? Number(e.target.value) : e.target.value; render(); });
   fields.addEventListener("change", (e) => {
+    if (e.target.id === "f-clip" && e.target.files[0]) { loadClip(e.target.files[0]); return; }
     const k = e.target.dataset.photo; if (!k || !e.target.files[0]) return;
     const url = URL.createObjectURL(e.target.files[0]); loadImg(url).then((im) => { vals["_" + k] = im; render(); });
   });
   fields.addEventListener("submit", (e) => e.preventDefault());
 
   let dl = null; const saveBtn = document.getElementById("save"), msg = document.getElementById("msg");
+  const vidBtn = document.getElementById("savevid"), playBtn = document.getElementById("playbtn");
+  const stamp = () => Date.now().toString().slice(-5);
+  async function offer(blob, name, kind, note) {
+    if (!dl && window.claude && window.claude.use) { try { dl = await window.claude.use("downloads"); } catch (e) { dl = null; } }
+    if (dl) {
+      try { await dl.save({ filename: name, data: blob }); msg.textContent = "Saved." + (note ? " " + note : ""); return; }
+      catch (err) { if (err && err.code === "declined") { msg.textContent = "Not saved."; return; } if (err && err.code === "rate_limited") { msg.textContent = "A save is already open. Try again in a moment."; return; } }
+    }
+    const fb = document.getElementById("fallback"), im = document.getElementById("fbimg"), vd = document.getElementById("fbvid"); const url = URL.createObjectURL(blob);
+    im.hidden = kind !== "image"; vd.hidden = kind !== "video"; if (kind === "image") im.src = url; else vd.src = url;
+    fb.hidden = false; msg.textContent = note || "";
+  }
   saveBtn.addEventListener("click", async () => {
     const c = document.createElement("canvas"); draw(c, true);
     const blob = await new Promise((r) => c.toBlob(r, "image/png"));
-    const name = `savage-${cur.id}-${Date.now().toString().slice(-5)}.png`;
-    if (!dl && window.claude && window.claude.use) { try { dl = await window.claude.use("downloads"); } catch (e) { dl = null; } }
-    if (dl) {
-      try { await dl.save({ filename: name, data: blob }); msg.textContent = "Saved."; return; }
-      catch (err) { if (err && err.code === "declined") { msg.textContent = "Not saved."; return; } if (err && err.code === "rate_limited") { msg.textContent = "A save is already open. Try again in a moment."; return; } }
-    }
-    const fb = document.getElementById("fallback"); document.getElementById("fbimg").src = URL.createObjectURL(blob); fb.hidden = false; msg.textContent = "";
+    offer(blob, `savage-${cur.id}-${stamp()}.png`, "image");
+  });
+
+  // ---------- video clips ----------
+  function clipUI() {
+    const on = !!(cur.overlay && clip); vidBtn.hidden = !on; playBtn.hidden = !on;
+    if (clip) playBtn.textContent = clip.el.paused ? "Play clip" : "Pause clip";
+    const n = document.getElementById("clipname"); if (n) n.textContent = clip ? `Using: ${clip.name} (${Math.round(clip.el.duration || 0)}s). The clip stays loaded when you switch overlay.` : "No clip yet. Phone clips (MP4 or MOV) work best.";
+  }
+  let raf = 0;
+  function loop() { cancelAnimationFrame(raf); const tick = () => { if (clip && cur.overlay && !recording) render(); raf = requestAnimationFrame(tick); }; raf = requestAnimationFrame(tick); }
+  function loadClip(file) {
+    if (clip) { clip.el.pause(); URL.revokeObjectURL(clip.el.src); }
+    const v = document.createElement("video"); v.muted = true; v.loop = true; v.playsInline = true; v.preload = "auto"; v.src = URL.createObjectURL(file);
+    clip = { el: v, name: file.name }; msg.textContent = "Loading clip…";
+    v.addEventListener("loadeddata", () => { msg.textContent = ""; v.play().catch(() => {}); loop(); clipUI(); }, { once: true });
+    v.addEventListener("error", () => { msg.textContent = "That clip couldn't be opened in this browser. Try an MP4 straight from your phone."; clip = null; clipUI(); render(); }, { once: true });
+  }
+  playBtn.addEventListener("click", () => { if (!clip) return; if (clip.el.paused) clip.el.play().catch(() => {}); else clip.el.pause(); clipUI(); });
+
+  vidBtn.addEventListener("click", async () => {
+    if (!clip || recording) return;
+    const v = clip.el;
+    const mime = ["video/mp4;codecs=avc1.42E01E,mp4a.40.2", "video/mp4", "video/webm;codecs=vp9,opus", "video/webm;codecs=vp8,opus", "video/webm"].find((m) => window.MediaRecorder && MediaRecorder.isTypeSupported(m));
+    if (!mime || !HTMLCanvasElement.prototype.captureStream) { msg.textContent = "This browser can't make videos. Save the PNG and add it in CapCut instead."; return; }
+    recording = true; vidBtn.disabled = saveBtn.disabled = playBtn.disabled = true;
+    const c = document.createElement("canvas"); c.width = cur.w; c.height = cur.h; const ctx = c.getContext("2d");
+    const stream = c.captureStream(30);
+    try {
+      if (!clip.ac) { const ac = new (window.AudioContext || window.webkitAudioContext)(); const src = ac.createMediaElementSource(v); const dest = ac.createMediaStreamDestination(); src.connect(dest); clip.ac = ac; clip.dest = dest; }
+      await clip.ac.resume(); clip.dest.stream.getAudioTracks().forEach((t) => stream.addTrack(t));
+    } catch (e) { /* no sound track: the video still saves */ }
+    const rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 8000000 }); const chunks = [];
+    rec.ondataavailable = (e) => { if (e.data && e.data.size) chunks.push(e.data); };
+    const stopped = new Promise((r) => { rec.onstop = r; });
+    v.pause(); v.loop = false;
+    await new Promise((r) => { const t = setTimeout(r, 800); v.addEventListener("seeked", () => { clearTimeout(t); r(); }, { once: true }); v.currentTime = 0; });
+    v.muted = false; // sound goes only into the recording, not the speakers
+    paint(ctx, "video"); rec.start(250);
+    try { await v.play(); } catch (e) {}
+    const dur = v.duration || 0;
+    await new Promise((res) => {
+      let done = false; const finish = () => { if (!done) { done = true; res(); } };
+      v.addEventListener("ended", finish, { once: true });
+      const step = () => { if (done) return; paint(ctx, "video"); msg.textContent = `Making video… ${Math.floor(v.currentTime)}s of ${Math.round(dur)}s. Keep this tab open.`; requestAnimationFrame(step); };
+      requestAnimationFrame(step);
+    });
+    paint(ctx, "video"); rec.stop(); await stopped;
+    v.muted = true; v.loop = true; v.play().catch(() => {});
+    recording = false; vidBtn.disabled = saveBtn.disabled = playBtn.disabled = false; clipUI();
+    const ext = mime.startsWith("video/mp4") ? "mp4" : "webm";
+    const blob = new Blob(chunks, { type: mime.split(";")[0] });
+    offer(blob, `savage-${cur.id}-${stamp()}.${ext}`, "video", ext === "webm" ? "This browser saves WebM. If Instagram won't take it, open it in CapCut and export again." : "");
   });
 
   // ---------- boot ----------
-  buildFields(); render();
+  buildFields(); render(); clipUI();
   Promise.all([document.fonts.load("italic 800 40px 'Barlow Condensed'"), document.fonts.load("italic 900 40px 'Barlow Condensed'"), document.fonts.load("500 20px Barlow"), document.fonts.load("700 20px Barlow"), document.fonts.load("600 20px 'IBM Plex Mono'")].map((p) => p.catch(() => null)))
     .then(() => Promise.all(Object.entries(SRC).map(([k, s]) => loadImg(s).then((im) => { IMG[k] = im; }))))
     .then(render);
