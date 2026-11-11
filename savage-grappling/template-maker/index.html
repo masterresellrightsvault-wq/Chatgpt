@@ -1,0 +1,345 @@
+<meta charset="utf-8">
+<title>Savage Template Maker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;1,700;1,800;1,900&family=Barlow:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  /* Tool layout: template list, then fields beside a live preview. Single dark look matching the Savage posts. */
+  :root {
+    color-scheme: dark;
+    --bg: #07080c; --panel: #10131b; --panel-2: #181c27; --line: #2a3042; --ink: #f3f4f7; --text: #cdd2de; --mute: #8e96ab;
+    --royal: #0123b4; --volt: #2b4ef5; --volt-2: #7b93ff; --red: #e3202c;
+    --display: "Barlow Condensed", "Arial Narrow", Impact, sans-serif; --body: "Barlow", "Helvetica Neue", Arial, sans-serif; --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  }
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: var(--body); font-size: 16px; line-height: 1.5; margin: 0; padding-inline: 16px; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding-block: 28px 70px; }
+  h1 { font-family: var(--display); font-style: italic; font-weight: 800; text-transform: uppercase; font-size: clamp(38px, 6vw, 64px); line-height: .9; color: var(--ink); margin: 0; }
+  h2 { font-family: var(--mono); font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--volt-2); margin: 0 0 8px; }
+  p { margin: 0; max-width: 70ch; }
+  .lead { margin-top: 10px; color: var(--text); }
+  .groups { display: grid; gap: 14px; margin-top: 22px; }
+  .tpls { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tpl { background: var(--panel); border: 1.5px solid var(--line); color: var(--ink); padding: 8px 12px; font: inherit; font-size: 14.5px; cursor: pointer; text-align: left; display: grid; }
+  .tpl small { color: var(--mute); font-family: var(--mono); font-size: 11px; }
+  .tpl[aria-pressed="true"] { border-color: var(--volt); background: #121a3d; }
+  .tpl:hover { border-color: var(--volt-2); }
+  .main { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 460px); gap: 24px; margin-top: 24px; align-items: start; }
+  @media (max-width: 880px) { .main { grid-template-columns: 1fr; } .previewbox { order: -1; } }
+  .fields { background: var(--panel); border: 1px solid var(--line); padding: 18px; display: grid; gap: 14px; min-width: 0; }
+  .fields .tip { color: var(--mute); font-size: 14px; }
+  .f { display: grid; gap: 6px; }
+  .f > span { font-family: var(--mono); font-size: 11.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
+  input[type=text], textarea, select { font: inherit; font-size: 16px; color: var(--ink); background: var(--bg); border: 1.5px solid var(--line); padding: 9px 11px; width: 100%; }
+  textarea { min-height: 84px; resize: vertical; }
+  input[type=range] { width: 100%; accent-color: var(--volt); }
+  input[type=file] { color: var(--text); font-size: 14px; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .chk { display: flex; gap: 8px; align-items: center; font-size: 15px; cursor: pointer; } .chk input { width: 18px; height: 18px; accent-color: var(--volt); }
+  .previewbox { position: sticky; top: 12px; display: grid; gap: 12px; }
+  .stage { background-color: #1a1d26; background-image: linear-gradient(45deg, #232735 25%, transparent 25%), linear-gradient(-45deg, #232735 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #232735 75%), linear-gradient(-45deg, transparent 75%, #232735 75%); background-size: 20px 20px; background-position: 0 0, 0 10px, 10px -10px, -10px 0; border: 1px solid var(--line); display: grid; place-items: center; padding: 10px; }
+  canvas#view { display: block; width: 100%; height: auto; max-height: 72vh; object-fit: contain; }
+  .meta { font-family: var(--mono); font-size: 12px; color: var(--mute); }
+  .btns { display: flex; gap: 10px; flex-wrap: wrap; }
+  .btn { background: var(--red); color: #fff; border: 0; font-family: var(--display); font-style: italic; font-weight: 800; text-transform: uppercase; font-size: 22px; padding: 10px 20px 8px; cursor: pointer; }
+  .btn.ghost { background: transparent; border: 1.5px solid var(--line); color: var(--ink); font-family: var(--mono); font-style: normal; font-size: 12.5px; font-weight: 600; letter-spacing: .06em; }
+  button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid var(--volt-2); outline-offset: 2px; }
+  .msg { font-size: 14.5px; color: var(--text); min-height: 1.4em; }
+  #fallback img, #fallback video { width: 100%; border: 1px solid var(--line); }
+  .btn:disabled { opacity: .5; cursor: wait; }
+  .how { margin-top: 36px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .how div { background: var(--panel); border: 1px solid var(--line); padding: 14px 16px; font-size: 15px; }
+  .how b { color: var(--ink); display: block; margin-bottom: 4px; }
+</style>
+
+<div class="wrap">
+  <h1>Savage template maker</h1>
+  <p class="lead">Pick a template, type your words, add a photo, then save the image. Overlays save with a see-through background so you can drop them on top of a clip in CapCut, TikTok or Instagram.</p>
+
+  <div class="groups" id="groups"></div>
+
+  <div class="main">
+    <form class="fields" id="fields" autocomplete="off"></form>
+    <div class="previewbox">
+      <div class="stage"><canvas id="view" width="1080" height="1350" aria-label="Preview of the post"></canvas></div>
+      <div class="meta" id="meta"></div>
+      <div class="btns"><button class="btn" id="save" type="button">Save PNG</button><button class="btn" id="savevid" type="button" hidden>Save video</button><button class="btn ghost" id="playbtn" type="button" hidden>Pause clip</button></div>
+      <div class="msg" id="msg" role="status"></div>
+      <div id="fallback" hidden><p class="meta" style="margin-bottom:8px">Saving isn't available here. Right-click the image below and choose "Save image", or press and hold it on a phone.</p><img id="fbimg" alt="Finished image to save"><video id="fbvid" controls playsinline hidden></video></div>
+    </div>
+  </div>
+
+  <div class="how">
+    <div><b>Video overlays</b>Pick Hook text, Debate sticker or Name tag, upload your clip, then "Save video" to get the clip with the text on it, sound included. It takes as long as the clip, so keep the tab open. Or save the PNG and add it as an overlay in CapCut.</div>
+    <div><b>Photos</b>Use your own photo with "Upload photo". Zoom and move it with the sliders until the athletes sit where you want them.</div>
+    <div><b>Carousels</b>Make the cover, then each inner slide with its number, then the question slide. Post them in that order.</div>
+    <div><b>Keep it raw</b>These are for the 20% designed posts and overlays. Most posts should still be real clips with one line of text.</div>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  const C = { ink: "#04050b", chalk: "#f3f4f7", volt: "#2b4ef5", royal: "#0123b4", red: "#e3202c", mute: "#aab4d6" };
+  const DISPLAY = "'Barlow Condensed', 'Arial Narrow', sans-serif", BODY = "Barlow, Arial, sans-serif", MONO = "'IBM Plex Mono', monospace";
+
+  // ---------- assets ----------
+  const SRC = { mark: "a/sg-mark-white.svg", wordmark: "a/wordmark-white.svg", cycon: "a/cycon.png", ajjfp: "a/ajjfr.png", kamikaze: "a/kamikaze.png",
+    "cut-takedown": "a/cut-takedown.png", "cut-armraise": "a/cut-armraise.png", "cut-fistpump": "a/cut-fistpump.png", "cut-clinch": "a/cut-clinch.png",
+    "photo-takedown": "a/photo-takedown.jpg", "photo-armbar": "a/photo-armbar.jpg", "still-41.5": "a/still-41.5.jpg", "still-53.5": "a/still-53.5.jpg", "still-33.5": "a/still-33.5.jpg", "still-4.4": "a/still-4.4.jpg" };
+  const IMG = {};
+  const loadImg = (src) => new Promise((res) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = src; });
+
+  const SAMPLES = [["photo-takedown", "Sample: takedown photo"], ["photo-armbar", "Sample: armbar photo"], ["still-41.5", "Sample: crowd"], ["still-53.5", "Sample: podium"], ["still-33.5", "Sample: hug"], ["still-4.4", "Sample: clinch"]];
+  const CUTS = [["none", "No cut-out"], ["cut-takedown", "Takedown"], ["cut-armraise", "Arm raise"], ["cut-fistpump", "Fist pump"], ["cut-clinch", "Clinch"]];
+
+  // ---------- drawing helpers ----------
+  function font(ctx, size, weight = 800, italic = true, fam = DISPLAY) { ctx.font = `${italic ? "italic " : ""}${weight} ${size}px ${fam}`; }
+  function wrap(ctx, text, maxW) {
+    const out = [];
+    String(text || "").split("\n").forEach((para) => {
+      const words = para.split(/\s+/).filter(Boolean); let line = "";
+      words.forEach((w) => { const t = line ? line + " " + w : w; if (ctx.measureText(t).width > maxW && line) { out.push(line); line = w; } else line = t; });
+      out.push(line);
+    });
+    return out;
+  }
+  // Big uppercase display text, optionally in boxes (the overlay style)
+  function display(ctx, text, x, y, size, maxW, opt = {}) {
+    font(ctx, size, opt.weight || 800, true); ctx.textBaseline = "alphabetic";
+    const lines = wrap(ctx, String(text || "").toUpperCase(), maxW - (opt.box ? size * 0.5 : 0));
+    const lh = size * (opt.box ? 1.08 : 0.92);
+    lines.forEach((ln, i) => {
+      const w = ctx.measureText(ln).width; const lx = opt.align === "center" ? x - w / 2 : x; const ly = y + i * lh;
+      if (opt.box) { ctx.fillStyle = opt.box; const px = size * 0.22; ctx.fillRect(lx - px, ly - size * 0.86, w + px * 2, size * 1.0); }
+      if (opt.shadow) { ctx.shadowColor = "rgba(0,0,0,.6)"; ctx.shadowBlur = size * 0.25; ctx.shadowOffsetY = size * 0.04; }
+      ctx.fillStyle = opt.color || C.chalk; ctx.fillText(ln, lx, ly);
+      ctx.shadowColor = "transparent"; ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
+    });
+    return y + lines.length * lh;
+  }
+  function body(ctx, text, x, y, size, maxW, color = "#d7dcea", lh = 1.32, weight = 500) {
+    font(ctx, size, weight, false, BODY); ctx.fillStyle = color;
+    const lines = wrap(ctx, text, maxW); lines.forEach((ln, i) => ctx.fillText(ln, x, y + i * size * lh)); return y + lines.length * size * lh;
+  }
+  function label(ctx, text, x, y, size, color = C.mute, align = "left") {
+    font(ctx, size, 600, false, MONO); ctx.fillStyle = color; ctx.textAlign = align;
+    const t = String(text || "").toUpperCase().split("").join(String.fromCharCode(8202)); ctx.fillText(t, x, y); ctx.textAlign = "left";
+  }
+  function cover(ctx, img, x, y, w, h, zoom = 1, fx = 50, fy = 50) {
+    if (!img) return; const w0 = img.videoWidth || img.naturalWidth || img.width, h0 = img.videoHeight || img.naturalHeight || img.height; if (!w0 || !h0) return; const s = Math.max(w / w0, h / h0) * zoom; const iw = w0 * s, ih = h0 * s;
+    const ox = x + (w - iw) * (fx / 100), oy = y + (h - ih) * (fy / 100);
+    ctx.save(); ctx.beginPath(); ctx.rect(x, y, w, h); ctx.clip(); ctx.drawImage(img, ox, oy, iw, ih); ctx.restore();
+  }
+  function arena(ctx, w, h, gx = 0.66) {
+    ctx.fillStyle = "#04050b"; ctx.fillRect(0, 0, w, h);
+    let g = ctx.createRadialGradient(w * gx, h * 0.12, 0, w * gx, h * 0.12, Math.max(w, h) * 0.75);
+    g.addColorStop(0, "rgba(43,78,245,.9)"); g.addColorStop(0.3, "rgba(1,35,180,.55)"); g.addColorStop(0.6, "rgba(1,20,110,.18)"); g.addColorStop(1, "rgba(4,5,11,0)");
+    ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
+    ctx.save(); ctx.globalCompositeOperation = "screen"; ctx.globalAlpha = 0.12;
+    for (let i = -7; i <= 7; i++) { ctx.beginPath(); ctx.moveTo(w * gx, -h * 0.08); ctx.lineTo(w * gx + i * w * 0.12 - w * 0.02, h * 0.95); ctx.lineTo(w * gx + i * w * 0.12 + w * 0.02, h * 0.95); ctx.closePath(); ctx.fillStyle = "#a0b9ff"; ctx.fill(); }
+    ctx.restore();
+    g = ctx.createRadialGradient(w / 2, h / 2, Math.min(w, h) * 0.35, w / 2, h / 2, Math.max(w, h) * 0.75);
+    g.addColorStop(0, "rgba(0,0,0,0)"); g.addColorStop(1, "rgba(0,0,0,.7)"); ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
+  }
+  function ghost(ctx, text, x, y, size) {
+    font(ctx, size, 900, true); ctx.lineWidth = 3; ctx.strokeStyle = "rgba(150,175,255,.16)"; ctx.strokeText(String(text).toUpperCase(), x, y);
+  }
+  function fadeDown(ctx, y0, y1, w) { const g = ctx.createLinearGradient(0, y0, 0, y1); g.addColorStop(0, "rgba(4,5,11,0)"); g.addColorStop(1, "rgba(4,5,11,.96)"); ctx.fillStyle = g; ctx.fillRect(0, y0, w, y1 - y0); }
+  function logo(ctx, x, y, h) {
+    if (IMG.mark) { const mw = IMG.mark.width * (h / IMG.mark.height); ctx.save(); ctx.shadowColor = "rgba(43,78,245,.8)"; ctx.shadowBlur = h * 0.25; ctx.drawImage(IMG.mark, x, y, mw, h); ctx.restore(); x += mw + h * 0.2; }
+    if (IMG.wordmark) { const wh = h * 0.56; ctx.drawImage(IMG.wordmark, x, y + (h - wh) / 2, IMG.wordmark.width * (wh / IMG.wordmark.height), wh); }
+  }
+  function partners(ctx, w, y, h) {
+    const g = ctx.createLinearGradient(0, y, 0, y + h); g.addColorStop(0, "rgba(6,8,18,.85)"); g.addColorStop(1, "rgba(3,4,9,.98)"); ctx.fillStyle = g; ctx.fillRect(0, y, w, h);
+    const lg = ctx.createLinearGradient(0, 0, w, 0); lg.addColorStop(0, "rgba(43,78,245,0)"); lg.addColorStop(0.5, C.chalk); lg.addColorStop(1, "rgba(43,78,245,0)"); ctx.fillStyle = lg; ctx.fillRect(0, y, w, 3);
+    const logos = ["cycon", "ajjfp", "kamikaze"].map((k) => IMG[k]).filter(Boolean); const lh = h * 0.66; const gap = 18;
+    const total = logos.reduce((a, i) => a + i.width * (lh / i.height), 0) + gap * (logos.length - 1); let x = (w - total) / 2;
+    logos.forEach((i) => { const lw = i.width * (lh / i.height); ctx.drawImage(i, x, y + (h - lh) / 2, lw, lh); ctx.strokeStyle = "rgba(150,175,255,.3)"; ctx.lineWidth = 1; ctx.strokeRect(x, y + (h - lh) / 2, lw, lh); x += lw + gap; });
+  }
+  function glowCut(ctx, img, x, y, h, fade = true) {
+    if (!img) return; const w = img.width * (h / img.height);
+    const off = document.createElement("canvas"); off.width = Math.ceil(w); off.height = Math.ceil(h); const o = off.getContext("2d"); o.drawImage(img, 0, 0, w, h);
+    if (fade) { o.globalCompositeOperation = "destination-in"; const g = o.createLinearGradient(0, 0, 0, h); g.addColorStop(0, "#000"); g.addColorStop(0.8, "#000"); g.addColorStop(1, "rgba(0,0,0,0)"); o.fillStyle = g; o.fillRect(0, 0, w, h); }
+    ctx.save(); ctx.shadowColor = "rgba(43,78,245,.85)"; ctx.shadowBlur = 40; ctx.drawImage(off, x - w / 2, y, w, h); ctx.restore();
+    return w;
+  }
+  function cta(ctx, text, x, y, size) {
+    font(ctx, size, 800, true); const t = String(text).toUpperCase(); const w = ctx.measureText(t).width; const px = size * 0.5, h = size * 1.3;
+    ctx.save(); ctx.fillStyle = C.red; ctx.shadowColor = "rgba(227,32,44,.5)"; ctx.shadowBlur = 30; ctx.beginPath(); const sk = h * 0.18;
+    ctx.moveTo(x + sk, y); ctx.lineTo(x + w + px * 2 + sk, y); ctx.lineTo(x + w + px * 2 - sk, y + h); ctx.lineTo(x - sk, y + h); ctx.closePath(); ctx.fill(); ctx.restore();
+    ctx.fillStyle = "#fff"; ctx.fillText(t, x + px, y + h * 0.77);
+  }
+  function bgPhoto(ctx, v, w, h, y0 = 0, y1 = h) { const im = v._photo || IMG[v.sample]; cover(ctx, im, 0, y0, w, y1 - y0, v.zoom, v.fx, v.fy); }
+
+  // ---------- templates ----------
+  const photoFields = [{ k: "photo", t: "photo" }, { k: "sample", t: "select", l: "Or use a sample photo", opts: SAMPLES, def: "photo-takedown" }, { k: "zoom", t: "range", l: "Zoom", min: 1, max: 2.5, step: 0.05, def: 1 }, { k: "fx", t: "range", l: "Move left / right", min: 0, max: 100, step: 1, def: 50 }, { k: "fy", t: "range", l: "Move up / down", min: 0, max: 100, step: 1, def: 50 }];
+  const T = [
+    { id: "hook", g: "Video overlays", n: "Hook text", w: 1080, h: 1920, overlay: true, tip: "One line of text for the top of a clip. Keep it under 8 words.",
+      f: [{ k: "l1", t: "text", l: "Line 1 (black box)", def: "He was 30kg" }, { k: "l2", t: "text", l: "Line 2 (coloured box)", def: "heavier" }, { k: "col", t: "select", l: "Line 2 colour", opts: [["blue", "Blue"], ["red", "Red"], ["black", "Black"]], def: "blue" }, { k: "y", t: "range", l: "Height on screen", min: 220, max: 900, step: 10, def: 330 }],
+      draw(ctx, v) { const bx = { blue: C.volt, red: C.red, black: "#000" }[v.col]; let y = display(ctx, v.l1, 70, v.y, 128, 940, { box: "#000" }); if (v.l2) display(ctx, v.l2, 70, y + 10, 128, 940, { box: bx }); } },
+    { id: "debate", g: "Video overlays", n: "Debate sticker", w: 1080, h: 1920, overlay: true, tip: "Freeze the clip on the moment, show this for 1 second, then play.",
+      f: [{ k: "txt", t: "select", l: "Sticker", opts: [["WHO WON?", "Who won?"], ["TOO EARLY?", "Too early?"], ["LEGAL OR NOT?", "Legal or not?"], ["POINTS OR NO POINTS?", "Points or no points?"], ["WOULD YOU TAP?", "Would you tap?"], ["REF'S CALL?", "Ref's call?"]], def: "WHO WON?" }, { k: "own", t: "text", l: "Or type your own", def: "" }, { k: "sub", t: "text", l: "Small line under it", def: "Comment your call 👇" }],
+      draw(ctx, v) { const t = (v.own || v.txt).toUpperCase(); ctx.save(); ctx.translate(540, 900); ctx.rotate(-0.07); font(ctx, 150, 900, true); const w = Math.min(ctx.measureText(t).width, 900); ctx.fillStyle = C.red; ctx.shadowColor = "rgba(0,0,0,.5)"; ctx.shadowBlur = 40; ctx.fillRect(-w / 2 - 40, -140, w + 80, 190); ctx.shadowBlur = 0; ctx.fillStyle = "#fff"; ctx.textAlign = "center"; ctx.fillText(t, 0, 0, 900); ctx.restore(); ctx.textAlign = "left"; if (v.sub) { font(ctx, 44, 700, false, BODY); ctx.textAlign = "center"; ctx.fillStyle = "#fff"; ctx.shadowColor = "#000"; ctx.shadowBlur = 12; ctx.fillText(v.sub, 540, 1060); ctx.shadowBlur = 0; ctx.textAlign = "left"; } } },
+    { id: "nametag", g: "Video overlays", n: "Name tag", w: 1080, h: 1920, overlay: true, tip: "Shows who's on the mat. Sits above the app's caption area.",
+      f: [{ k: "name", t: "text", l: "Athlete name", def: "[Athlete name]" }, { k: "gym", t: "text", l: "Gym", def: "[Gym name]" }, { k: "div", t: "text", l: "Division", def: "Blue belt · No-Gi · -77kg" }, { k: "y", t: "range", l: "Height on screen", min: 900, max: 1400, step: 10, def: 1240 }],
+      draw(ctx, v) { const y = v.y; ctx.fillStyle = "rgba(4,5,11,.88)"; ctx.fillRect(60, y, 760, 170); ctx.fillStyle = C.volt; ctx.fillRect(60, y, 12, 170); display(ctx, v.name, 100, y + 78, 70, 700); body(ctx, v.gym, 100, y + 120, 34, 700, C.chalk, 1.2, 700); label(ctx, v.div, 100, y + 156, 22, C.mute); } },
+    { id: "endcard", g: "Video overlays", n: "End card", w: 1080, h: 1920, tip: "The last 1–2 seconds of a clip: logo and the next event.",
+      f: [{ k: "kick", t: "text", l: "Small line", def: "Next Savage" }, { k: "date", t: "text", l: "Date", def: "Sun 6 Dec" }, { k: "venue", t: "text", l: "Venue", def: "Deakin Uni · Burwood" }, { k: "cta", t: "text", l: "Button", def: "Link in bio" }, { k: "cut", t: "select", l: "Cut-out athletes", opts: CUTS, def: "cut-takedown" }],
+      draw(ctx, v) { arena(ctx, 1080, 1920, 0.6); ghost(ctx, "SAVAGE", -40, 700, 520); if (v.cut !== "none") glowCut(ctx, IMG[v.cut], 540, 330, 620); logo(ctx, 80, 1020, 150); label(ctx, v.kick, 84, 1270, 30, C.volt); display(ctx, v.date, 80, 1400, 150, 920); body(ctx, v.venue, 84, 1475, 44, 920, C.chalk, 1.2, 700); cta(ctx, v.cta, 84, 1560, 64); } },
+    { id: "meme2", g: "Memes", n: "Two-panel meme", w: 1080, h: 1350, tip: "Classic top/bottom meme. Use two photos or the same one twice.",
+      f: [{ k: "t1", t: "text", l: "Top text", def: "Coach: \"just play your game\"" }, { k: "photo", t: "photo", l: "Top photo" }, { k: "s1", t: "select", l: "Or sample (top)", opts: SAMPLES, def: "still-4.4" }, { k: "t2", t: "text", l: "Bottom text", def: "Me, who has no game:" }, { k: "photo2", t: "photo", l: "Bottom photo" }, { k: "s2", t: "select", l: "Or sample (bottom)", opts: SAMPLES, def: "still-41.5" }],
+      draw(ctx, v) { ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, 1080, 1350); const tb = (t, y) => { font(ctx, 46, 700, false, BODY); ctx.fillStyle = "#111"; wrap(ctx, t, 1000).slice(0, 2).forEach((l, i) => ctx.fillText(l, 40, y + 58 + i * 54)); }; tb(v.t1, 0); cover(ctx, v._photo || IMG[v.s1], 0, 140, 1080, 535); tb(v.t2, 675); cover(ctx, v._photo2 || IMG[v.s2], 0, 815, 1080, 535); label(ctx, "@savagegrappling", 1060, 1330, 20, "rgba(255,255,255,.85)", "right"); } },
+    { id: "meme1", g: "Memes", n: "Single meme", w: 1080, h: 1350, tip: "One caption above one photo. Good for 'POV' and 'When…' memes.",
+      f: [{ k: "t1", t: "textarea", l: "Caption", def: "POV: you drew your own teammate in pool 1" }, ...photoFields],
+      draw(ctx, v) { ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, 1080, 1350); font(ctx, 54, 700, false, BODY); ctx.fillStyle = "#111"; const lines = wrap(ctx, v.t1, 1000).slice(0, 4); lines.forEach((l, i) => ctx.fillText(l, 40, 80 + i * 64)); const top = 40 + lines.length * 64 + 30; bgPhoto(ctx, v, 1080, 1350, top, 1350); label(ctx, "@savagegrappling", 1060, 1330, 20, "rgba(255,255,255,.85)", "right"); } },
+    { id: "cover", g: "Carousels", n: "Carousel cover", w: 1080, h: 1350, tip: "Slide 1. A hook people want to swipe for.",
+      f: [{ k: "kick", t: "text", l: "Small line", def: "Save this" }, { k: "h1", t: "text", l: "Headline (white)", def: "Types of people" }, { k: "h2", t: "text", l: "Headline (blue)", def: "at a BJJ comp" }, ...photoFields],
+      draw(ctx, v) { arena(ctx, 1080, 1350); bgPhoto(ctx, v, 1080, 1350, 0, 900); fadeDown(ctx, 380, 920, 1080); ctx.fillStyle = "rgba(4,5,11,.96)"; ctx.fillRect(0, 918, 1080, 432); logo(ctx, 60, 50, 80); label(ctx, v.kick, 64, 800, 26, C.volt); let y = display(ctx, v.h1, 60, 940, 128, 960, { shadow: true }); display(ctx, v.h2, 60, y, 128, 960, { color: C.volt, shadow: true }); label(ctx, "Swipe →", 1020, 1300, 24, C.chalk, "right"); } },
+    { id: "slide", g: "Carousels", n: "Carousel slide", w: 1080, h: 1350, tip: "Inner slides. One idea per slide, short lines.",
+      f: [{ k: "num", t: "text", l: "Slide number", def: "02" }, { k: "h", t: "text", l: "Heading", def: "The screaming coach" }, { k: "b", t: "textarea", l: "Text", def: "Louder than the ref, the crowd and the PA combined. Somehow still right about the guard pass." }, { k: "cut", t: "select", l: "Cut-out athletes", opts: CUTS, def: "none" }],
+      draw(ctx, v) { arena(ctx, 1080, 1350, 0.75); logo(ctx, 60, 50, 70); ghost(ctx, v.num, 560, 520, 520); if (v.cut !== "none") glowCut(ctx, IMG[v.cut], 760, 560, 560); label(ctx, v.num + " /", 64, 330, 30, C.volt); let y = display(ctx, v.h, 60, 450, 112, 960, { shadow: true }); body(ctx, v.b, 64, y + 30, 44, v.cut !== "none" ? 560 : 940, "#d7dcea"); label(ctx, "Swipe →", 1020, 1300, 24, C.chalk, "right"); } },
+    { id: "endslide", g: "Carousels", n: "Question slide", w: 1080, h: 1350, tip: "Last slide. Ask something specific so people comment.",
+      f: [{ k: "q", t: "text", l: "Question", def: "Which one are you?" }, { k: "sub", t: "text", l: "Under it", def: "Tell us in the comments 👇" }],
+      draw(ctx, v) { arena(ctx, 1080, 1350, 0.5); logo(ctx, 60, 50, 70); const y = display(ctx, v.q, 540, 620, 150, 960, { align: "center", shadow: true }); font(ctx, 48, 600, false, BODY); ctx.textAlign = "center"; ctx.fillStyle = C.chalk; ctx.fillText(v.sub, 540, y + 50); ctx.textAlign = "left"; label(ctx, "@savagegrappling", 540, 1290, 24, C.mute, "center"); } },
+    { id: "athlete", g: "Spotlights", n: "Athlete spotlight", w: 1080, h: 1350, tip: "Tag the athlete and invite them as a Collaborator.",
+      f: [{ k: "name", t: "text", l: "Name", def: "[Athlete name]" }, { k: "gym", t: "text", l: "Gym", def: "[Gym name]" }, { k: "div", t: "text", l: "Belt / division", def: "Purple belt · Gi · -82kg" }, { k: "quote", t: "textarea", l: "Their words (one line)", def: "\"I lost every match at my first comp. This time I took gold.\"" }, ...photoFields],
+      draw(ctx, v) { arena(ctx, 1080, 1350); bgPhoto(ctx, v, 1080, 1350, 0, 860); fadeDown(ctx, 420, 880, 1080); ctx.fillStyle = "rgba(4,5,11,.96)"; ctx.fillRect(0, 878, 1080, 472); logo(ctx, 60, 50, 80); label(ctx, "Athlete spotlight", 64, 820, 26, C.volt); let y = display(ctx, v.name, 60, 940, 112, 960, { shadow: true }); body(ctx, v.gym, 64, y + 4, 40, 960, C.chalk, 1.2, 700); label(ctx, v.div, 64, y + 60, 24); body(ctx, v.quote, 64, y + 130, 40, 950, "#d7dcea", 1.3, 500); } },
+    { id: "gym", g: "Spotlights", n: "Gym spotlight", w: 1080, h: 1350, tip: "Feature a gym and invite them as a Collaborator.",
+      f: [{ k: "gym", t: "text", l: "Gym name", def: "[Gym name]" }, { k: "stat", t: "text", l: "Big stat", def: "24 athletes" }, { k: "stat2", t: "text", l: "Stat label", def: "brought to the last Savage" }, { k: "line", t: "textarea", l: "One line about them", def: "Known for: leg locks, loud benches and turning up every single event." }, ...photoFields],
+      draw(ctx, v) { arena(ctx, 1080, 1350); bgPhoto(ctx, v, 1080, 1350, 0, 760); fadeDown(ctx, 340, 780, 1080); ctx.fillStyle = "rgba(4,5,11,.96)"; ctx.fillRect(0, 778, 1080, 572); logo(ctx, 60, 50, 80); label(ctx, "Gym spotlight", 64, 730, 26, C.volt); let y = display(ctx, v.gym, 60, 870, 116, 960, { shadow: true }); display(ctx, v.stat, 60, y + 40, 96, 960, { color: C.volt }); body(ctx, v.stat2, 64, y + 90, 36, 960, C.chalk, 1.2, 600); body(ctx, v.line, 64, y + 170, 38, 950); } },
+    { id: "promo", g: "Promo & results", n: "Event promo", w: 1080, h: 1350, tip: "Dates, entries closing, early bird. Use for 1 in 5 posts at most.",
+      f: [{ k: "kick", t: "text", l: "Small line", def: "Last call" }, { k: "h1", t: "text", l: "Headline (white)", def: "Entries close" }, { k: "h2", t: "text", l: "Headline (blue)", def: "Friday 10am" }, { k: "info", t: "text", l: "Info line", def: "Sun 6 Dec · Deakin Uni Burwood · 3–4 matches guaranteed" }, { k: "cta", t: "text", l: "Button", def: "Enter · link in bio" }, { k: "cut", t: "select", l: "Cut-out athletes", opts: CUTS, def: "cut-armraise" }, { k: "spons", t: "check", l: "Show sponsor logos", def: false }],
+      draw(ctx, v) { arena(ctx, 1080, 1350); ghost(ctx, "SAVAGE", -30, 640, 500); if (v.cut !== "none") glowCut(ctx, IMG[v.cut], 540, 150, 600); logo(ctx, 60, 50, 80); const base = v.spons ? 700 : 760; label(ctx, v.kick, 64, base, 28, "#ff6b74"); let y = display(ctx, v.h1, 60, base + 120, 132, 960, { shadow: true }); y = display(ctx, v.h2, 60, y, 132, 960, { color: C.volt, shadow: true }); y = body(ctx, v.info, 64, y + 20, 36, 950, "#d7dcea", 1.3, 600); cta(ctx, v.cta, 64, y + 10, 48); if (v.spons) partners(ctx, 1080, 1210, 140); } },
+    { id: "results", g: "Promo & results", n: "Results", w: 1080, h: 1350, tip: "Post the day after the event. Collab with the winning gyms.",
+      f: [{ k: "title", t: "text", l: "Title", def: "Best Overall Academy" }, { k: "sub", t: "text", l: "Event", def: "Savage · Sun 6 Dec" }, { k: "p1", t: "text", l: "1st", def: "[Gym name]" }, { k: "p2", t: "text", l: "2nd", def: "[Gym name]" }, { k: "p3", t: "text", l: "3rd", def: "[Gym name]" }],
+      draw(ctx, v) { arena(ctx, 1080, 1350, 0.5); ghost(ctx, "CHAMPS", -20, 1250, 420); logo(ctx, 60, 50, 80); label(ctx, v.sub, 64, 250, 26, C.volt); const y = display(ctx, v.title, 60, 360, 104, 960, { shadow: true }); [[v.p1, "1ST", 1], [v.p2, "2ND", 0], [v.p3, "3RD", 0]].forEach(([n, r, top], i) => { const yy = y + 40 + i * 190; ctx.fillStyle = "rgba(6,8,18,.82)"; ctx.fillRect(60, yy, 960, top ? 170 : 150); ctx.fillStyle = top ? C.volt : "#3a4364"; ctx.fillRect(60, yy, 12, top ? 170 : 150); display(ctx, r, 100, yy + (top ? 112 : 100), top ? 92 : 72, 200, { color: top ? C.chalk : "#8f9ac0" }); body(ctx, n, 300, yy + (top ? 100 : 90), top ? 50 : 42, 700, C.chalk, 1.2, 700); }); } },
+    { id: "story", g: "Promo & results", n: "Story countdown", w: 1080, h: 1920, tip: "Leave the dashed box clear for the app's link sticker.",
+      f: [{ k: "kick", t: "text", l: "Small line", def: "Entries close in" }, { k: "big", t: "text", l: "Big text", def: "5 days" }, { k: "info", t: "text", l: "Info line", def: "Fri 10am · Gi & No-Gi · 3–4 matches" }, { k: "cut", t: "select", l: "Cut-out athletes", opts: CUTS, def: "cut-takedown" }],
+      draw(ctx, v) { arena(ctx, 1080, 1920, 0.5); ghost(ctx, "SAVAGE", -40, 900, 560); logo(ctx, 60, 260, 90); if (v.cut !== "none") glowCut(ctx, IMG[v.cut], 540, 420, 640); label(ctx, v.kick, 64, 1140, 32, "#ff6b74"); const y = display(ctx, v.big, 60, 1300, 200, 960, { shadow: true }); body(ctx, v.info, 64, y + 10, 40, 950, "#d7dcea", 1.3, 600); ctx.setLineDash([18, 14]); ctx.strokeStyle = "rgba(243,244,247,.5)"; ctx.lineWidth = 4; ctx.strokeRect(190, 1500, 700, 130); ctx.setLineDash([]); label(ctx, "Put the link sticker here", 540, 1574, 24, C.mute, "center"); } },
+  ];
+
+  // ---------- UI ----------
+  const view = document.getElementById("view"), fields = document.getElementById("fields"), groupsEl = document.getElementById("groups");
+  let cur = T[0], vals = {}; const G = { vfx: 50, when: "all" }; let clip = null, recording = false;
+  const groups = [...new Set(T.map((t) => t.g))];
+  groupsEl.innerHTML = groups.map((g) => `<div><h2>${g}</h2><div class="tpls">${T.filter((t) => t.g === g).map((t) => `<button type="button" class="tpl" data-t="${t.id}" aria-pressed="${t.id === cur.id}">${t.n}<small>${t.w}×${t.h}${t.overlay ? " · see-through" : ""}</small></button>`).join("")}</div></div>`).join("");
+
+  function buildFields() {
+    vals = {}; cur.f.forEach((f) => { if (f.t !== "photo") vals[f.k] = f.def; });
+    fields.innerHTML = `<p class="tip">${cur.tip}</p>` + cur.f.map((f) => {
+      const id = "f-" + cur.id + "-" + f.k;
+      if (f.t === "text") return `<label class="f" for="${id}"><span>${f.l}</span><input type="text" id="${id}" data-k="${f.k}" value="${String(f.def).replace(/"/g, "&quot;")}"></label>`;
+      if (f.t === "textarea") return `<label class="f" for="${id}"><span>${f.l}</span><textarea id="${id}" data-k="${f.k}">${f.def}</textarea></label>`;
+      if (f.t === "select") return `<label class="f" for="${id}"><span>${f.l}</span><select id="${id}" data-k="${f.k}">${f.opts.map(([v, l]) => `<option value="${v}" ${v === f.def ? "selected" : ""}>${l}</option>`).join("")}</select></label>`;
+      if (f.t === "range") return `<label class="f" for="${id}"><span>${f.l}</span><input type="range" id="${id}" data-k="${f.k}" min="${f.min}" max="${f.max}" step="${f.step}" value="${f.def}"></label>`;
+      if (f.t === "check") return `<label class="chk" for="${id}"><input type="checkbox" id="${id}" data-k="${f.k}" ${f.def ? "checked" : ""}> ${f.l}</label>`;
+      if (f.t === "photo") return `<label class="f" for="${id}"><span>${f.l || "Upload photo"}</span><input type="file" accept="image/*" id="${id}" data-photo="${f.k}"></label>`;
+      return "";
+    }).join("") + (cur.overlay ? `<label class="f" for="f-clip"><span>Upload video clip</span><input type="file" accept="video/*" id="f-clip"></label><p class="tip" id="clipname"></p><label class="f" for="f-vfx"><span>Move clip left / right</span><input type="range" id="f-vfx" data-g="vfx" min="0" max="100" step="1" value="${G.vfx}"></label><label class="f" for="f-when"><span>When the text shows (in the saved video)</span><select id="f-when" data-g="when">${[["all", "Whole clip"], ["first", "First 3 seconds"], ["last", "Last 3 seconds"]].map(([v, l]) => `<option value="${v}" ${G.when === v ? "selected" : ""}>${l}</option>`).join("")}</select></label><label class="chk" for="f-prev"><input type="checkbox" id="f-prev" data-k="_prev" checked> Show a sample photo when there's no clip (not saved)</label>` : "");
+    vals._prev = true;
+  }
+
+  // mode: "preview" (on screen), "png" (text only, see-through for overlays), "video" (clip + timed text)
+  function textOn() { if (!clip || G.when === "all") return true; const t = clip.el.currentTime, d = clip.el.duration || 0; return G.when === "first" ? t < 3 : t > d - 3; }
+  function paint(ctx, mode) {
+    ctx.clearRect(0, 0, cur.w, cur.h);
+    if (cur.overlay && mode !== "png") {
+      if (clip && clip.el.readyState >= 2) cover(ctx, clip.el, 0, 0, cur.w, cur.h, 1, G.vfx, 50);
+      else if (mode === "preview" && vals._prev) { cover(ctx, IMG["photo-takedown"], 0, 0, cur.w, cur.h, 1, 25, 50); ctx.fillStyle = "rgba(0,0,0,.15)"; ctx.fillRect(0, 0, cur.w, cur.h); }
+    }
+    if (mode !== "video" || textOn()) { ctx.save(); cur.draw(ctx, vals); ctx.restore(); }
+  }
+  function draw(target, forExport) {
+    if (target.width !== cur.w || target.height !== cur.h) { target.width = cur.w; target.height = cur.h; }
+    paint(target.getContext("2d"), forExport ? "png" : "preview");
+  }
+  const render = () => { draw(view, false); document.getElementById("meta").textContent = `${cur.n} · ${cur.w}×${cur.h} px${cur.overlay ? " · saves see-through" : ""}`; };
+
+  groupsEl.addEventListener("click", (e) => { const b = e.target.closest("[data-t]"); if (!b || recording) return; cur = T.find((t) => t.id === b.dataset.t); groupsEl.querySelectorAll("[data-t]").forEach((x) => x.setAttribute("aria-pressed", x === b)); buildFields(); render(); clipUI(); document.getElementById("msg").textContent = ""; document.getElementById("fallback").hidden = true; });
+  fields.addEventListener("input", (e) => { const g = e.target.dataset.g; if (g) { G[g] = e.target.type === "range" ? Number(e.target.value) : e.target.value; render(); return; } const k = e.target.dataset.k; if (!k) return; vals[k] = e.target.type === "checkbox" ? e.target.checked : e.target.type === "range" ? Number(e.target.value) : e.target.value; render(); });
+  fields.addEventListener("change", (e) => {
+    if (e.target.id === "f-clip" && e.target.files[0]) { loadClip(e.target.files[0]); return; }
+    const k = e.target.dataset.photo; if (!k || !e.target.files[0]) return;
+    const url = URL.createObjectURL(e.target.files[0]); loadImg(url).then((im) => { vals["_" + k] = im; render(); });
+  });
+  fields.addEventListener("submit", (e) => e.preventDefault());
+
+  let dl = null; const saveBtn = document.getElementById("save"), msg = document.getElementById("msg");
+  const vidBtn = document.getElementById("savevid"), playBtn = document.getElementById("playbtn");
+  const stamp = () => Date.now().toString().slice(-5);
+  async function offer(blob, name, kind, note) {
+    if (!dl && window.claude && window.claude.use) { try { dl = await window.claude.use("downloads"); } catch (e) { dl = null; } }
+    if (dl) {
+      try { await dl.save({ filename: name, data: blob }); msg.textContent = "Saved." + (note ? " " + note : ""); return; }
+      catch (err) { if (err && err.code === "declined") { msg.textContent = "Not saved."; return; } if (err && err.code === "rate_limited") { msg.textContent = "A save is already open. Try again in a moment."; return; } }
+    }
+    const fb = document.getElementById("fallback"), im = document.getElementById("fbimg"), vd = document.getElementById("fbvid"); const url = URL.createObjectURL(blob);
+    im.hidden = kind !== "image"; vd.hidden = kind !== "video"; if (kind === "image") im.src = url; else vd.src = url;
+    fb.hidden = false; msg.textContent = note || "";
+  }
+  saveBtn.addEventListener("click", async () => {
+    const c = document.createElement("canvas"); draw(c, true);
+    const blob = await new Promise((r) => c.toBlob(r, "image/png"));
+    offer(blob, `savage-${cur.id}-${stamp()}.png`, "image");
+  });
+
+  // ---------- video clips ----------
+  function clipUI() {
+    const on = !!(cur.overlay && clip); vidBtn.hidden = !on; playBtn.hidden = !on;
+    if (clip) playBtn.textContent = clip.el.paused ? "Play clip" : "Pause clip";
+    const n = document.getElementById("clipname"); if (n) n.textContent = clip ? `Using: ${clip.name} (${Math.round(clip.el.duration || 0)}s). The clip stays loaded when you switch overlay.` : "No clip yet. Phone clips (MP4 or MOV) work best.";
+  }
+  let raf = 0;
+  function loop() { cancelAnimationFrame(raf); const tick = () => { if (clip && cur.overlay && !recording) render(); raf = requestAnimationFrame(tick); }; raf = requestAnimationFrame(tick); }
+  function loadClip(file) {
+    if (clip) { clip.el.pause(); URL.revokeObjectURL(clip.el.src); }
+    const v = document.createElement("video"); v.muted = true; v.loop = true; v.playsInline = true; v.preload = "auto"; v.src = URL.createObjectURL(file);
+    clip = { el: v, name: file.name }; msg.textContent = "Loading clip…";
+    v.addEventListener("loadeddata", () => { msg.textContent = ""; v.play().catch(() => {}); loop(); clipUI(); }, { once: true });
+    v.addEventListener("error", () => { msg.textContent = "That clip couldn't be opened in this browser. Try an MP4 straight from your phone."; clip = null; clipUI(); render(); }, { once: true });
+  }
+  playBtn.addEventListener("click", () => { if (!clip) return; if (clip.el.paused) clip.el.play().catch(() => {}); else clip.el.pause(); clipUI(); });
+
+  vidBtn.addEventListener("click", async () => {
+    if (!clip || recording) return;
+    const v = clip.el;
+    const mime = ["video/mp4;codecs=avc1.42E01E,mp4a.40.2", "video/mp4", "video/webm;codecs=vp9,opus", "video/webm;codecs=vp8,opus", "video/webm"].find((m) => window.MediaRecorder && MediaRecorder.isTypeSupported(m));
+    if (!mime || !HTMLCanvasElement.prototype.captureStream) { msg.textContent = "This browser can't make videos. Save the PNG and add it in CapCut instead."; return; }
+    recording = true; vidBtn.disabled = saveBtn.disabled = playBtn.disabled = true;
+    const c = document.createElement("canvas"); c.width = cur.w; c.height = cur.h; const ctx = c.getContext("2d");
+    const stream = c.captureStream(30);
+    try {
+      if (!clip.ac) { const ac = new (window.AudioContext || window.webkitAudioContext)(); const src = ac.createMediaElementSource(v); const dest = ac.createMediaStreamDestination(); src.connect(dest); clip.ac = ac; clip.dest = dest; }
+      await clip.ac.resume(); clip.dest.stream.getAudioTracks().forEach((t) => stream.addTrack(t));
+    } catch (e) { /* no sound track: the video still saves */ }
+    const rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 8000000 }); const chunks = [];
+    rec.ondataavailable = (e) => { if (e.data && e.data.size) chunks.push(e.data); };
+    const stopped = new Promise((r) => { rec.onstop = r; });
+    v.pause(); v.loop = false;
+    await new Promise((r) => { const t = setTimeout(r, 800); v.addEventListener("seeked", () => { clearTimeout(t); r(); }, { once: true }); v.currentTime = 0; });
+    v.muted = false; // sound goes only into the recording, not the speakers
+    paint(ctx, "video"); rec.start(250);
+    try { await v.play(); } catch (e) {}
+    const dur = v.duration || 0;
+    await new Promise((res) => {
+      let done = false; const finish = () => { if (!done) { done = true; res(); } };
+      v.addEventListener("ended", finish, { once: true });
+      const step = () => { if (done) return; paint(ctx, "video"); msg.textContent = `Making video… ${Math.floor(v.currentTime)}s of ${Math.round(dur)}s. Keep this tab open.`; requestAnimationFrame(step); };
+      requestAnimationFrame(step);
+    });
+    paint(ctx, "video"); rec.stop(); await stopped;
+    v.muted = true; v.loop = true; v.play().catch(() => {});
+    recording = false; vidBtn.disabled = saveBtn.disabled = playBtn.disabled = false; clipUI();
+    const ext = mime.startsWith("video/mp4") ? "mp4" : "webm";
+    const blob = new Blob(chunks, { type: mime.split(";")[0] });
+    offer(blob, `savage-${cur.id}-${stamp()}.${ext}`, "video", ext === "webm" ? "This browser saves WebM. If Instagram won't take it, open it in CapCut and export again." : "");
+  });
+
+  // ---------- boot ----------
+  buildFields(); render(); clipUI();
+  Promise.all([document.fonts.load("italic 800 40px 'Barlow Condensed'"), document.fonts.load("italic 900 40px 'Barlow Condensed'"), document.fonts.load("500 20px Barlow"), document.fonts.load("700 20px Barlow"), document.fonts.load("600 20px 'IBM Plex Mono'")].map((p) => p.catch(() => null)))
+    .then(() => Promise.all(Object.entries(SRC).map(([k, s]) => loadImg(s).then((im) => { IMG[k] = im; }))))
+    .then(render);
+})();
+</script>

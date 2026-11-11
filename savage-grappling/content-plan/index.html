@@ -1,0 +1,545 @@
+<title>Savage Content Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;1,800&family=Barlow:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  /* Layout: guide sections up top, then a filterable day-by-day calendar of 3 posts a day. */
+  :root {
+    --bg: #f3f4f8; --surface: #ffffff; --surface-2: #e9ecf4; --ink: #0b0d14; --text: #2a2f3d; --mute: #5f6780; --line: #d8dce8;
+    --accent: #0123b4; --accent-2: #2b4ef5; --red: #d61c28; --good: #137a4c; --amber: #a65f00;
+    --display: "Barlow Condensed", "Arial Narrow", Impact, sans-serif; --body: "Barlow", "Helvetica Neue", Arial, sans-serif; --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { color-scheme: dark;
+    --bg: #07080c; --surface: #10131b; --surface-2: #181c27; --ink: #f3f4f7; --text: #d3d7e2; --mute: #9098ae; --line: #272c3b; --accent: #6f88ff; --accent-2: #8aa0ff; --red: #ff4a55; --good: #4fd394; --amber: #f0b24a; } }
+  :root[data-theme="dark"] { color-scheme: dark;
+    --bg: #07080c; --surface: #10131b; --surface-2: #181c27; --ink: #f3f4f7; --text: #d3d7e2; --mute: #9098ae; --line: #272c3b; --accent: #6f88ff; --accent-2: #8aa0ff; --red: #ff4a55; --good: #4fd394; --amber: #f0b24a; }
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: var(--body); font-size: 16.5px; line-height: 1.55; padding-inline: 16px; margin: 0; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding-block: 36px 90px; }
+  h1, h2, h3 { color: var(--ink); margin: 0; text-wrap: balance; }
+  h1 { font-family: var(--display); font-style: italic; font-weight: 800; text-transform: uppercase; font-size: clamp(44px, 7vw, 80px); line-height: .9; }
+  h2 { font-family: var(--display); font-style: italic; font-weight: 800; text-transform: uppercase; font-size: clamp(30px, 4.5vw, 44px); line-height: .95; margin-bottom: 12px; }
+  h3 { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+  p { margin: 0 0 10px; max-width: 70ch; }
+  b { color: var(--ink); }
+  .eyebrow { font-family: var(--mono); font-weight: 600; font-size: 12.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; display: block; }
+  .lead { font-size: 19px; max-width: 64ch; }
+  section { padding-top: 56px; }
+  .tape { height: 8px; max-width: 300px; margin-top: 22px; background: linear-gradient(90deg, var(--ink) 0 70%, var(--accent-2) 70%); }
+  nav.jump { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); margin: 26px -16px 0; padding: 10px 16px; display: flex; gap: 8px; overflow-x: auto; }
+  nav.jump a { flex: none; font-family: var(--mono); font-size: 12.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; text-decoration: none; color: var(--ink); border: 1.5px solid var(--line); padding: 6px 10px; }
+  nav.jump a:hover, nav.jump a:focus-visible { border-color: var(--accent); color: var(--accent); outline: none; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin-top: 14px; }
+  .card { background: var(--surface); border: 1px solid var(--line); padding: 16px 18px; min-width: 0; }
+  .card p, .card li { font-size: 15.5px; }
+  .card ul { margin: 6px 0 0; padding-left: 18px; }
+  .pill { display: inline-block; font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; padding: 2px 7px; border: 1.5px solid var(--line); color: var(--ink); white-space: nowrap; }
+  .pill.a { border-color: var(--accent); color: var(--accent); } .pill.r { border-color: var(--red); color: var(--red); } .pill.g { border-color: var(--good); color: var(--good); }
+  table { border-collapse: collapse; width: 100%; background: var(--surface); border: 1px solid var(--line); }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 15px; }
+  th { font-family: var(--mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
+  .tw { overflow-x: auto; margin-top: 14px; }
+  .dont { list-style: none; padding: 0; margin: 14px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 10px; }
+  .dont li { background: var(--surface); border: 1px solid var(--line); border-left: 5px solid var(--red); padding: 12px 14px; font-size: 15.5px; }
+  .dont li b { display: block; color: var(--red); }
+
+  /* format mock-ups */
+  .mocks { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 16px; margin-top: 16px; }
+  .mock figure { margin: 0; }
+  .phone { position: relative; aspect-ratio: 9/16; background: linear-gradient(160deg, #1b2a6b, #05070f 70%); border-radius: 18px; overflow: hidden; border: 3px solid #000; max-width: 100%; }
+  .phone.sq { aspect-ratio: 4/5; border-radius: 6px; }
+  .phone .scene { position: absolute; inset: 0; background: radial-gradient(50% 35% at 50% 55%, rgba(120,150,255,.45), transparent 70%), repeating-linear-gradient(0deg, rgba(255,255,255,.04) 0 2px, transparent 2px 6px); }
+  .phone .fig { position: absolute; left: 22%; right: 22%; bottom: 22%; height: 34%; border-radius: 40% 40% 10% 10%; background: rgba(5,7,15,.85); box-shadow: 0 0 18px rgba(80,110,255,.7); }
+  .phone .t { position: absolute; left: 8%; right: 8%; top: 13%; font-family: var(--display); font-weight: 800; font-style: italic; text-transform: uppercase; color: #fff; font-size: 17px; line-height: 1.45; }
+  .phone .t span { background: #000; padding: 2px 6px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+  .phone .t span.b { background: #2b4ef5; }
+  .phone .ui { position: absolute; right: 6%; bottom: 18%; display: grid; gap: 9px; } .phone .ui i { width: 18px; height: 18px; border-radius: 50%; background: rgba(255,255,255,.75); }
+  .phone .cap { position: absolute; left: 7%; right: 25%; bottom: 7%; height: 6px; background: rgba(255,255,255,.55); border-radius: 3px; box-shadow: 0 -10px 0 rgba(255,255,255,.35); }
+  .phone .bubble { position: absolute; left: 8%; top: 10%; right: 18%; background: #fff; color: #111; border-radius: 10px; padding: 6px 8px; font-size: 11px; line-height: 1.25; font-family: var(--body); }
+  .phone .bubble small { display: block; color: #777; font-size: 9px; }
+  .phone .split { position: absolute; inset: 0; display: grid; grid-template-rows: 1fr 1fr; }
+  .phone .split div { position: relative; border-bottom: 2px solid #000; background: linear-gradient(180deg, #2a3768, #0a0e1c); }
+  .phone .split div:last-child { background: linear-gradient(180deg, #3b1c24, #12060a); }
+  .phone .mid { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) rotate(-4deg); background: #e3202c; color: #fff; font-family: var(--display); font-weight: 800; font-style: italic; font-size: 26px; padding: 2px 12px; text-transform: uppercase; }
+  .phone .meme { position: absolute; inset: 0; display: grid; grid-template-rows: auto 1fr auto 1fr; background: #fff; }
+  .phone .meme p { margin: 0; padding: 6px 8px; font-size: 11.5px; color: #111; font-weight: 600; line-height: 1.25; background: #fff; }
+  .phone .meme div { background: linear-gradient(160deg, #31406f, #0b0f1d); }
+  .phone .wm { position: absolute; right: 6px; bottom: 5px; font-family: var(--mono); font-size: 8px; color: rgba(255,255,255,.7); }
+  .phone .slides { position: absolute; bottom: 8%; left: 0; right: 0; display: flex; justify-content: center; gap: 4px; } .phone .slides i { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.4); } .phone .slides i:first-child { background: #fff; }
+  .mock figcaption { margin-top: 8px; font-size: 14.5px; } .mock figcaption b { display: block; }
+
+  /* calendar */
+  .events { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; margin-top: 12px; background: var(--surface); border: 1px solid var(--line); padding: 14px 16px; }
+  .events label { display: grid; gap: 4px; font-family: var(--mono); font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--mute); }
+  input[type=date], input[type=search], select { font: inherit; font-size: 15px; color: var(--ink); background: var(--bg); border: 1.5px solid var(--line); padding: 8px 10px; min-height: 42px; }
+  button { font: inherit; cursor: pointer; }
+  .btn { background: var(--ink); color: var(--bg); border: 0; padding: 9px 14px; font-family: var(--mono); font-size: 12.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; min-height: 42px; }
+  .btn.ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--line); }
+  button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible { outline: 3px solid var(--accent-2); outline-offset: 2px; }
+  .filters { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; align-items: center; }
+  .months { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 14px; }
+  .months button { border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); padding: 6px 12px; font-family: var(--mono); font-size: 12.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
+  .months button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .progress { font-family: var(--mono); font-size: 13px; color: var(--mute); }
+  .day { margin-top: 18px; }
+  .dayhead { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; padding-bottom: 6px; border-bottom: 2px solid var(--ink); }
+  .dayhead .d { font-family: var(--display); font-style: italic; font-weight: 800; font-size: 28px; text-transform: uppercase; color: var(--ink); line-height: 1; }
+  .dayhead .ev { font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--red); text-transform: uppercase; letter-spacing: .06em; }
+  .dayhead .th { font-size: 14px; color: var(--mute); }
+  .posts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
+  @media (max-width: 900px) { .posts { grid-template-columns: 1fr; } }
+  .post { background: var(--surface); border: 1px solid var(--line); padding: 12px 14px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+  .post.done { opacity: .55; }
+  .post .top { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .post .time { font-family: var(--mono); font-weight: 600; font-size: 13px; color: var(--ink); }
+  .post .hook { font-family: var(--display); font-weight: 800; font-style: italic; text-transform: uppercase; font-size: 21px; line-height: 1.05; color: var(--ink); }
+  .post .k { font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
+  .post p { font-size: 14.5px; margin: 0; }
+  .post details summary { cursor: pointer; font-family: var(--mono); font-size: 12px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--accent); }
+  .post pre { white-space: pre-wrap; font-family: var(--body); font-size: 14.5px; background: var(--surface-2); border: 1px solid var(--line); padding: 10px 12px; margin: 8px 0 6px; color: var(--text); }
+  .post .row { display: flex; gap: 8px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+  .post label.chk { display: inline-flex; gap: 6px; align-items: center; font-size: 14px; cursor: pointer; }
+  .post label.chk input { width: 18px; height: 18px; accent-color: var(--accent); }
+  .small { font-size: 14px; color: var(--mute); }
+  .bank { columns: 2 320px; column-gap: 24px; margin-top: 12px; padding-left: 18px; }
+  .bank li { break-inside: avoid; margin-bottom: 6px; font-size: 15.5px; }
+  details.fold { background: var(--surface); border: 1px solid var(--line); padding: 12px 16px; margin-top: 10px; }
+  details.fold > summary { cursor: pointer; font-weight: 700; color: var(--ink); }
+  @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Savage Grappling · content plan · 12 Nov 2026 to 12 May 2027</span>
+    <h1>6 months.<br>3 posts a day.</h1>
+    <div class="tape"></div>
+    <p class="lead" style="margin-top:18px">Built from what actually goes viral in jiu-jitsu: real people, raw phone footage, one line of tension, and a question that starts an argument in the comments. Designed graphics are only used for dates, entries and results.</p>
+    <p class="small">Every post below has a time, platforms, an on-screen hook, a caption you can copy, a design note and what footage to use. Words in [brackets] get swapped for the real athlete, gym or date. Tick posts off as you go: ticks save on this device.</p>
+  </header>
+
+  <nav class="jump" aria-label="Sections">
+    <a href="#rhythm">Daily rhythm</a><a href="#formats">Post designs</a><a href="#platforms">Platforms</a><a href="#reposts">Other people's videos</a><a href="#comments">Comments</a><a href="#dont">What not to do</a><a href="#themes">Monthly themes</a><a href="#banks">Hook & meme banks</a><a href="#calendar">Calendar</a>
+  </nav>
+
+  <section id="rhythm">
+    <span class="eyebrow">Every day</span>
+    <h2>The daily rhythm</h2>
+    <div class="tw"><table>
+      <thead><tr><th>Slot</th><th>Time (Melbourne)</th><th>What</th><th>Platforms</th><th>Effort</th></tr></thead>
+      <tbody>
+        <tr><td><b>Morning</b></td><td>7:00am</td><td>Meme, community question, poll, or a stitch/duet of a big BJJ clip. Easy to share, easy to comment on.</td><td>Instagram feed + Story, Facebook, Threads, TikTok (photo mode)</td><td>10 min</td></tr>
+        <tr><td><b>Midday</b></td><td>12:30pm</td><td>Clip of the day: one raw 7–15 second moment from a Savage event with a one-line hook.</td><td>TikTok, Instagram Reels, Facebook Reels, YouTube Shorts</td><td>15 min</td></tr>
+        <tr><td><b>Evening</b></td><td>7:30pm</td><td>The big one: a story, a debate clip, a breakdown, a reply to a comment, an athlete or gym spotlight, or (in event weeks) a promo post.</td><td>All video platforms; carousels to Instagram and Facebook</td><td>20–30 min</td></tr>
+        <tr><td><b>Stories</b></td><td>Through the day</td><td>Reshare every post where Savage is tagged, a daily poll, and behind-the-scenes. Stories don't count toward the 3.</td><td>Instagram + Facebook Stories</td><td>5 min</td></tr>
+      </tbody>
+    </table></div>
+    <div class="grid">
+      <div class="card"><h3>The 80 / 20 rule</h3><p>About 80% of posts are real footage and people. At most 20% are designed graphics (dates, entries, results). Over 6 months that's roughly 430 real posts and 110 designed ones, and the calendar below keeps to it.</p></div>
+      <div class="card"><h3>Batch it</h3><p>Sunday night: cut the week's 7 midday clips and 7 evening videos in one sitting (CapCut or Instagram's editor). Mornings are memes and polls you can make on your phone in a few minutes.</p></div>
+      <div class="card"><h3>Footage supply</h3><p>One event gives about 50–100 usable moments if 2–3 people film vertically on the day. After every event, ask athletes to send their own clips with one line about the match. That alone fills the midday slot for 6 weeks.</p></div>
+    </div>
+  </section>
+
+  <section id="formats">
+    <span class="eyebrow">What each post looks like</span>
+    <h2>Post designs</h2>
+    <p>Simple and raw beats polished. The only design rule that matters: one line of big, bold text in the top third, and the action already happening in the first second.</p>
+    <div class="mocks">
+      <figure class="mock"><div class="phone"><div class="scene"></div><div class="fig"></div><div class="t"><span>Wait for it…</span></div><div class="ui"><i></i><i></i><i></i></div><div class="cap"></div></div>
+        <figcaption><b>Wait-for-it clip</b>9:16, 7–15 s. Black box text, top third. Payoff at second 3–6. No logo, no intro.</figcaption></figure>
+      <figure class="mock"><div class="phone"><div class="scene"></div><div class="fig"></div><div class="t"><span>He was 30kg</span><br><span class="b">heavier</span></div><div class="ui"><i></i><i></i><i></i></div><div class="cap"></div></div>
+        <figcaption><b>Underdog / story clip</b>First-person line from the athlete. Their name and gym in the caption, tagged.</figcaption></figure>
+      <figure class="mock"><div class="phone"><div class="split"><div></div><div></div></div><div class="mid">Who won?</div><div class="ui"><i></i><i></i><i></i></div></div>
+        <figcaption><b>Debate clip</b>Freeze on the controversial moment, "Who won?" or "Too early?", then play. Answer in the comments, not the video.</figcaption></figure>
+      <figure class="mock"><div class="phone"><div class="scene"></div><div class="fig"></div><div class="bubble"><small>Reply to @someone</small>"no way that was legal"</div><div class="ui"><i></i><i></i><i></i></div></div>
+        <figcaption><b>Reply-to-comment</b>Use the app's "reply with video" so the comment sticker shows. Answer with footage.</figcaption></figure>
+      <figure class="mock"><div class="phone sq"><div class="meme"><p>Coach: "just play your game"</p><div></div><p>Me, who has no game:</p><div></div></div><span class="wm">@savagegrappling</span></div>
+        <figcaption><b>Meme</b>4:5 or 9:16. Plain white text panels, real comp photo or a familiar meme template. Tiny handle in the corner, nothing else.</figcaption></figure>
+      <figure class="mock"><div class="phone sq"><div class="scene"></div><div class="t"><span>Types of people</span><br><span class="b">at a BJJ comp</span></div><div class="slides"><i></i><i></i><i></i><i></i><i></i></div></div>
+        <figcaption><b>Carousel</b>5–8 slides. Slide 1 is the hook, the last slide asks a question. Made to be saved and sent.</figcaption></figure>
+      <figure class="mock"><div class="phone"><div class="scene"></div><div class="fig"></div><div class="t"><span>Steal this</span><br><span class="b">sweep</span></div><div class="ui"><i></i><i></i><i></i></div><div class="cap"></div></div>
+        <figcaption><b>Breakdown</b>A coach replays a comp finish in slow motion, 20–40 s. Credit and tag the athlete.</figcaption></figure>
+      <figure class="mock"><div class="phone sq" style="background:linear-gradient(160deg,#0123b4,#05070f)"><div class="t" style="top:40%"><span>Entries close</span><br><span class="b">Friday 10am</span></div></div>
+        <figcaption><b>Promo (the 20%)</b>Use the designed posts already made (countdown, entries close, results). No sponsor band on every post.</figcaption></figure>
+    </div>
+  </section>
+
+  <section id="platforms">
+    <span class="eyebrow">Where to post</span>
+    <h2>Platforms</h2>
+    <div class="grid">
+      <div class="card"><span class="pill a">Main</span><h3 style="margin-top:6px">TikTok</h3><ul><li>Youngest crowd, most reach for small accounts.</li><li>Raw clips, trends, reply-to-comment videos, Stitch and Duet.</li><li>Post the midday and evening videos. 3 a day is fine.</li><li>Use trending sounds at low volume under the real audio.</li></ul></div>
+      <div class="card"><span class="pill a">Main</span><h3 style="margin-top:6px">Instagram</h3><ul><li>Reels for video, carousels for saves, Stories every day.</li><li>Use <b>Collab</b> with the athlete or gym on every clip so it shows on their profile too.</li><li>Max 5 hashtags. Tag the location.</li><li>Pin your 3 best posts: a viral clip, "first comp? read this", next event.</li></ul></div>
+      <div class="card"><span class="pill a">Main</span><h3 style="margin-top:6px">Facebook</h3><ul><li>Parents, coaches and older grapplers. Kids clips and stories do best here.</li><li>Post Reels plus share into local BJJ and martial arts groups (follow each group's rules).</li><li>Create a Facebook Event for every comp.</li></ul></div>
+      <div class="card"><span class="pill">Reuse</span><h3 style="margin-top:6px">YouTube</h3><ul><li>Shorts: upload the same midday clips.</li><li>Long form: full matches and a livestream of Mat 1 on event day. Families search for their kid's match.</li></ul></div>
+      <div class="card"><span class="pill">Light</span><h3 style="margin-top:6px">Threads / X</h3><ul><li>Memes and one-line questions only. Copy the morning post.</li></ul></div>
+      <div class="card"><span class="pill r">Careful</span><h3 style="margin-top:6px">Reddit (r/bjj)</h3><ul><li>Only post a genuinely great clip or an honest "we run a comp, ask us anything".</li><li>No ads, no links in the first comment. The community bans obvious promotion.</li></ul></div>
+    </div>
+  </section>
+
+  <section id="reposts">
+    <span class="eyebrow">Other people's videos</span>
+    <h2>Using other people's clips the right way</h2>
+    <p>Reposting viral BJJ clips is how big pages grow, but downloading someone's video and posting it as your own can get posts removed and accounts struck for copyright. Do it like this instead:</p>
+    <div class="grid">
+      <div class="card"><span class="pill g">Do</span><h3 style="margin-top:6px">Stitch, Duet, Remix</h3><p>On TikTok and Instagram, use the built-in Stitch, Duet or Remix on public videos that allow it. The original creator is credited automatically. Add Savage's take: "This happens at Savage every comp" + your own clip.</p></div>
+      <div class="card"><span class="pill g">Do</span><h3 style="margin-top:6px">Ask, then repost with credit</h3><p>DM the creator: <i>"Hey! Love this clip. Can we repost it on Savage Grappling with full credit and a tag?"</i> Keep the screenshot of their yes. Tag them in the first line of the caption and as a Collab.</p></div>
+      <div class="card"><span class="pill g">Do</span><h3 style="margin-top:6px">Athletes' own Savage clips</h3><p>Anything filmed at Savage by a parent or teammate: ask them to send it or invite you as a Collaborator. Most will say yes, and their friends see it on both profiles.</p></div>
+      <div class="card"><span class="pill r">Don't</span><h3 style="margin-top:6px">Don't use paid media footage</h3><p>FloGrappling, UFC Fight Pass, ADCC and similar broadcast footage is owned by them. Stitch their public posts if allowed, but never download and re-upload.</p></div>
+    </div>
+  </section>
+
+  <section id="comments">
+    <span class="eyebrow">Comments drive reach</span>
+    <h2>The comment routine</h2>
+    <div class="grid">
+      <div class="card"><h3>1. End every caption with a specific question</h3><p>"Who won this?" beats "Thoughts?". "What would you have done from here?" beats "Comment below".</p></div>
+      <div class="card"><h3>2. Reply to the first 20 comments within an hour</h3><p>Early replies double the comment count and tell the platform the post is active.</p></div>
+      <div class="card"><h3>3. Pin the funniest comment</h3><p>It sets the tone and gets people joining in.</p></div>
+      <div class="card"><h3>4. Turn the top comment into the next video</h3><p>Use "reply with video". Arguments about a ref call can run for three posts.</p></div>
+      <div class="card"><h3>5. Ask for tags, not likes</h3><p>"Tag the teammate who'd do this" spreads the post to people who don't follow you yet.</p></div>
+      <div class="card"><h3>6. Keep it friendly</h3><p>Debate the call, never the person. Delete abuse, and never post a clip that mocks a kid or an injured athlete.</p></div>
+    </div>
+  </section>
+
+  <section id="dont">
+    <span class="eyebrow">Stop doing these</span>
+    <h2>What not to do</h2>
+    <ul class="dont">
+      <li><b>No logo intros</b>The first second must be action or a face. The profile picture already shows the logo.</li>
+      <li><b>No montages over 20 seconds</b>One moment per post. A 77-second highlight is ten posts.</li>
+      <li><b>No "sign up now" every day</b>At most 1 post in 5 asks for money. Entertainment earns the right to sell.</li>
+      <li><b>No sponsor band on every post</b>It makes everything look like an ad. Sponsors get a monthly spotlight and a mention in event captions.</li>
+      <li><b>No empty halls or truck-loading at normal speed</b>Behind-the-scenes only works sped up to 10–15 seconds with a hook.</li>
+      <li><b>No landscape or square video</b>Vertical 9:16, filmed close at mat level.</li>
+      <li><b>No posting without tags</b>Every clip names and tags both athletes and both gyms, and uses Collab.</li>
+      <li><b>No reposting others' videos without permission</b>Use Stitch, Duet or Remix, or ask first.</li>
+      <li><b>No clips of injuries for views</b>Injury clips go viral, but they hurt trust with parents and gyms. Skip them.</li>
+      <li><b>No mocking kids or beginners</b>Celebrate effort. Memes punch at situations, not people.</li>
+      <li><b>No 30 hashtags</b>3–5 relevant ones. Location tag every time.</li>
+      <li><b>No disappearing between events</b>3 posts a day, every day, including the quiet weeks.</li>
+    </ul>
+  </section>
+
+  <section id="themes">
+    <span class="eyebrow">Each month has a focus</span>
+    <h2>Monthly themes</h2>
+    <div class="tw"><table>
+      <thead><tr><th>Month</th><th>Theme</th><th>What it means in posts</th></tr></thead>
+      <tbody id="themes-body"></tbody>
+    </table></div>
+  </section>
+
+  <section id="banks">
+    <span class="eyebrow">Copy and reuse</span>
+    <h2>Hook, meme and question banks</h2>
+    <p class="small">The calendar pulls from these. Use them any time a clip needs a hook.</p>
+    <div id="banks-body"></div>
+  </section>
+
+  <section id="calendar">
+    <span class="eyebrow">Day by day</span>
+    <h2>The calendar</h2>
+    <p>Event dates change the plan around them: announcements, countdowns, entries closing, event-day posts and results. <b>The dates below are examples.</b> Set Daniel's real dates and the calendar rebuilds.</p>
+    <div class="events" id="events">
+      <label for="ev1">Event 1<input type="date" id="ev1"></label>
+      <label for="ev2">Event 2<input type="date" id="ev2"></label>
+      <label for="ev3">Event 3<input type="date" id="ev3"></label>
+      <label for="ev4">Event 4 (optional)<input type="date" id="ev4"></label>
+      <button class="btn" id="apply" type="button">Rebuild calendar</button>
+    </div>
+    <div class="months" id="months" role="group" aria-label="Month"></div>
+    <div class="filters">
+      <label class="small" for="slot">Slot <select id="slot"><option value="">All 3</option><option>Morning</option><option>Midday</option><option>Evening</option></select></label>
+      <label class="small" for="type">Type <select id="type"><option value="">All types</option></select></label>
+      <label class="small" for="q">Search <input type="search" id="q" placeholder="e.g. debate, meme, kids"></label>
+      <button class="btn ghost" id="today" type="button">Jump to today</button>
+      <span class="progress" id="progress"></span>
+    </div>
+    <div id="cal"></div>
+  </section>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  const START = new Date(2026, 10, 12); // 12 Nov 2026
+  const DAYS = 182;
+  const DEFAULT_EVENTS = ["2026-12-06", "2027-02-07", "2027-04-11", ""];
+  const KEY = "savage-plan-v1";
+  let store = {}; try { store = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) {}
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {} };
+  store.done = store.done || {}; store.events = store.events || DEFAULT_EVENTS;
+
+  const TAGS = "#bjj #jiujitsu #nogi #grappling #bjjmelbourne";
+  const pick = (arr, i) => arr[((i % arr.length) + arr.length) % arr.length];
+
+  // ---------- banks ----------
+  const H = {
+    wait: ["Wait for it…", "Watch his left leg", "He did NOT see this coming", "Keep watching the crowd", "3 seconds left on the clock…", "Nobody expected the finish", "The slam at 0:04", "Turn the sound up", "He thought he had the back…", "Blink and you'll miss it", "This is why you protect your neck", "Watch the ref's face"],
+    giant: ["He was 30kg heavier", "Her first comp. His tenth.", "White belt vs the biggest guy in the bracket", "They told her she'd get smashed", "Lightest person in the absolute", "Coach said 'just survive'", "Youngest in the bracket", "Down on points with 20 seconds left", "Underdog in every match", "First match ever. Watch."],
+    fast: ["11-second armbar", "Fastest tap of the day", "Flying triangle at a local comp", "Under 20 seconds", "Sub from bottom with 5 seconds left", "He hit it in the first exchange", "Straight from the handshake"],
+    debate: ["Who won this? 👇", "Too early a stoppage?", "Legal or not?", "Points or no points?", "Should the ref have stopped it?", "Would you have tapped?", "Sweep or takedown?", "Ref's call: right or wrong?", "Who's winning this scramble?", "Draw or decision?"],
+    story: ["She started BJJ 6 months ago", "His dad drove 4 hours for this", "First comp at 41", "He almost didn't sign up", "Her first ever win", "Lost every match last time. Not this time.", "The moment he got his hand raised", "He cried on the podium. Here's why.", "Back from a knee reconstruction for this", "Three brothers, one bracket", "Mum and son, same comp", "She trains at 5am before work"],
+    breakdown: ["How did he finish that?", "Steal this sweep", "The setup nobody noticed", "3 details that won this match", "Why this takedown worked", "The grip that changed everything", "Coach breaks down the finish", "Watch it in slow motion"],
+    reply: ["Replying to @[user]: here's the full match", "You asked who won. Here's the answer.", "'He let her win'? Watch again.", "You said the ref was wrong. The ref replied.", "Replying to @[user]: yes, it was legal", "Replying to @[user]: here's what happened next"],
+    kids: ["Her first medal", "Little guy, big takedown", "Kids division had the best energy", "He's 8 and already hunting the back", "Watch the parents in the background", "Best celebration of the day"],
+    react: ["Watch the coach", "His teammates lost it", "Mum's reaction 😭", "The crowd when the clock hit zero", "The bench when he hit the takedown"],
+    bts: ["4am. 1 truck. 500 grapplers.", "What it takes to run a comp", "Setting up 6 mats in 40 minutes", "The medals are here", "Day-before-comp checklist", "POV: you run a BJJ tournament"],
+  };
+  const MEMES = [
+    ["Me after one YouTube instructional / Me in the actual roll", "Two-panel meme"],
+    ["Round robin: 3–4 guaranteed matches. My cardio: 1.", "Single image + caption"],
+    ["Weigh-in in 60 minutes. Me looking at the sausage sizzle.", "Photo from a Savage event"],
+    ["When the ref says 'combate' and you forget your whole game plan", "Reaction meme"],
+    ["Coach: 'just play your game' / Me, who has no game:", "Two-panel meme"],
+    ["POV: you drew your own teammate in pool 1", "Text on video"],
+    ["White belts at their first comp: 15 grips, 0 plans", "Nobody / Me format"],
+    ["Me pretending I'm not nervous in the warm-up area", "Reaction meme"],
+    ["When their gym is louder than your gym", "Crowd clip + text"],
+    ["Entry fees by belt (no hate to brown belts)", "Carousel, one belt per slide"],
+    ["Me refreshing the Smoothcomp brackets every 4 minutes", "Screen-record style"],
+    ["The 'one more round' that turned into six", "Text post"],
+    ["Types of people at a BJJ comp", "Carousel: screaming coach, sauna-suit guy, mum filming, the esky guy…"],
+    ["Things you only hear at a BJJ comp", "Carousel of quotes"],
+    ["Gi people vs No-Gi people", "Side-by-side meme"],
+    ["When you pull guard and they just… stand there", "Clip + text"],
+    ["Tell me you train jiu-jitsu without telling me 👇", "Comment prompt"],
+    ["Describe your guard in 3 words 👇", "Comment prompt"],
+    ["Wrong answers only: what's this position called?", "Freeze-frame + comment prompt"],
+    ["My first comp: expectation vs reality", "Two-panel meme"],
+    ["My body the day after 4 round-robin matches", "Reaction meme"],
+    ["When the ref nearly raises the wrong hand", "Clip + text"],
+    ["Your coach's face when you ignore the game plan", "Coach reaction clip"],
+    ["Points explained by someone who's never trained", "Text post / voiceover"],
+    ["Opponent says 'good luck bro' and is built like a fridge", "Reaction meme"],
+    ["Cutting weight vs the lolly stand", "Two-panel meme"],
+    ["Tag the teammate who'd tap to a headlock", "Comment prompt"],
+    ["'I'm just going for fun.' Also me: 6 weeks of comp prep", "Two-panel meme"],
+    ["Kids division parents > UFC crowds", "Crowd clip + text"],
+    ["Gym owners when 20 students sign up for the same comp", "Reaction meme"],
+    ["That one guy who brings a whole esky", "Photo + text"],
+    ["Hearing your name called for Mat 4 while you're in the toilet queue", "Text on video"],
+    ["Spot the white belt 👀", "Photo + comment prompt"],
+    ["Rate my competition breakfast", "Photo + comment prompt"],
+    ["When you finally hit the move you've drilled for 6 months", "Celebration clip"],
+    ["Your mates when you say you entered a comp", "Reaction meme"],
+  ];
+  const COMMUNITY = [
+    "Gi or No-Gi? 👇", "What's the one sub you'd most like to win with?", "What's your comp-morning ritual?", "Rate your nerves 1–10 before your first comp",
+    "Drop your gym name. Let's see who's representing.", "Best comp snack? Wrong answers welcome.", "What belt are you and how long did it take?",
+    "Who's the toughest person in your gym? Tag them.", "Leg locks: yes or no?", "What made you start BJJ?", "Worst injury you came back from?",
+    "What should we add to the next Savage?", "Your dream superfight at Savage?", "Morning trainers or night trainers?", "Biggest thing you learned from losing a match?",
+  ];
+  const DEMO_THEME = {
+    10: ["Relaunch: Prove it", "First month of the new style. Lots of best-of clips from 2026 events, memes and debates to grow comments. Build-up to the next event."],
+    11: ["Year of Savage", "Event, then year-in-review: biggest clips, best celebrations, top academies. Christmas memes. 'Train over the holidays?' polls."],
+    0: ["New Year, first comp", "Recruit white belts and first-timers. 'First comp? Read this', first-timer stories, nerves memes, team discount codes."],
+    1: ["Event month", "Build-up and event. Fix the quiet February: early bird, gym ambassador codes, daily clips of last year's February finishes."],
+    2: ["Kids & teens", "Parent-friendly content on Facebook. Kids' first medals, coach spotlights, safety and refereeing explained."],
+    3: ["Team season", "Best Overall Academy rivalry. Gym spotlights, 'which gym takes it?' debates, then the event."],
+    4: ["Mid-year push", "Results and spotlights from April, then the next build-up. Review what's working and double down."],
+  };
+
+  // ---------- caption builders ----------
+  const cap = {
+    wait: (h) => `${h}\n\n[Athlete] (@[handle]) from @[gym] at Savage Grappling [event] 😳 Did you see it coming?\n\n${TAGS}`,
+    giant: (h) => `${h}.\n\n[Athlete] (@[handle], @[gym]) in their own words: "[one line from the athlete]".\n\nWho's your underdog pick for the next Savage? 👇\n\n${TAGS}`,
+    fast: (h) => `${h} ⚡ [Athlete] (@[handle]) from @[gym] didn't waste any time.\n\nWhat's the fastest tap you've ever got? 👇\n\n${TAGS}`,
+    debate: (h) => `${h}\n\n[Athlete A] (@[gym A]) vs [Athlete B] (@[gym B]). Watch it twice and tell us your call. We'll post the ref's explanation tomorrow.\n\n${TAGS}`,
+    story: (h) => `${h}.\n\n[2–3 sentences of the real story in the athlete's own words.]\n\nThis is what Savage is about. Tag someone who needs to see this 👇\n\n#bjj #jiujitsu #bjjcommunity #savagegrappling`,
+    breakdown: (h) => `${h} 🎯 Coach [name] from @[gym] breaks down [Athlete]'s [technique] from Savage [event].\n\nSave this for your next drilling session. What should we break down next?\n\n${TAGS}`,
+    reply: (h) => `${h}\n\nYou had a lot to say on yesterday's clip. Here's the full exchange. Still think the same? 👇\n\n${TAGS}`,
+    kids: (h) => `${h} 🥇 [Name], [age], from @[gym]. Parents, coaches: this is why we do it.\n\nDrop a 🔥 for the kids division.\n\n#kidsbjj #bjj #jiujitsu #bjjmelbourne`,
+    react: (h) => `${h} 😂 The best part of any comp is the people watching.\n\nTag the teammate who screams the loudest 👇\n\n${TAGS}`,
+    bts: (h) => `${h}\n\nThe bit nobody sees. Thanks to every ref, volunteer and staff member who makes it happen.\n\nWant to help at the next one? Comment 'crew' 👇\n\n#bjj #behindthescenes #savagegrappling`,
+    meme: (t) => `${t}\n\nTag the teammate this is about 👇\n\n#bjjmemes #bjj #jiujitsu`,
+    community: (t) => `${t}\n\nBest answer gets pinned.\n\n#bjj #jiujitsu #bjjcommunity`,
+    stitch: () => `This happens at Savage every comp 👀 Stitching @[creator]'s clip.\n\nWho's doing this at the next one? 👇\n\n${TAGS}`,
+    spotlight: () => `Gym spotlight: @[gym] 🏆\n\n[2–3 lines: how many they brought to the last Savage, their best result, what they're known for.]\n\nCoaches, want your gym featured? Comment your gym name 👇\n\n#bjj #bjjgym #bjjmelbourne`,
+    athlete: () => `Athlete spotlight: [Name] (@[handle]) from @[gym].\n\n[Belt], [division]. [One line about their run at Savage.] Next goal: [goal].\n\nWho should we spotlight next? Tag them 👇\n\n#bjj #jiujitsu #savagegrappling`,
+    sponsor: () => `Huge thanks to our partners @[cycon civil] @[AJJFP] @[kamikaze energy] for backing Australian grapplers 🙏\n\n[One line about what each one does / an offer for the community.]\n\n#bjj #savagegrappling`,
+    recap: () => `This week at Savage 👇\n\nSlide through the best clips, the most argued ref call and the top comment of the week.\n\nWhich one was your favourite?\n\n${TAGS}`,
+  };
+
+  // Promo / event posts, by days before (+) or after (−) an event
+  const EVENT = {
+    42: ["Event announced", "Next Savage: [date] at [venue]. Early bird is open.", "Designed post: date + venue + 'Prove it on the mats'. Add to pinned posts and update covers.", "Promo"],
+    35: ["Early bird open", "Early bird entry is open until [date]. 3–4 matches guaranteed.", "Designed post: price card. Share to gym owners in DMs.", "Promo"],
+    28: ["First comp? Read this", "First comp coming up? Save this before [date].", "Carousel: format, run sheet, what to bring, prices (already designed).", "Promo"],
+    21: ["Which gym takes the trophy?", "Coaches: Best Overall Academy is on the line on [date].", "Designed post + DM the top 15 gyms. Invite them as Collaborators.", "Promo"],
+    14: ["2 weeks out", "Two weeks. Who's in? Comment your division 👇", "Raw clip of last event's best finish + text '2 weeks'.", "Promo"],
+    7: ["7 days", "7 days. Entries close [day] 10am.", "Countdown post (designed) + story countdown sticker.", "Promo"],
+    4: ["Entries close soon", "Entries close in 2 days. Gi + No-Gi combo $100.", "Story countdown + reshare of best clip.", "Promo"],
+    2: ["Last call", "LAST CALL. Entries close at 10am today.", "Designed 'entries close' post at 7am + stories at 8:30 and 9:30.", "Promo"],
+    1: ["Brackets live", "Brackets are live on Smoothcomp. Screenshot your pool and tag your first opponent 👀", "Screenshot of a bracket + 'What to bring' slide to stories.", "Promo"],
+    0: ["EVENT DAY", "Live stories all day. Same-day reel of the best moment by 8pm.", "Phones vertical at mat level. Film every takedown, sub, podium and crowd reaction.", "Event"],
+    "-1": ["Results", "Results from [event] 🏆 Tag yourself 👇", "Results carousel (designed template). Collab with winning gyms.", "Results"],
+    "-2": ["Best Overall Academy", "Congrats @[gym], Best Overall Academy at [event] 🏆", "Photo of the team with the trophy, raw. Collab with the gym.", "Results"],
+    "-3": ["Photographer gallery", "The best shots from [event] by @[photographer] 📸 Find yourself 👇", "Carousel of 10 photos. Credit the photographer.", "Results"],
+    "-7": ["Week recap", "Week 1 after [event]: the top 5 moments. Which was best? 👇", "Carousel of 5 freeze-frames with numbers.", "Results"],
+  };
+
+  // Default rotations (by day index)
+  const MORNING = ["meme", "community", "meme", "stitch", "meme", "community", "meme"];
+  const MIDDAY = ["wait", "giant", "fast", "kids", "wait", "react", "fast", "giant", "wait", "kids", "react", "fast", "bts", "wait"];
+  const EVENING = ["debate", "story", "breakdown", "reply", "athlete", "debate", "story", "spotlight", "breakdown", "reply", "story", "debate", "recap", "athlete"];
+
+  const LABEL = { wait: "Wait-for-it clip", giant: "Underdog clip", fast: "Fast finish", kids: "Kids clip", react: "Reaction clip", bts: "Behind the scenes", debate: "Debate clip", story: "Story", breakdown: "Breakdown", reply: "Reply to a comment", athlete: "Athlete spotlight", spotlight: "Gym spotlight", recap: "Weekly recap carousel", meme: "Meme", community: "Question / poll", stitch: "Stitch / Duet", sponsor: "Sponsor spotlight", Promo: "Promo (designed)", Event: "Event day", Results: "Results" };
+  const DESIGN = {
+    wait: "9:16, 7–15 s. Hook in a black text box, top third. Start 1 s before the action, payoff at 3–6 s. No logo.",
+    giant: "9:16, 10–20 s. Athlete's one-line story as text. Show the size difference in the first frame.",
+    fast: "9:16, under 10 s. Timer overlay in the corner counting up. Loop-friendly ending.",
+    kids: "9:16, 8–15 s. Parent-friendly. Get permission from the parent before posting.",
+    react: "9:16, 6–12 s. Crowd or coach face first, then the action they're reacting to.",
+    bts: "9:16, sped up to 10–15 s. Hook text the whole way through.",
+    debate: "9:16. Freeze 1 s on the moment, red 'WHO WON?' label, then play at normal speed. No answer in the video.",
+    story: "9:16, 15–30 s. Athlete on camera or their clip with 2–3 lines of their own words as captions.",
+    breakdown: "9:16, 20–40 s. Coach voiceover, slow motion, arrows drawn in the app.",
+    reply: "Use the app's 'reply with video' so the comment sticker appears at the top.",
+    athlete: "4:5 photo or 9:16 clip. Name, gym and belt as text. Collab with the athlete.",
+    spotlight: "Carousel: team photo, best clip still, coach quote. Collab with the gym.",
+    recap: "Carousel, 5–6 slides: best clip stills, top comment screenshot, next event date on the last slide.",
+    meme: "4:5 or 9:16. Plain text panels, real Savage photo or a familiar template. Tiny @savagegrappling in a corner.",
+    community: "Instagram/Facebook text post or a Story poll sticker. Pin the best answer.",
+    stitch: "TikTok Stitch or Instagram Remix of a big public BJJ clip (only if the creator allows it), then your Savage clip.",
+    sponsor: "One designed post a month. Logos large, a real offer or story from the sponsor.",
+  };
+  const PLAT = {
+    morning: "Instagram + Story · Facebook · Threads · TikTok photo",
+    clip: "TikTok · Reels · FB Reels · YT Shorts",
+    carousel: "Instagram · Facebook",
+  };
+  const FOOT = {
+    wait: "Last event footage: a slam, scramble or last-second finish.",
+    giant: "Ask athletes who beat bigger or more experienced opponents to send their clip + one line.",
+    fast: "Last event footage: any sub under 30 seconds.",
+    kids: "Kids division footage, with parent permission.",
+    react: "Crowd and coach reactions (turn the camera around after big moments).",
+    bts: "Set-up, truck, medals, weigh-ins.",
+    debate: "A close match, a ref call people would argue about, or a scramble.",
+    story: "Interview a first-timer, an older competitor, a comeback or a para athlete (with consent).",
+    breakdown: "Film a coach from a competing gym reviewing their student's finish.",
+    reply: "The top comment on a recent clip + the footage that answers it.",
+    athlete: "Podium photo + best clip of one athlete.",
+    spotlight: "The gym's team photo from the last event + a clip.",
+    recap: "This week's best posts + top comment screenshot.",
+    meme: "Event photos, crowd shots, or a familiar meme template.",
+    community: "No footage needed.",
+    stitch: "A public viral BJJ clip that allows Stitch/Remix + one of your own clips.",
+    sponsor: "Sponsor logos + a photo of their product or team at the event.",
+  };
+
+  // ---------- build ----------
+  const fmt = (d) => d.toLocaleDateString("en-AU", { weekday: "short", day: "numeric", month: "short", year: "numeric" });
+  const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  const parse = (s) => { if (!s) return null; const [y, m, dd] = s.split("-").map(Number); return new Date(y, m - 1, dd); };
+  const dayDiff = (a, b) => Math.round((a - b) / 864e5);
+
+  function build() {
+    const events = store.events.map(parse).filter(Boolean).sort((a, b) => a - b);
+    const out = [];
+    let c = { wait: 0, giant: 0, fast: 0, debate: 0, story: 0, breakdown: 0, reply: 0, kids: 0, react: 0, bts: 0, meme: 0, community: 0 };
+    for (let i = 0; i < DAYS; i++) {
+      const d = new Date(START.getFullYear(), START.getMonth(), START.getDate() + i);
+      let rel = null, evName = "";
+      for (let k = 0; k < events.length; k++) { const diff = dayDiff(events[k], d); if (String(diff) in EVENT) { rel = String(diff); evName = "Event " + (k + 1) + " · " + fmt(events[k]); break; } }
+      const posts = [];
+      // Morning
+      let mt = pick(MORNING, i);
+      if (i % 30 === 15) mt = "sponsor";
+      if (mt === "meme") { const m = pick(MEMES, c.meme++); posts.push(mk("Morning", "7:00am", "meme", m[0], cap.meme(m[0]), DESIGN.meme + " Format: " + m[1] + ".", FOOT.meme, PLAT.morning)); }
+      else if (mt === "community") { const q = pick(COMMUNITY, c.community++); posts.push(mk("Morning", "7:00am", "community", q, cap.community(q), DESIGN.community, FOOT.community, PLAT.morning)); }
+      else if (mt === "sponsor") { posts.push(mk("Morning", "7:00am", "sponsor", "Thanks to our partners", cap.sponsor(), DESIGN.sponsor, FOOT.sponsor, PLAT.carousel)); }
+      else { posts.push(mk("Morning", "7:00am", "stitch", "This happens at Savage every comp", cap.stitch(), DESIGN.stitch, FOOT.stitch, "TikTok · Instagram Reels")); }
+      // Midday
+      const md = rel === "0" ? null : pick(MIDDAY, i);
+      if (md) { const h = pick(H[md], c[md]++); posts.push(mk("Midday", "12:30pm", md, h, cap[md](h), DESIGN[md], FOOT[md], PLAT.clip)); }
+      else posts.push(mk("Midday", "12:30pm", "Event", "Live from the mats", "Live stories every 30–60 minutes: doors opening, the full hall at 9am, podiums (tag every athlete), team standings.", "Stories, vertical, raw. Tag athletes and gyms on every podium shot.", "Film everything vertically. One phone per 2 mats.", "Instagram + Facebook Stories"));
+      // Evening
+      if (rel !== null) {
+        const e = EVENT[rel];
+        posts.push(mk("Evening", rel === "2" ? "7:00am" : "7:30pm", e[3], e[0], e[1].replace("[event]", "Savage") + (e[3] === "Promo" ? "\n\nLink in bio.\n\n#bjj #bjjmelbourne #savagegrappling" : "\n\n#bjj #jiujitsu #savagegrappling"), e[2], e[3] === "Promo" ? "Designed posts already made (countdown, entries close, carousels, results)." : "Event footage and photos.", e[3] === "Promo" ? "Instagram · Facebook · TikTok" : PLAT.clip, evName));
+      } else {
+        const ev = pick(EVENING, i);
+        if (H[ev]) { const h = pick(H[ev], c[ev]++); posts.push(mk("Evening", "7:30pm", ev, h, cap[ev](h), DESIGN[ev], FOOT[ev], ev === "recap" ? PLAT.carousel : PLAT.clip)); }
+        else { const titles = { athlete: "Athlete spotlight", spotlight: "Gym spotlight", recap: "This week at Savage" }; posts.push(mk("Evening", "7:30pm", ev, titles[ev], cap[ev](), DESIGN[ev], FOOT[ev], ev === "athlete" ? PLAT.clip : PLAT.carousel)); }
+      }
+      out.push({ i, d, key: iso(d), rel, evName, posts });
+    }
+    return out;
+  }
+  function mk(slot, time, type, hook, caption, design, footage, platforms, ev) { return { slot, time, type, hook, caption, design, footage, platforms, ev }; }
+
+  // ---------- render ----------
+  const esc = (s) => String(s).replace(/[&<>"]/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
+  let DATA = build(), month = null;
+  const cal = document.getElementById("cal");
+
+  function monthsList() { const seen = []; DATA.forEach((x) => { const k = x.d.getFullYear() + "-" + x.d.getMonth(); if (!seen.includes(k)) seen.push(k); }); return seen; }
+  function renderMonths() {
+    const el = document.getElementById("months");
+    const ms = monthsList(); if (!month || !ms.includes(month)) month = ms[0];
+    el.innerHTML = ms.map((k) => { const [y, m] = k.split("-").map(Number); const name = new Date(y, m, 1).toLocaleDateString("en-AU", { month: "short", year: "2-digit" }); return `<button type="button" data-m="${k}" aria-pressed="${k === month}">${name}</button>`; }).join("");
+  }
+  function renderTypes() {
+    const sel = document.getElementById("type"); const types = new Set(); DATA.forEach((x) => x.posts.forEach((p) => types.add(p.type)));
+    const cur = sel.value; sel.innerHTML = '<option value="">All types</option>' + [...types].map((t) => `<option value="${t}">${LABEL[t] || t}</option>`).join(""); sel.value = cur;
+  }
+  function render() {
+    const slot = document.getElementById("slot").value, type = document.getElementById("type").value, q = document.getElementById("q").value.trim().toLowerCase();
+    let total = 0, done = 0;
+    DATA.forEach((x) => x.posts.forEach((p, j) => { total++; if (store.done[x.key + "-" + j]) done++; }));
+    document.getElementById("progress").textContent = `${done} of ${total} posted`;
+    const days = DATA.filter((x) => x.d.getFullYear() + "-" + x.d.getMonth() === month);
+    cal.innerHTML = days.map((x) => {
+      const theme = DEMO_THEME[x.d.getMonth()];
+      const posts = x.posts.map((p, j) => ({ p, j })).filter(({ p }) => (!slot || p.slot === slot) && (!type || p.type === type) && (!q || (p.hook + p.caption + (LABEL[p.type] || "") + p.design).toLowerCase().includes(q)));
+      if (!posts.length) return "";
+      return `<div class="day" id="d-${x.key}">
+        <div class="dayhead"><span class="d">${fmt(x.d)}</span>${x.posts.some((p) => p.ev) ? `<span class="ev">${esc(x.posts.find((p) => p.ev).ev)}</span>` : ""}<span class="th">${theme ? esc(theme[0]) : ""}</span></div>
+        <div class="posts">${posts.map(({ p, j }) => { const id = x.key + "-" + j; const isDone = !!store.done[id]; return `
+          <article class="post ${isDone ? "done" : ""}">
+            <div class="top"><span class="time">${p.slot} · ${p.time}</span><span class="pill ${p.type === "Promo" || p.type === "Event" ? "r" : p.type === "meme" || p.type === "community" ? "g" : "a"}">${esc(LABEL[p.type] || p.type)}</span></div>
+            <div class="hook">${esc(p.hook)}</div>
+            <div><span class="k">Platforms</span><p>${esc(p.platforms)}</p></div>
+            <details><summary>Caption</summary><pre id="c-${id}">${esc(p.caption)}</pre><button class="btn ghost" data-copy="c-${id}" type="button">Copy caption</button></details>
+            <details><summary>Design & footage</summary><p style="margin-top:6px"><b>Design:</b> ${esc(p.design)}</p><p style="margin-top:6px"><b>Footage:</b> ${esc(p.footage)}</p></details>
+            <div class="row"><label class="chk"><input type="checkbox" data-done="${id}" ${isDone ? "checked" : ""}> Posted</label></div>
+          </article>`; }).join("")}</div></div>`;
+    }).join("") || '<p class="small" style="margin-top:16px">No posts match those filters.</p>';
+  }
+
+  // themes + banks
+  const tb = document.getElementById("themes-body");
+  const order = [10, 11, 0, 1, 2, 3, 4];
+  const mname = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  tb.innerHTML = order.map((m) => `<tr><td><b>${mname[m]} ${m >= 10 ? "2026" : "2027"}</b></td><td>${esc(DEMO_THEME[m][0])}</td><td>${esc(DEMO_THEME[m][1])}</td></tr>`).join("");
+  const banks = [["Wait-for-it hooks", H.wait], ["Underdog hooks", H.giant], ["Fast-finish hooks", H.fast], ["Debate hooks", H.debate], ["Story hooks", H.story], ["Breakdown hooks", H.breakdown], ["Reply-to-comment hooks", H.reply], ["Kids hooks", H.kids], ["Reaction hooks", H.react], ["Behind-the-scenes hooks", H.bts], ["Memes", MEMES.map((m) => m[0] + " (" + m[1] + ")")], ["Community questions", COMMUNITY]];
+  document.getElementById("banks-body").innerHTML = banks.map(([t, list]) => `<details class="fold"><summary>${t} (${list.length})</summary><ul class="bank">${list.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></details>`).join("");
+
+  // events
+  ["ev1", "ev2", "ev3", "ev4"].forEach((id, k) => { document.getElementById(id).value = store.events[k] || ""; });
+  document.getElementById("apply").addEventListener("click", () => {
+    store.events = ["ev1", "ev2", "ev3", "ev4"].map((id) => document.getElementById(id).value); save();
+    DATA = build(); renderTypes(); renderMonths(); render();
+  });
+  document.getElementById("months").addEventListener("click", (e) => { const b = e.target.closest("[data-m]"); if (!b) return; month = b.dataset.m; renderMonths(); render(); });
+  ["slot", "type"].forEach((id) => document.getElementById(id).addEventListener("change", render));
+  document.getElementById("q").addEventListener("input", render);
+  document.getElementById("today").addEventListener("click", () => {
+    const t = new Date(); const k = iso(t); const x = DATA.find((y) => y.key === k) || DATA[0];
+    month = x.d.getFullYear() + "-" + x.d.getMonth(); renderMonths(); render();
+    const el = document.getElementById("d-" + x.key); if (el) el.scrollIntoView({ block: "start" });
+  });
+  cal.addEventListener("change", (e) => { const id = e.target.dataset.done; if (!id) return; if (e.target.checked) store.done[id] = 1; else delete store.done[id]; save(); render(); });
+  cal.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-copy]"); if (!b) return; const pre = document.getElementById(b.dataset.copy);
+    const ok = () => { b.textContent = "Copied"; setTimeout(() => (b.textContent = "Copy caption"), 1500); };
+    const fb = () => { const r = document.createRange(); r.selectNodeContents(pre); const s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = "Selected, press copy"; };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(pre.textContent).then(ok, fb); else fb();
+  });
+
+  renderTypes(); renderMonths(); render();
+})();
+</script>

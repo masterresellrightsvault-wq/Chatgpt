@@ -1,0 +1,53 @@
+@import url("assets/fonts.css");
+
+/* Savage Grappling brand tokens. Used by banners, posts and render templates. */
+:root {
+  --ink: #07080c;
+  --steel: #12151e;
+  --line: #262b3b;
+  --royal: #0123b4;   /* exact logo blue */
+  --volt: #2b4ef5;    /* logo blue lifted for dark backgrounds */
+  --chalk: #f3f4f7;
+  --mute: #9aa1b4;
+  --red: #e3202c;     /* reserved for sign-up / urgency */
+  --display: "Barlow Condensed", "Arial Narrow", Impact, sans-serif;
+  --body: "Barlow", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--ink); color: var(--chalk); font-family: var(--body); }
+.canvas { position: relative; overflow: hidden; background: var(--ink); }
+
+.display { font-family: var(--display); font-weight: 800; font-style: italic; text-transform: uppercase; line-height: .86; letter-spacing: -.01em; }
+.label { font-family: var(--mono); font-weight: 600; text-transform: uppercase; letter-spacing: .12em; }
+.blue { color: var(--volt); }
+.red { color: var(--red); }
+
+.photo { position: absolute; inset: 0; background-size: cover; background-position: center; }
+
+/* Mat tape: the white/blue competition-area border, used as the brand's structural line */
+.tape { height: 10px; background: linear-gradient(90deg, var(--chalk) 0 70%, var(--volt) 70% 100%); }
+.tape-v { width: 10px; background: linear-gradient(180deg, var(--chalk) 0 70%, var(--volt) 70% 100%); }
+
+.cta {
+  display: inline-flex; align-items: center; gap: .5em;
+  background: var(--red); color: #fff;
+  font-family: var(--display); font-weight: 800; font-style: italic; text-transform: uppercase;
+  padding: .32em .7em .28em; transform: skewX(-8deg);
+}
+.cta > span { transform: skewX(8deg); display: inline-block; }
+
+.chip {
+  display: inline-block; border: 2px solid var(--chalk); color: var(--chalk);
+  font-family: var(--mono); font-weight: 600; text-transform: uppercase; letter-spacing: .08em;
+  padding: .35em .6em;
+}
+
+/* Scoreboard block: echoes the match clock used on the mats */
+.score { display: inline-grid; grid-auto-flow: column; background: #000; border: 2px solid var(--line); font-family: var(--mono); font-weight: 600; }
+.score > div { padding: .3em .55em; border-right: 2px solid var(--line); }
+.score > div:last-child { border-right: 0; }
+.score .r { background: var(--red); color: #fff; }
+.score .b { background: var(--royal); color: #fff; }
+.cta, .chip, .score > div { white-space: nowrap; }
